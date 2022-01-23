@@ -3,7 +3,7 @@ package org.laba2.entities;
 import java.util.Objects;
 
 public class Customer {
-    private String customerId;
+    private int customerId;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -11,11 +11,11 @@ public class Customer {
 
     public Customer() {}
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -56,22 +56,11 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return getCustomerId().equals(customer.getCustomerId()) && getFirstName().equals(customer.getFirstName()) && getLastName().equals(customer.getLastName()) && getPhoneNumber().equals(customer.getPhoneNumber()) && Objects.equals(getEmail(), customer.getEmail());
+        return getCustomerId() == customer.getCustomerId() && getFirstName().equals(customer.getFirstName()) && getLastName().equals(customer.getLastName()) && getPhoneNumber().equals(customer.getPhoneNumber()) && getEmail().equals(customer.getEmail());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getCustomerId(), getFirstName(), getLastName(), getPhoneNumber(), getEmail());
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId='" + customerId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

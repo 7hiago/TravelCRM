@@ -4,61 +4,71 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Order {
-    private String orderId;
-    private String tourId;
-    private String customerId;
-    private String managerId;
-    private String accountingId;
-    private LocalDate date;
+    private int orderId;
+    private int tourId;
+    private int customerId;
+    private int managerId;
+    private int accountingId;
+    private String date;
     private String status;
 
     public Order() {}
 
-    public String getOrderId() {
+    public Order(int orderId, int tourId, int customerId, int managerId, int accountingId, String date, String status) {
+        this.orderId = orderId;
+        this.tourId = tourId;
+        this.customerId = customerId;
+        this.managerId = managerId;
+        this.accountingId = accountingId;
+        this.date = date;
+        this.status = status;
+    }
+
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
-    public String getTourId() {
+    public int getTourId() {
         return tourId;
     }
 
-    public void setTourId(String tourId) {
+    public void setTourId(int tourId) {
         this.tourId = tourId;
     }
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
-    public String getManagerId() {
+    public int getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(String managerId) {
+    public void setManagerId(int managerId) {
         this.managerId = managerId;
     }
 
-    public String getAccountingId() {
+    public int getAccountingId() {
         return accountingId;
     }
 
-    public void setAccountingId(String accountingId) {
+    public void setAccountingId(int accountingId) {
         this.accountingId = accountingId;
     }
 
-    public LocalDate getDate() {
+    public String getDate()  {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -75,24 +85,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return getOrderId().equals(order.getOrderId()) && getTourId().equals(order.getTourId()) && getCustomerId().equals(order.getCustomerId()) && getManagerId().equals(order.getManagerId()) && getAccountingId().equals(order.getAccountingId()) && getDate().equals(order.getDate()) && getStatus().equals(order.getStatus());
+        return getOrderId() == order.getOrderId() && getTourId() == order.getTourId() && getCustomerId() == order.getCustomerId() && getManagerId() == order.getManagerId() && getAccountingId() == order.getAccountingId() && getDate().equals(order.getDate()) && getStatus().equals(order.getStatus());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getOrderId(), getTourId(), getCustomerId(), getManagerId(), getAccountingId(), getDate(), getStatus());
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId='" + orderId + '\'' +
-                ", tourId='" + tourId + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", managerId='" + managerId + '\'' +
-                ", accountingId='" + accountingId + '\'' +
-                ", date=" + date +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Manager {
-    private String managerId;
+    private int managerId;
     private String firstName;
     private String lastName;
     private float salary;
@@ -16,11 +16,11 @@ public class Manager {
 
     public Manager() {}
 
-    public String getManagerId() {
+    public int getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(String managerId) {
+    public void setManagerId(int managerId) {
         this.managerId = managerId;
     }
 
@@ -93,27 +93,12 @@ public class Manager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Manager manager = (Manager) o;
-        return Float.compare(manager.getSalary(), getSalary()) == 0 && getManagerId().equals(manager.getManagerId()) && getFirstName().equals(manager.getFirstName()) && getLastName().equals(manager.getLastName()) && getHireDate().equals(manager.getHireDate()) && getPhoneNumber().equals(manager.getPhoneNumber()) && getEmail().equals(manager.getEmail()) && getLogin().equals(manager.getLogin()) && getPassword().equals(manager.getPassword());
+        return getManagerId() == manager.getManagerId() && Float.compare(manager.getSalary(), getSalary()) == 0 && getFirstName().equals(manager.getFirstName()) && getLastName().equals(manager.getLastName()) && getHireDate().equals(manager.getHireDate()) && getPhoneNumber().equals(manager.getPhoneNumber()) && getEmail().equals(manager.getEmail()) && getLogin().equals(manager.getLogin()) && getPassword().equals(manager.getPassword());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getManagerId(), getFirstName(), getLastName(), getSalary(), getHireDate(), getPhoneNumber(), getEmail(), getLogin(), getPassword());
-    }
-
-    @Override
-    public String toString() {
-        return "Manager{" +
-                "managerId='" + managerId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", salary=" + salary +
-                ", hireDate=" + hireDate +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 
 }

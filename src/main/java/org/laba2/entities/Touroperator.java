@@ -3,18 +3,25 @@ package org.laba2.entities;
 import java.util.Objects;
 
 public class Touroperator {
-    private String touroperatorId;
+    private int touroperatorId;
     private String name;
     private String phoneNumber;
     private String email;
 
     public Touroperator() {}
 
-    public String getTouroperatorId() {
+    public Touroperator(int touroperatorId, String name, String phoneNumber, String email) {
+        this.touroperatorId = touroperatorId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+    public int getTouroperatorId() {
         return touroperatorId;
     }
 
-    public void setTouroperatorId(String touroperatorId) {
+    public void setTouroperatorId(int touroperatorId) {
         this.touroperatorId = touroperatorId;
     }
 
@@ -43,26 +50,15 @@ public class Touroperator {
     }
 
     @Override
-    public String toString() {
-        return "Touroperator{" +
-                "touroperatorId='" + touroperatorId + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Touroperator that = (Touroperator) o;
-        return getTouroperatorId().equals(that.getTouroperatorId()) && getName().equals(that.getName()) && getPhoneNumber().equals(that.getPhoneNumber()) && getEmail().equals(that.getEmail());
+        return getTouroperatorId() == that.getTouroperatorId() && getName().equals(that.getName()) && getPhoneNumber().equals(that.getPhoneNumber()) && getEmail().equals(that.getEmail());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getTouroperatorId(), getName(), getPhoneNumber(), getEmail());
     }
-
 }

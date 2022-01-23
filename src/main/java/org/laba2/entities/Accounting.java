@@ -1,9 +1,12 @@
 package org.laba2.entities;
 
+import org.springframework.context.annotation.Bean;
+
 import java.util.Objects;
 
+
 public class Accounting {
-    private String accountingId;
+    private int accountingId;
     private float tourPrice;
     private float tourPaid;
     private float commission;
@@ -13,11 +16,11 @@ public class Accounting {
 
     public Accounting() {}
 
-    public String getAccountingId() {
+    public int getAccountingId() {
         return accountingId;
     }
 
-    public void setAccountingId(String accountingId) {
+    public void setAccountingId(int accountingId) {
         this.accountingId = accountingId;
     }
 
@@ -74,24 +77,11 @@ public class Accounting {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Accounting that = (Accounting) o;
-        return Float.compare(that.getTourPrice(), getTourPrice()) == 0 && Float.compare(that.getTourPaid(), getTourPaid()) == 0 && Float.compare(that.getCommission(), getCommission()) == 0 && Float.compare(that.getTouroperatorPrice(), getTouroperatorPrice()) == 0 && Float.compare(that.getTouroperatorPaid(), getTouroperatorPaid()) == 0 && Float.compare(that.getProfit(), getProfit()) == 0 && getAccountingId().equals(that.getAccountingId());
+        return getAccountingId() == that.getAccountingId() && Float.compare(that.getTourPrice(), getTourPrice()) == 0 && Float.compare(that.getTourPaid(), getTourPaid()) == 0 && Float.compare(that.getCommission(), getCommission()) == 0 && Float.compare(that.getTouroperatorPrice(), getTouroperatorPrice()) == 0 && Float.compare(that.getTouroperatorPaid(), getTouroperatorPaid()) == 0 && Float.compare(that.getProfit(), getProfit()) == 0;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getAccountingId(), getTourPrice(), getTourPaid(), getCommission(), getTouroperatorPrice(), getTouroperatorPaid(), getProfit());
-    }
-
-    @Override
-    public String toString() {
-        return "Accounting{" +
-                "accountingId='" + accountingId + '\'' +
-                ", tourPrice=" + tourPrice +
-                ", tourPaid=" + tourPaid +
-                ", commission=" + commission +
-                ", touroperatorPrice=" + touroperatorPrice +
-                ", touroperatorPaid=" + touroperatorPaid +
-                ", profit=" + profit +
-                '}';
     }
 }

@@ -1,24 +1,31 @@
 package org.laba2.entities;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Tour {
-    private String tourId;
+    private int tourId;
     private String country;
     private String hotel;
-    private LocalDate departureDate;
-    private LocalDate returnDate;
+    private String departureDate;
+    private String returnDate;
     private String proposalNumber;
-    private String touroperatorId;
+    private int touroperatorId;
 
-    public Tour() {}
+    public Tour(int tourId, String country, String hotel, String departureDate, String returnDate, String proposalNumber, int touroperatorId) {
+        this.tourId = tourId;
+        this.country = country;
+        this.hotel = hotel;
+        this.departureDate = departureDate;
+        this.returnDate = returnDate;
+        this.proposalNumber = proposalNumber;
+        this.touroperatorId = touroperatorId;
+    }
 
-    public String getTourId() {
+    public int getTourId() {
         return tourId;
     }
 
-    public void setTourId(String tourId) {
+    public void setTourId(int tourId) {
         this.tourId = tourId;
     }
 
@@ -38,19 +45,19 @@ public class Tour {
         this.hotel = hotel;
     }
 
-    public LocalDate getDepartureDate() {
+    public String getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(LocalDate departureDate) {
+    public void setDepartureDate(String departureDate) {
         this.departureDate = departureDate;
     }
 
-    public LocalDate getReturnDate() {
+    public String getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
     }
 
@@ -62,11 +69,11 @@ public class Tour {
         this.proposalNumber = proposalNumber;
     }
 
-    public String getTouroperatorId() {
+    public int getTouroperatorId() {
         return touroperatorId;
     }
 
-    public void setTouroperatorId(String touroperatorId) {
+    public void setTouroperatorId(int touroperatorId) {
         this.touroperatorId = touroperatorId;
     }
 
@@ -75,24 +82,11 @@ public class Tour {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tour tour = (Tour) o;
-        return getTourId().equals(tour.getTourId()) && getCountry().equals(tour.getCountry()) && getHotel().equals(tour.getHotel()) && getDepartureDate().equals(tour.getDepartureDate()) && getReturnDate().equals(tour.getReturnDate()) && getProposalNumber().equals(tour.getProposalNumber()) && getTouroperatorId().equals(tour.getTouroperatorId());
+        return getTourId() == tour.getTourId() && getTouroperatorId() == tour.getTouroperatorId() && getCountry().equals(tour.getCountry()) && getHotel().equals(tour.getHotel()) && getDepartureDate().equals(tour.getDepartureDate()) && getReturnDate().equals(tour.getReturnDate()) && getProposalNumber().equals(tour.getProposalNumber());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getTourId(), getCountry(), getHotel(), getDepartureDate(), getReturnDate(), getProposalNumber(), getTouroperatorId());
-    }
-
-    @Override
-    public String toString() {
-        return "Tour{" +
-                "tourId='" + tourId + '\'' +
-                ", country='" + country + '\'' +
-                ", hotel='" + hotel + '\'' +
-                ", departureDate=" + departureDate +
-                ", returnDate=" + returnDate +
-                ", proposalNumber='" + proposalNumber + '\'' +
-                ", touroperatorId='" + touroperatorId + '\'' +
-                '}';
     }
 }
