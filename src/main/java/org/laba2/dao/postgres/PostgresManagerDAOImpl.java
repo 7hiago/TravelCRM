@@ -1,8 +1,9 @@
-package org.laba2.dao;
+package org.laba2.dao.postgres;
 
+import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
 
-public class PostgresDAOManagerImpl implements DAOManager {
+public class PostgresManagerDAOImpl implements ManagerDAO {
     @Override
     public void createManager(Manager manager) {
 

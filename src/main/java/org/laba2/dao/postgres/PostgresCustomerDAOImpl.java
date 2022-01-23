@@ -1,8 +1,9 @@
-package org.laba2.dao;
+package org.laba2.dao.postgres;
 
+import org.laba2.dao.CustomerDAO;
 import org.laba2.entities.Customer;
 
-public class PostgresDAOCustomerImpl implements DAOCustomer {
+public class PostgresCustomerDAOImpl implements CustomerDAO {
     @Override
     public void createCustomer(Customer customer) {
 

@@ -1,8 +1,9 @@
-package org.laba2.dao;
+package org.laba2.dao.postgres;
 
+import org.laba2.dao.AccountingDAO;
 import org.laba2.entities.Accounting;
 
-public class PostgresDAOAccountingImpl implements DAOAccounting {
+public class PostgresAccountingDAOImpl implements AccountingDAO {
     @Override
     public void createAccounting(Accounting accounting) {
 
