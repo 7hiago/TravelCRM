@@ -1,13 +1,15 @@
 package org.laba2.dao;
 
+import org.laba2.dao.postgres.PostgresDAOFactory;
+
 public abstract class AbstractDAOFactory {
 
-    public abstract DAOOrder getDAOOrder();
-    public abstract DAOTour getDAOTour();
-    public abstract DAOCustomer getDAOCustomer();
-    public abstract DAOManager getDAOManager();
-    public abstract DAOTouroperator getDAOTouroperator();
-    public abstract DAOAccounting getDAOAccounting();
+    public abstract OrderDAO getDAOOrder();
+    public abstract TourDAO getDAOTour();
+    public abstract CustomerDAO getDAOCustomer();
+    public abstract ManagerDAO getDAOManager();
+    public abstract TouroperatorDAO getDAOTouroperator();
+    public abstract AccountingDAO getDAOAccounting();
 
     public static PostgresDAOFactory getDAOFactory(DBType dbType) {
         switch (dbType) {
