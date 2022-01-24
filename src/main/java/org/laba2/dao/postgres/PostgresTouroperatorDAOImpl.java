@@ -1,13 +1,14 @@
 package org.laba2.dao.postgres;
 
 import org.laba2.dao.TouroperatorDAO;
-import org.laba2.entities.Order;
 import org.laba2.entities.Touroperator;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
     @Override
     public void createTouroperator(Touroperator touroperator) {

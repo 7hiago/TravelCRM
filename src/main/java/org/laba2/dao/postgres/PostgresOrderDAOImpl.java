@@ -85,7 +85,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             preparedStatement.setInt(7, order_id);
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item not exist");
-            System.out.println("Job updated successfully");
+            System.out.println("Order updated successfully");
         } catch (SQLException e) {
             e.printStackTrace();
         }
