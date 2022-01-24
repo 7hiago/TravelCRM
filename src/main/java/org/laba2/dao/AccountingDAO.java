@@ -4,7 +4,7 @@ import org.laba2.entities.Accounting;
 
 public interface AccountingDAO {
     void createAccounting(Accounting accounting);
-    Accounting getAccounting(String accounting_id);
-    void updateAccounting(String accounting_id, Accounting accounting);
-    void removeAccounting(String accounting_id);
+    Accounting getAccounting(int accounting_id);
+    void updateAccounting(int accounting_id, Accounting accounting);
+    void removeAccounting(int accounting_id);
 }
