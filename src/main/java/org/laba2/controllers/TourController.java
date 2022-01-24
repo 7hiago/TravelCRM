@@ -4,7 +4,6 @@ import org.laba2.dao.TourDAO;
 import org.laba2.entities.Tour;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,19 +23,18 @@ public class TourController {
     }
 
     @GetMapping("/showTour/{tourId}")
-    public ModelAndView showTour(@PathVariable("tourId") int tourId) {
-        return new ModelAndView("./tour/showTour", "tour", tourDAO.getTour(tourId));
+    public ModelAndView showTour(@PathVariable("tourId") String tourId) {
+        return new ModelAndView("tour/showTour", "tour", tourDAO.getTour(tourId));
     }
 
     @GetMapping("/{tourId}/editTour")
-    public ModelAndView editTour(@PathVariable("tourId") int tourId) {
+    public ModelAndView editTour(@PathVariable("tourId") String tourId) {
         return new ModelAndView("./tour/editTour", "command", tourDAO.getTour(tourId));
     }
 
     @PatchMapping("/saveEditedTour/{tourId}")
-    public ModelAndView saveEditedTour(@ModelAttribute("tour") Tour tour, @PathVariable("tourId") int tourId) {
+    public ModelAndView saveEditedTour(@ModelAttribute Tour tour, @PathVariable("tourId") String tourId) {
         tourDAO.updateTour(tourId, tour);
-        return new ModelAndView("redirect:/tour/showTour");
+        return new ModelAndView("redirect:/tour/showTour/{tourId}");
     }
-
 }
