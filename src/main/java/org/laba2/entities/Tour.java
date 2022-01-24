@@ -3,7 +3,7 @@ package org.laba2.entities;
 import java.util.Objects;
 
 public class Tour {
-    private int tourId;
+    private String tourId;
     private String country;
     private String hotel;
     private String departureDate;
@@ -11,7 +11,7 @@ public class Tour {
     private String proposalNumber;
     private int touroperatorId;
 
-    public Tour(int tourId, String country, String hotel, String departureDate, String returnDate, String proposalNumber, int touroperatorId) {
+    public Tour(String tourId, String country, String hotel, String departureDate, String returnDate, String proposalNumber, int touroperatorId) {
         this.tourId = tourId;
         this.country = country;
         this.hotel = hotel;
@@ -21,11 +21,11 @@ public class Tour {
         this.touroperatorId = touroperatorId;
     }
 
-    public int getTourId() {
+    public String getTourId() {
         return tourId;
     }
 
-    public void setTourId(int tourId) {
+    public void setTourId(String tourId) {
         this.tourId = tourId;
     }
 
@@ -82,7 +82,7 @@ public class Tour {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tour tour = (Tour) o;
-        return getTourId() == tour.getTourId() && getTouroperatorId() == tour.getTouroperatorId() && getCountry().equals(tour.getCountry()) && getHotel().equals(tour.getHotel()) && getDepartureDate().equals(tour.getDepartureDate()) && getReturnDate().equals(tour.getReturnDate()) && getProposalNumber().equals(tour.getProposalNumber());
+        return getTourId().equals(tour.getTourId()) && getTouroperatorId() == tour.getTouroperatorId() && getCountry().equals(tour.getCountry()) && getHotel().equals(tour.getHotel()) && getDepartureDate().equals(tour.getDepartureDate()) && getReturnDate().equals(tour.getReturnDate()) && getProposalNumber().equals(tour.getProposalNumber());
     }
 
     @Override

@@ -8,13 +8,25 @@ public class Manager {
     private String firstName;
     private String lastName;
     private float salary;
-    private LocalDate hireDate;
+    private String hireDate;
     private String phoneNumber;
     private String email;
     private String login;
     private String password;
 
     public Manager() {}
+
+    public Manager(int managerId, String firstName, String lastName, float salary, String hireDate, String phoneNumber, String email, String login, String password) {
+        this.managerId = managerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.salary = salary;
+        this.hireDate = hireDate;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+    }
 
     public int getManagerId() {
         return managerId;
@@ -48,11 +60,11 @@ public class Manager {
         this.salary = salary;
     }
 
-    public LocalDate getHireDate() {
+    public String getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(LocalDate hireDate) {
+    public void setHireDate(String hireDate) {
         this.hireDate = hireDate;
     }
 

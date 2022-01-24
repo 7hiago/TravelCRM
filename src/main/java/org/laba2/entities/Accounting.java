@@ -16,6 +16,16 @@ public class Accounting {
 
     public Accounting() {}
 
+    public Accounting(int accountingId, float tourPrice, float tourPaid, float commission, float touroperatorPrice, float touroperatorPaid, float profit) {
+        this.accountingId = accountingId;
+        this.tourPrice = tourPrice;
+        this.tourPaid = tourPaid;
+        this.commission = commission;
+        this.touroperatorPrice = touroperatorPrice;
+        this.touroperatorPaid = touroperatorPaid;
+        this.profit = profit;
+    }
+
     public int getAccountingId() {
         return accountingId;
     }
