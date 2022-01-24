@@ -1,11 +1,7 @@
 package org.laba2;
 
-import org.laba2.dao.OrderDAO;
-import org.laba2.dao.TourDAO;
-import org.laba2.dao.TouroperatorDAO;
-import org.laba2.dao.postgres.PostgresOrderDAOImpl;
-import org.laba2.dao.postgres.PostgresTourDAOImpl;
-import org.laba2.dao.postgres.PostgresTouroperatorDAOImpl;
+import org.laba2.dao.*;
+import org.laba2.dao.postgres.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +14,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 @Configuration
 @ComponentScan({"org.laba2"})
-//@PropertySource("classpath:database.properties")
 @PropertySource("classpath:dataSource.properties")
 
 public class AppConfig {
@@ -43,14 +38,28 @@ public class AppConfig {
     }
 
     @Bean
-    public TourDAO tourDAO(){
-        return new PostgresTourDAOImpl();
-    }
-
-    @Bean
     public TouroperatorDAO touroperatorDAO(){
         return new PostgresTouroperatorDAOImpl();
     }
 
+    @Bean
+    public AccountingDAO accountingDAO(){
+        return new PostgresAccountingDAOImpl();
+    }
+
+    @Bean
+    public ManagerDAO managerDAO(){
+        return new PostgresManagerDAOImpl();
+    }
+
+    @Bean
+    public CustomerDAO customerDAO(){
+        return new PostgresCustomerDAOImpl();
+    }
+
+    @Bean
+    public TourDAO tourDAO(){
+        return new PostgresTourDAOImpl();
+    }
 
 }
