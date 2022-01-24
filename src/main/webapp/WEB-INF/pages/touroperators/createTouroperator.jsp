@@ -13,7 +13,7 @@
 </head>
 <body>
 <h2>Create touroperator</h2>
-<a href="..">Back to main</a>
+<a href="./showTouroperators">Back to touroperators</a>
 <form:form action="saveCreatedTouroperator" method="post">
     <table>
         <tr>

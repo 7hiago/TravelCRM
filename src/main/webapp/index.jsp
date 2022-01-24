@@ -6,11 +6,12 @@
 <body>
 <h2>Menu</h2>
 <ul>
-    <li><a href="orders/showOrders">View all order</a></li>
+    <li><a href="orders/showOrders">Orders</a></li>
 <%--    <li><a href="orders/createOrder">Create new order</a></li>--%>
-    <li><a href="touroperators/showTouroperators">View all touroperators</a></li>
+    <li><a href="managers/showManagers">Managers</a></li>
+    <li><a href="customers/showCustomers">Customers</a></li>
+    <li><a href="touroperators/showTouroperators">Touroperators</a></li>
 <%--    <li><a href="touroperators/createTouroperator">Create new touroperator</a></li>--%>
-<%--    <li><a href="./order/deleteOrder">Delete order</a></li>--%>
 </ul>
 </body>
 </html>

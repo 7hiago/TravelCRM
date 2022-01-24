@@ -13,7 +13,7 @@
 </head>
 <body>
 <h2>Create order</h2>
-<a href="..">Back to main</a>
+<a href="./showOrders">Back to orders</a>
 <form:form action="saveCreatedOrder" method="post">
     <table>
         <tr>

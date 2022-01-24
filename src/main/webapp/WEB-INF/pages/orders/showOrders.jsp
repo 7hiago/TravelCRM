@@ -40,20 +40,16 @@
                 <a href="../tour/showTour/${order.tourId}">${order.tourId}</a>
             </td>
             <td>
-                <a href="./showOrder/${order.customerId}">${order.customerId}</a>
+                <a href="../customers/showCustomer/${order.customerId}">${order.customerId}</a>
             </td>
             <td>
-                <a href="./showOrder/${order.managerId}">${order.managerId}</a>
+                <a href="../managers/showManager/${order.managerId}">${order.managerId}</a>
             </td>
             <td>
-                <a href="./showOrder/${order.accountingId}">${order.accountingId}</a>
+                <a href="../accounting/showAccounting/${order.accountingId}">${order.accountingId}</a>
             </td>
-            <td>
-                <a href="./showOrder/${order.date}">${order.date}</a>
-            </td>
-            <td>
-                <a href="./showOrder/${order.status}">${order.status}</a>
-            </td>
+            <td>${order.date}</td>
+            <td>${order.status}</td>
             <td>
                 <a href="./${order.orderId}/editOrder/">Edit</a>
             </td>
@@ -61,7 +57,6 @@
                 <form:form action="./deleteOrder/${order.orderId}" method="delete">
                         <input type="submit" value="Delete"/>
                 </form:form>
-<%--                <a href="./deleteOrder/${order.orderId}">Delete</a>--%>
             </td>
         </tr>
     </c:forEach>
