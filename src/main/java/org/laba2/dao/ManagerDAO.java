@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ManagerDAO {
     void createManager(Manager manager);
-    Manager getManager(int manager_id);
+    Manager getManager(String manager_id);
     List<Manager> getManagers();
-    void updateManager(int manager_id, Manager manager);
-    void removeManager(int manager_id);
+    void updateManager(String manager_id, Manager manager);
+    void removeManager(String manager_id);
 }
