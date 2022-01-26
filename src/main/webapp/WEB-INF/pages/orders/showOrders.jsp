@@ -17,10 +17,11 @@
 <br>
 <h2>Orders</h2>
 <a href="..">Back to main</a></br>
-<a href="./createOrder">Create new order</a>
+<a href="./createOrder">Create new order</a></br>
+<a href="./createCompleteOrder">Create new complete order</a></br>
 <table border="1" cellpadding="2" width="60%">
     <tr>
-        <th>OrderId</th>
+        <th>Order number</th>
         <th>Tour</th>
         <th>Customer</th>
         <th>Manager</th>
@@ -32,29 +33,29 @@
     </tr>
 
     <c:forEach var="order" items="${orders}">
-        <tr>
-            <td>
-                <a href="./showOrder/${order.orderId}">${order.orderId}</a>
+        <tr style="align-items: center">
+            <td>#${order.orderNumber}
+<%--                <a href="./showOrder/${order.orderNumber}">#${order.orderNumber}</a>--%>
             </td>
             <td>
-                <a href="../tour/showTour/${order.tourId}">${order.tourId}</a>
+                <a href="../tour/showTour/${order.tour.tourId}">${order.tour.country}</a>
             </td>
             <td>
-                <a href="../customers/showCustomer/${order.customerId}">${order.customerId}</a>
+                <a href="../customers/showCustomer/${order.customer.customerId}">${order.customer.lastName}</a>
             </td>
             <td>
-                <a href="../managers/showManager/${order.managerId}">${order.managerId}</a>
+                <a href="../managers/showManager/${order.manager.managerId}">${order.manager.login}</a>
             </td>
             <td>
-                <a href="../accounting/showAccounting/${order.accountingId}">${order.accountingId}</a>
+                <a href="../accounting/showAccounting/${order.accounting.accountingId}">${order.accounting.tourPrice}</a>
             </td>
             <td>${order.date}</td>
             <td>${order.status}</td>
             <td>
-                <a href="./${order.orderId}/editOrder/">Edit</a>
+                <a href="./${order.orderNumber}/editOrder/">Edit</a>
             </td>
             <td>
-                <form:form action="./deleteOrder/${order.orderId}" method="delete">
+                <form:form action="./deleteOrder/${order.orderNumber}" method="delete">
                         <input type="submit" value="Delete"/>
                 </form:form>
             </td>
