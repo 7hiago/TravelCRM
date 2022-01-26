@@ -3,7 +3,7 @@ package org.laba2.entities;
 import java.util.Objects;
 
 public class Customer {
-    private int customerId;
+    private String customerId;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -11,7 +11,7 @@ public class Customer {
 
     public Customer() {}
 
-    public Customer(int customerId, String firstName, String lastName, String phoneNumber, String email) {
+    public Customer(String customerId, String firstName, String lastName, String phoneNumber, String email) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,11 +19,11 @@ public class Customer {
         this.email = email;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -64,7 +64,7 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return getCustomerId() == customer.getCustomerId() && getFirstName().equals(customer.getFirstName()) && getLastName().equals(customer.getLastName()) && getPhoneNumber().equals(customer.getPhoneNumber()) && getEmail().equals(customer.getEmail());
+        return getCustomerId().equals(customer.getCustomerId()) && getFirstName().equals(customer.getFirstName()) && getLastName().equals(customer.getLastName()) && getPhoneNumber().equals(customer.getPhoneNumber()) && getEmail().equals(customer.getEmail());
     }
 
     @Override

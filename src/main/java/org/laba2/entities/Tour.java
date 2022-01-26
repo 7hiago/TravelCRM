@@ -9,9 +9,11 @@ public class Tour {
     private String departureDate;
     private String returnDate;
     private String proposalNumber;
-    private int touroperatorId;
+    private String touroperatorId;
 
-    public Tour(String tourId, String country, String hotel, String departureDate, String returnDate, String proposalNumber, int touroperatorId) {
+    public Tour() {}
+
+    public Tour(String tourId, String country, String hotel, String departureDate, String returnDate, String proposalNumber, String touroperatorId) {
         this.tourId = tourId;
         this.country = country;
         this.hotel = hotel;
@@ -69,11 +71,11 @@ public class Tour {
         this.proposalNumber = proposalNumber;
     }
 
-    public int getTouroperatorId() {
+    public String getTouroperatorId() {
         return touroperatorId;
     }
 
-    public void setTouroperatorId(int touroperatorId) {
+    public void setTouroperatorId(String touroperatorId) {
         this.touroperatorId = touroperatorId;
     }
 
@@ -82,7 +84,7 @@ public class Tour {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tour tour = (Tour) o;
-        return getTourId().equals(tour.getTourId()) && getTouroperatorId() == tour.getTouroperatorId() && getCountry().equals(tour.getCountry()) && getHotel().equals(tour.getHotel()) && getDepartureDate().equals(tour.getDepartureDate()) && getReturnDate().equals(tour.getReturnDate()) && getProposalNumber().equals(tour.getProposalNumber());
+        return getTourId().equals(tour.getTourId()) && getTouroperatorId().equals(tour.getTouroperatorId()) && getCountry().equals(tour.getCountry()) && getHotel().equals(tour.getHotel()) && getDepartureDate().equals(tour.getDepartureDate()) && getReturnDate().equals(tour.getReturnDate()) && getProposalNumber().equals(tour.getProposalNumber());
     }
 
     @Override

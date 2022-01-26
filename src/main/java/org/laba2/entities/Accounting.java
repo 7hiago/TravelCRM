@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 public class Accounting {
-    private int accountingId;
+    private String accountingId;
     private float tourPrice;
     private float tourPaid;
     private float commission;
@@ -16,7 +16,7 @@ public class Accounting {
 
     public Accounting() {}
 
-    public Accounting(int accountingId, float tourPrice, float tourPaid, float commission, float touroperatorPrice, float touroperatorPaid, float profit) {
+    public Accounting(String accountingId, float tourPrice, float tourPaid, float commission, float touroperatorPrice, float touroperatorPaid, float profit) {
         this.accountingId = accountingId;
         this.tourPrice = tourPrice;
         this.tourPaid = tourPaid;
@@ -26,11 +26,11 @@ public class Accounting {
         this.profit = profit;
     }
 
-    public int getAccountingId() {
+    public String getAccountingId() {
         return accountingId;
     }
 
-    public void setAccountingId(int accountingId) {
+    public void setAccountingId(String accountingId) {
         this.accountingId = accountingId;
     }
 
@@ -87,7 +87,7 @@ public class Accounting {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Accounting that = (Accounting) o;
-        return getAccountingId() == that.getAccountingId() && Float.compare(that.getTourPrice(), getTourPrice()) == 0 && Float.compare(that.getTourPaid(), getTourPaid()) == 0 && Float.compare(that.getCommission(), getCommission()) == 0 && Float.compare(that.getTouroperatorPrice(), getTouroperatorPrice()) == 0 && Float.compare(that.getTouroperatorPaid(), getTouroperatorPaid()) == 0 && Float.compare(that.getProfit(), getProfit()) == 0;
+        return getAccountingId().equals(that.getAccountingId()) && Float.compare(that.getTourPrice(), getTourPrice()) == 0 && Float.compare(that.getTourPaid(), getTourPaid()) == 0 && Float.compare(that.getCommission(), getCommission()) == 0 && Float.compare(that.getTouroperatorPrice(), getTouroperatorPrice()) == 0 && Float.compare(that.getTouroperatorPaid(), getTouroperatorPaid()) == 0 && Float.compare(that.getProfit(), getProfit()) == 0;
     }
 
     @Override

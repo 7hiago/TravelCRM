@@ -3,25 +3,25 @@ package org.laba2.entities;
 import java.util.Objects;
 
 public class Touroperator {
-    private int touroperatorId;
+    private String touroperatorId;
     private String name;
     private String phoneNumber;
     private String email;
 
     public Touroperator() {}
 
-    public Touroperator(int touroperatorId, String name, String phoneNumber, String email) {
+    public Touroperator(String touroperatorId, String name, String phoneNumber, String email) {
         this.touroperatorId = touroperatorId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
 
-    public int getTouroperatorId() {
+    public String getTouroperatorId() {
         return touroperatorId;
     }
 
-    public void setTouroperatorId(int touroperatorId) {
+    public void setTouroperatorId(String touroperatorId) {
         this.touroperatorId = touroperatorId;
     }
 
@@ -54,7 +54,7 @@ public class Touroperator {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Touroperator that = (Touroperator) o;
-        return getTouroperatorId() == that.getTouroperatorId() && getName().equals(that.getName()) && getPhoneNumber().equals(that.getPhoneNumber()) && getEmail().equals(that.getEmail());
+        return getTouroperatorId().equals(that.getTouroperatorId()) && getName().equals(that.getName()) && getPhoneNumber().equals(that.getPhoneNumber()) && getEmail().equals(that.getEmail());
     }
 
     @Override

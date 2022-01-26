@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Manager {
-    private int managerId;
+    private String managerId;
     private String firstName;
     private String lastName;
     private float salary;
@@ -16,7 +16,7 @@ public class Manager {
 
     public Manager() {}
 
-    public Manager(int managerId, String firstName, String lastName, float salary, String hireDate, String phoneNumber, String email, String login, String password) {
+    public Manager(String managerId, String firstName, String lastName, float salary, String hireDate, String phoneNumber, String email, String login, String password) {
         this.managerId = managerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,11 +28,11 @@ public class Manager {
         this.password = password;
     }
 
-    public int getManagerId() {
+    public String getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(int managerId) {
+    public void setManagerId(String managerId) {
         this.managerId = managerId;
     }
 
@@ -105,7 +105,7 @@ public class Manager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Manager manager = (Manager) o;
-        return getManagerId() == manager.getManagerId() && Float.compare(manager.getSalary(), getSalary()) == 0 && getFirstName().equals(manager.getFirstName()) && getLastName().equals(manager.getLastName()) && getHireDate().equals(manager.getHireDate()) && getPhoneNumber().equals(manager.getPhoneNumber()) && getEmail().equals(manager.getEmail()) && getLogin().equals(manager.getLogin()) && getPassword().equals(manager.getPassword());
+        return getManagerId().equals(manager.getManagerId()) && Float.compare(manager.getSalary(), getSalary()) == 0 && getFirstName().equals(manager.getFirstName()) && getLastName().equals(manager.getLastName()) && getHireDate().equals(manager.getHireDate()) && getPhoneNumber().equals(manager.getPhoneNumber()) && getEmail().equals(manager.getEmail()) && getLogin().equals(manager.getLogin()) && getPassword().equals(manager.getPassword());
     }
 
     @Override
