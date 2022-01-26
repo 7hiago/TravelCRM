@@ -1,26 +1,35 @@
-package org.laba2.dao.postgres;
+package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.OrderDAO;
 import org.laba2.entities.Order;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class PostgresOrderDAOImpl implements OrderDAO {
+
+    private final DataSource dataSource;
+
+    @Autowired
+    public PostgresOrderDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void createOrder(Order order) {
 
-        try (Connection connection = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders_table (tour_id, customer_id, manager_id, accounting_id, date, status) VALUES (?,?,?,?,?,?)"))
         {
-            preparedStatement.setInt(1, order.getTourId());
-            preparedStatement.setInt(2, order.getCustomerId());
-            preparedStatement.setInt(3, order.getManagerId());
-            preparedStatement.setInt(4, order.getAccountingId());
+            preparedStatement.setString(1, order.getTourId());
+            preparedStatement.setString(2, order.getCustomerId());
+            preparedStatement.setString(3, order.getManagerId());
+            preparedStatement.setString(4, order.getAccountingId());
             preparedStatement.setDate(5, Date.valueOf(order.getDate()));
             preparedStatement.setString(6, order.getStatus());
             int num = preparedStatement.executeUpdate();
@@ -36,7 +45,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     public Order getOrder(int order_id) {
         Order order = null;
         ResultSet resultSet = null;
-        try (Connection connection = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table WHERE order_id=?"))
         {
             preparedStatement.setInt(1, order_id);
@@ -56,7 +65,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public List<Order> getOrders() {
         List<Order> orderList = new ArrayList<>();
-        try(Connection connection = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table ORDER BY order_id");
             ResultSet resultSet = preparedStatement.executeQuery())
         {
@@ -72,14 +81,14 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public void updateOrder(int order_id, Order order) {
 
-        try(Connection connection = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE orders_table SET tour_id=?, customer_id=?, manager_id=?, accounting_id=?, date=?, status=? WHERE order_id=?"))
         {
-            preparedStatement.setInt(1, order.getTourId());
-            preparedStatement.setInt(2, order.getCustomerId());
-            preparedStatement.setInt(3, order.getManagerId());
-            preparedStatement.setInt(4, order.getAccountingId());
+            preparedStatement.setString(1, order.getTourId());
+            preparedStatement.setString(2, order.getCustomerId());
+            preparedStatement.setString(3, order.getManagerId());
+            preparedStatement.setString(4, order.getAccountingId());
             preparedStatement.setDate(5, Date.valueOf(order.getDate()));
             preparedStatement.setString(6, order.getStatus());
             preparedStatement.setInt(7, order_id);
@@ -94,7 +103,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public void removeOrder(int order_id) {
 
-        try (Connection connection = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM orders_table WHERE order_id=?"))
         {
@@ -111,10 +120,10 @@ public class PostgresOrderDAOImpl implements OrderDAO {
         Order order = null;
         try {
             int order_id = resultSet.getInt("order_id");
-            int tour_id = resultSet.getInt("tour_id");
-            int customer_id = resultSet.getInt("customer_id");
-            int manager_id = resultSet.getInt("manager_id");
-            int accounting_id = resultSet.getInt("accounting_id");
+            String tour_id = resultSet.getString("tour_id");
+            String customer_id = resultSet.getString("customer_id");
+            String manager_id = resultSet.getString("manager_id");
+            String accounting_id = resultSet.getString("accounting_id");
             String  date = resultSet.getString("date");
             String  status = resultSet.getString("status");
             order = new Order(order_id, tour_id, customer_id,

@@ -1,24 +1,35 @@
-package org.laba2.dao.postgres;
+package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.AccountingDAO;
 import org.laba2.entities.Accounting;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
-@Component
+@Repository
 public class PostgresAccountingDAOImpl implements AccountingDAO {
+
+    private final DataSource dataSource;
+
+    @Autowired
+    public PostgresAccountingDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Override
     public void createAccounting(Accounting accounting) {
-        try (Connection connection = PostgresDAOFactory.createConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO accounting_table (accounting_tour_price, accounting_tour_paid, accounting_commissionpercent, accounting_touroperator_price, accounting_touroperator_paid, accounting_profit) VALUES (?,?,?,?,?,?)"))
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO accounting_table (accounting_id, accounting_tour_price, accounting_tour_paid, accounting_commissionpercent, accounting_touroperator_price, accounting_touroperator_paid, accounting_profit) VALUES (?,?,?,?,?,?,?)"))
         {
-            preparedStatement.setFloat(1, accounting.getTourPrice());
-            preparedStatement.setFloat(2, accounting.getTourPaid());
-            preparedStatement.setFloat(3, accounting.getCommission());
-            preparedStatement.setFloat(4, accounting.getTouroperatorPrice());
-            preparedStatement.setFloat(5, accounting.getTouroperatorPaid());
-            preparedStatement.setFloat(6, accounting.getProfit());
+            preparedStatement.setString(1, accounting.getAccountingId());
+            preparedStatement.setFloat(2, accounting.getTourPrice());
+            preparedStatement.setFloat(3, accounting.getTourPaid());
+            preparedStatement.setFloat(4, accounting.getCommission());
+            preparedStatement.setFloat(5, accounting.getTouroperatorPrice());
+            preparedStatement.setFloat(6, accounting.getTouroperatorPaid());
+            preparedStatement.setFloat(7, accounting.getProfit());
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item accounting already exist");
             else System.out.println("Accounting added successfully");
@@ -28,13 +39,13 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
-    public Accounting getAccounting(int accounting_id) {
+    public Accounting getAccounting(String accounting_id) {
         Accounting accounting = null;
         ResultSet resultSet = null;
-        try (Connection connection = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM accounting_table WHERE accounting_id=?"))
         {
-            preparedStatement.setInt(1, accounting_id);
+            preparedStatement.setString(1, accounting_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             accounting = parseAccounting(resultSet);
@@ -49,8 +60,8 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
-    public void updateAccounting(int accounting_id, Accounting accounting) {
-        try(Connection connection = PostgresDAOFactory.createConnection();
+    public void updateAccounting(String accounting_id, Accounting accounting) {
+        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE accounting_table SET accounting_tour_price=?, accounting_tour_paid=?, accounting_commissionpercent=?, accounting_touroperator_price=?, accounting_touroperator_paid=?, accounting_profit=? WHERE accounting_id=?"))
         {
@@ -60,7 +71,7 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
             preparedStatement.setFloat(4, accounting.getTouroperatorPrice());
             preparedStatement.setFloat(5, accounting.getTouroperatorPaid());
             preparedStatement.setFloat(6, accounting.getProfit());
-            preparedStatement.setInt(7, accounting.getAccountingId());
+            preparedStatement.setString(7, accounting.getAccountingId());
 
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item accounting not exist");
@@ -71,12 +82,12 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
-    public void removeAccounting(int accounting_id) {
-        try (Connection connection = PostgresDAOFactory.createConnection();
+    public void removeAccounting(String accounting_id) {
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM accounting_table WHERE accounting_id=?"))
         {
-            preparedStatement.setInt(1, accounting_id);
+            preparedStatement.setString(1, accounting_id);
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item accounting not exist");
             else System.out.println("Accounting deleted successfully");
@@ -88,7 +99,7 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
     private Accounting parseAccounting(ResultSet resultSet) {
         Accounting accounting = null;
         try {
-            int accounting_id = resultSet.getInt("accounting_id");
+            String accounting_id = resultSet.getString("accounting_id");
             float tour_price = resultSet.getFloat("accounting_tour_price");
             float tour_paid = resultSet.getFloat("accounting_tour_paid");
             float commissionPercent = resultSet.getFloat("accounting_commissionpercent");

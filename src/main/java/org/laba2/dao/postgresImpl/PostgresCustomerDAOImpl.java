@@ -1,25 +1,35 @@
-package org.laba2.dao.postgres;
+package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.CustomerDAO;
 import org.laba2.entities.Customer;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class PostgresCustomerDAOImpl implements CustomerDAO {
+
+    private final DataSource dataSource;
+
+    @Autowired
+    public PostgresCustomerDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void createCustomer(Customer customer) {
-        try (Connection connection = PostgresDAOFactory.createConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customers_table (customer_firstname, customer_lastname, customer_phonenumber, customer_email) VALUES (?,?,?,?)"))
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customers_table (customer_id, customer_firstname, customer_lastname, customer_phonenumber, customer_email) VALUES (?,?,?,?,?)"))
         {
-            preparedStatement.setString(1, customer.getFirstName());
-            preparedStatement.setString(2, customer.getLastName());
-            preparedStatement.setString(3, customer.getPhoneNumber());
-            preparedStatement.setString(4, customer.getEmail());
+            preparedStatement.setString(1, customer.getCustomerId());
+            preparedStatement.setString(2, customer.getFirstName());
+            preparedStatement.setString(3, customer.getLastName());
+            preparedStatement.setString(4, customer.getPhoneNumber());
+            preparedStatement.setString(5, customer.getEmail());
 
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item customer already exist");
@@ -30,13 +40,13 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public Customer getCustomer(int customer_id) {
+    public Customer getCustomer(String customer_id) {
         Customer customer = null;
         ResultSet resultSet = null;
-        try (Connection connection = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table WHERE customer_id=?"))
         {
-            preparedStatement.setInt(1, customer_id);
+            preparedStatement.setString(1, customer_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             customer = parseCustomer(resultSet);
@@ -53,8 +63,8 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     @Override
     public List<Customer> getCustomers() {
         List<Customer> customerList = new ArrayList<>();
-        try(Connection connection = PostgresDAOFactory.createConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table ORDER BY customer_id");
+        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table ORDER BY customer_firstname");
             ResultSet resultSet = preparedStatement.executeQuery())
         {
             while (resultSet.next()) {
@@ -67,8 +77,8 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void updateCustomer(int customer_id, Customer customer) {
-        try(Connection connection = PostgresDAOFactory.createConnection();
+    public void updateCustomer(String customer_id, Customer customer) {
+        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE customers_table SET customer_firstname=?, customer_lastname=?, customer_phonenumber=?, customer_email=? WHERE customer_id=?"))
         {
@@ -76,7 +86,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             preparedStatement.setString(2, customer.getLastName());
             preparedStatement.setString(3, customer.getPhoneNumber());
             preparedStatement.setString(4, customer.getEmail());
-            preparedStatement.setInt(5, customer_id);
+            preparedStatement.setString(5, customer_id);
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item customer not exist");
             System.out.println("Customer updated successfully");
@@ -86,12 +96,12 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void removeCustomer(int customer_id) {
-        try (Connection connection = PostgresDAOFactory.createConnection();
+    public void removeCustomer(String customer_id) {
+        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM customers_table WHERE customer_id=?"))
         {
-            preparedStatement.setInt(1, customer_id);
+            preparedStatement.setString(1, customer_id);
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item customer not exist");
             else System.out.println("Customer deleted successfully");
@@ -103,7 +113,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     private Customer parseCustomer(ResultSet resultSet) {
         Customer customer = null;
         try {
-            int manager_id = resultSet.getInt("customer_id");
+            String manager_id = resultSet.getString("customer_id");
             String firstname = resultSet.getString("customer_firstname");
             String lastname = resultSet.getString("customer_lastname");
             String phoneNumber = resultSet.getString("customer_phonenumber");
