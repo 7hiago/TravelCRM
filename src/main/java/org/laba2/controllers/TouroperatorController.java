@@ -30,7 +30,7 @@ public class TouroperatorController {
     }
 
     @GetMapping("/showTouroperator/{touroperatorId}")
-    public ModelAndView showTouroperator(@PathVariable("touroperatorId") int touroperatorId) {
+    public ModelAndView showTouroperator(@PathVariable("touroperatorId") String touroperatorId) {
         return new ModelAndView("./touroperators/showTouroperator", "touroperator", touroperatorDAO.getTouroperator(touroperatorId));
     }
 
@@ -47,18 +47,18 @@ public class TouroperatorController {
     }
 
     @GetMapping("/{touroperatorId}/editTouroperator")
-    public ModelAndView editTouroperator(@PathVariable("touroperatorId") int touroperatorId) {
+    public ModelAndView editTouroperator(@PathVariable("touroperatorId") String touroperatorId) {
         return new ModelAndView("./touroperators/editTouroperator", "command", touroperatorDAO.getTouroperator(touroperatorId));
     }
 
     @PatchMapping("/saveEditedTouroperator/{touroperatorId}")
-    public ModelAndView saveEditedTouroperator(@ModelAttribute Touroperator touroperator, @PathVariable("touroperatorId") int touroperatorId) {
+    public ModelAndView saveEditedTouroperator(@ModelAttribute Touroperator touroperator, @PathVariable("touroperatorId") String touroperatorId) {
         touroperatorDAO.updateTouroperator(touroperatorId, touroperator);
         return new ModelAndView("redirect:/touroperators/showTouroperators");
     }
 
     @DeleteMapping("/deleteTouroperator/{touroperatorId}")
-    public ModelAndView deleteTouroperator(@PathVariable("touroperatorId") int touroperatorId) {
+    public ModelAndView deleteTouroperator(@PathVariable("touroperatorId") String touroperatorId) {
         touroperatorDAO.removeTouroperator(touroperatorId);
         return new ModelAndView("redirect:/touroperators/showTouroperators");
     }

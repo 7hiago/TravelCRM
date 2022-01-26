@@ -28,7 +28,7 @@ public class CustomerController {
     }
 
     @GetMapping("/showCustomer/{customerId}")
-    public ModelAndView showCustomer(@PathVariable("customerId") int customerId) {
+    public ModelAndView showCustomer(@PathVariable("customerId") String customerId) {
         return new ModelAndView("./customers/showCustomer", "customer", customerDAO.getCustomer(customerId));
     }
 
@@ -45,18 +45,18 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/editCustomer")
-    public ModelAndView editCustomer(@PathVariable("customerId") int customerId) {
+    public ModelAndView editCustomer(@PathVariable("customerId") String customerId) {
         return new ModelAndView("./customers/editCustomer", "command", customerDAO.getCustomer(customerId));
     }
 
     @PatchMapping("/saveEditedCustomer/{customerId}")
-    public ModelAndView saveEditedCustomer(@ModelAttribute Customer customer, @PathVariable("customerId") int customerId) {
+    public ModelAndView saveEditedCustomer(@ModelAttribute Customer customer, @PathVariable("customerId") String customerId) {
         customerDAO.updateCustomer(customerId, customer);
         return new ModelAndView("redirect:/customers/showCustomers");
     }
 
     @DeleteMapping("/deleteCustomer/{customerId}")
-    public ModelAndView deleteCustomer(@PathVariable("customerId") int customerId) {
+    public ModelAndView deleteCustomer(@PathVariable("customerId") String customerId) {
         customerDAO.removeCustomer(customerId);
         return new ModelAndView("redirect:/customers/showCustomers");
     }

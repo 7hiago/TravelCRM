@@ -28,7 +28,7 @@ public class ManagerController {
     }
 
     @GetMapping("/showManager/{managerId}")
-    public ModelAndView showManager(@PathVariable("managerId") int managerId) {
+    public ModelAndView showManager(@PathVariable("managerId") String managerId) {
         return new ModelAndView("./managers/showManager", "manager", managerDAO.getManager(managerId));
     }
 
@@ -45,18 +45,18 @@ public class ManagerController {
     }
 
     @GetMapping("/{managerId}/editManager")
-    public ModelAndView editManager(@PathVariable("managerId") int managerId) {
+    public ModelAndView editManager(@PathVariable("managerId") String managerId) {
         return new ModelAndView("./managers/editManager", "command", managerDAO.getManager(managerId));
     }
 
     @PatchMapping("/saveEditedManager/{managerId}")
-    public ModelAndView saveEditedManager(@ModelAttribute Manager manager, @PathVariable("managerId") int managerId) {
+    public ModelAndView saveEditedManager(@ModelAttribute Manager manager, @PathVariable("managerId") String managerId) {
         managerDAO.updateManager(managerId, manager);
         return new ModelAndView("redirect:/managers/showManagers");
     }
 
     @DeleteMapping("/deleteManager/{managerId}")
-    public ModelAndView deleteManager(@PathVariable("managerId") int managerId) {
+    public ModelAndView deleteManager(@PathVariable("managerId") String managerId) {
         managerDAO.removeManager(managerId);
         return new ModelAndView("redirect:/managers/showManagers");
     }

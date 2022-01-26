@@ -23,17 +23,17 @@ public class AccountingController {
     }
 
     @GetMapping("/showAccounting/{accountingId}")
-    public ModelAndView showAccounting(@PathVariable("accountingId") int accountingId) {
+    public ModelAndView showAccounting(@PathVariable("accountingId") String accountingId) {
         return new ModelAndView("accounting/showAccounting", "accounting", accountingDAO.getAccounting(accountingId));
     }
 
     @GetMapping("/{accountingId}/editAccounting")
-    public ModelAndView editAccounting(@PathVariable("accountingId") int accountingId) {
+    public ModelAndView editAccounting(@PathVariable("accountingId") String accountingId) {
         return new ModelAndView("./accounting/editAccounting", "command", accountingDAO.getAccounting(accountingId));
     }
 
     @PatchMapping("/saveEditedAccounting/{accountingId}")
-    public ModelAndView saveEditedAccounting(@ModelAttribute Accounting accounting, @PathVariable("accountingId") int accountingId) {
+    public ModelAndView saveEditedAccounting(@ModelAttribute Accounting accounting, @PathVariable("accountingId") String accountingId) {
         accountingDAO.updateAccounting(accountingId, accounting);
         return new ModelAndView("redirect:/accounting/showAccounting/{accountingId}");
     }
