@@ -1,6 +1,7 @@
 package org.laba2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -15,33 +16,18 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Hashtable;
 
 @EnableWebMvc
 @Configuration
 @ComponentScan({"org.laba2"})
 @PropertySource("classpath:dataSource.properties")
-@PropertySource("classpath:database.properties")
 public class AppConfig {
-
-    @Value("${database.driver}")
-    private String driverClass;
-    @Value("${database.dbUrl}")
-    private String jdbcUrl;
-    @Value("${database.user}")
-    private String jdbcUserName;
-    @Value("${database.password}")
-    private String jdbcPassword;
-
-    @Value("${dataSource.initialContextFactory}")
-    private String initialContextFactory;
-    @Value("${dataSource.providerHost}")
-    private String providerHost;
-    @Value("${dataSource.providerPort}")
-    private String providerPort;
-    @Value("${dataSource.dataSourceName}")
-    private String dataSourceName;
 
     private final ApplicationContext applicationContext;
 
@@ -58,8 +44,25 @@ public class AppConfig {
         return viewResolver;
     }
 
+    @Value("${tomcat.dataSource.driver}")
+    private String driverClass;
+    @Value("${tomcat.dataSource.dbUrl}")
+    private String jdbcUrl;
+    @Value("${tomcat.dataSource.user}")
+    private String jdbcUserName;
+    @Value("${tomcat.dataSource.password}")
+    private String jdbcPassword;
 
-    @Bean
+    @Value("${weblogic.datasource.initialContextFactory}")
+    private String initialContextFactory;
+    @Value("${weblogic.datasource.providerHost}")
+    private String providerHost;
+    @Value("${weblogic.datasource.providerPort}")
+    private String providerPort;
+    @Value("${weblogic.datasource.dataSourceName}")
+    private String dataSourceName;
+
+    @Bean(name = "datasource") // "tomcat"
     public DriverManagerDataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClass);
@@ -69,53 +72,32 @@ public class AppConfig {
         return dataSource;
     }
 
-//    @Bean
-//    public DataSource getWeblogicDataSource() {
-//        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
-//        dsLookup.setResourceRef(true);
-//        return dsLookup.getDataSource(dataSourceName);
-//    }
-
-//    @Bean(destroyMethod = "")
-//    public DataSource getWeblogicDataSource() {
-//        Context context = null;
-//        DataSource dataSource = null;
-//        try {
-//            context = new InitialContext();
-//            dataSource = (DataSource)context.lookup("jdbc.DataSourceTravelCRM");
-//        } catch (NamingException e) {
-//            e.printStackTrace();
-//        }
-//        return dataSource;
-//    }
-
-//    @Bean
-//    public static DataSource getWeblogicDataSource() {
-//        Hashtable<String, String> hashtable = new Hashtable<>();
-//        hashtable.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
-//        hashtable.put(Context.PROVIDER_URL, "t3://" + "localhost" +":" + "7001");
-//        Context context = null;
-//        DataSource dataSource = null;
-//        try {
-//            context = new InitialContext(hashtable);
-//            dataSource = (DataSource) context.lookup("DataSourceTravelCRM");
-//        } catch (NamingException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if(context != null) {
-//                    context.close();
-//                }
-//            } catch (NamingException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return dataSource;
-//    }
+    @Bean(name = "weblogic", destroyMethod = "") // "weblogic"
+    public DataSource getWeblogicDataSource() {
+        Hashtable<String, String> hashtable = new Hashtable<>();
+        hashtable.put(Context.INITIAL_CONTEXT_FACTORY, initialContextFactory);
+        hashtable.put(Context.PROVIDER_URL, "t3://" + providerHost + ":" + providerPort);
+        Context context = null;
+        DataSource dataSource = null;
+        try {
+            context = new InitialContext(hashtable);
+            dataSource = (DataSource) context.lookup(dataSourceName);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(context != null) {
+                    context.close();
+                }
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
+        }
+        return dataSource;
+    }
 
     @Bean
-    @Autowired
-    DatabasePopulator databasePopulator(DataSource dataSource) throws SQLException, InterruptedException {
+    DatabasePopulator databasePopulator(@Qualifier("datasource") DataSource dataSource) throws SQLException {
         DatabasePopulator dbp = new ResourceDatabasePopulator(false, false, "UTF-8",
                 new ClassPathResource("postgresDBSchema.sql"));
         dbp.populate(DataSourceUtils.getConnection(dataSource));
