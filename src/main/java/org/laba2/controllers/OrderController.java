@@ -1,16 +1,23 @@
 package org.laba2.controllers;
 
 import org.laba2.dto.CreateOrderDTO;
-import org.laba2.dto.EditOrderDTO;
+import org.laba2.dto.ShowOrderDTO;
 import org.laba2.services.ManagerService;
 import org.laba2.services.OrderService;
 import org.laba2.services.TouroperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -34,42 +41,31 @@ public class OrderController {
         return "./orders/showOrders";
     }
 
-    @GetMapping("/showOrder/{orderId}")
-    public ModelAndView showOrder(@PathVariable("orderId") int orderId) {
-        return new ModelAndView("./orders/showOrder", "order", orderService.getOrderById(orderId));
-    }
-
-//    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/createCompleteOrder")
-    public String createCompleteOrder(Model model) {
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/createOrder")
+    public String createOrder(Model model) {
         model.addAttribute("managers", managerService.getAvailableManagers());
         model.addAttribute("touroperators",touroperatorService.getAvailableTouroperators());
         model.addAttribute("createOrderDTO", new CreateOrderDTO());
-        return "./orders/createCompleteOrder";
+        return "./orders/createOrder";
     }
 
-    @PostMapping("/saveCreatedCompleteOrder")
-    public ModelAndView saveCreatedCompleteOrder(@ModelAttribute CreateOrderDTO createOrderDTO) {
+    @PostMapping("/saveCreatedOrder")
+    public ModelAndView saveCreatedOrder(@ModelAttribute CreateOrderDTO createOrderDTO) {
         orderService.saveNewOrder(createOrderDTO);
         return new ModelAndView("redirect:/orders/showOrders");
     }
 
-//    @GetMapping("/{orderId}/editOrder")
-//    public ModelAndView editOrder(@PathVariable("orderId") int orderId) {
-//        return new ModelAndView("./orders/editOrder", "command", orderService.getOrderById(orderId));
-//    }
-
     @GetMapping("/{orderId}/editOrder")
     public String editOrder(Model model, @PathVariable("orderId") int orderId) {
         model.addAttribute("managers", managerService.getAvailableManagers());
-        model.addAttribute("order", orderService.getOrderById(orderId));
-        model.addAttribute("editOrderDTO", new EditOrderDTO());
+        model.addAttribute("orderDTO", orderService.getOrderById(orderId));
         return "./orders/editOrder";
     }
 
     @PatchMapping("/saveEditedOrder/{orderID}")
-    public ModelAndView saveEditedOrder(@ModelAttribute EditOrderDTO editOrderDTO, @PathVariable("orderID") int orderId) {
-        orderService.updateOrderById(orderId, editOrderDTO);
+    public ModelAndView saveEditedOrder(@ModelAttribute ShowOrderDTO showOrderDTO, @PathVariable("orderID") int orderId) {
+        orderService.editOrderById(orderId, showOrderDTO);
         return new ModelAndView("redirect:/orders/showOrders");
     }
 

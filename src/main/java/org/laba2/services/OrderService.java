@@ -1,8 +1,8 @@
 package org.laba2.services;
 
-import org.laba2.dao.*;
+
+import org.laba2.dao.OrderDAO;
 import org.laba2.dto.CreateOrderDTO;
-import org.laba2.dto.EditOrderDTO;
 import org.laba2.dto.ShowOrderDTO;
 import org.laba2.entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class OrderService {
@@ -34,19 +33,10 @@ public class OrderService {
         this.orderDAO = orderDAO;
     }
 
-    public CreateOrderDTO createNewOrder() {
-        return new CreateOrderDTO();
-    }
-
     public void saveNewOrder(CreateOrderDTO createOrderDTO) {
 
-        createOrderDTO.getTour().setTourId("TR-" + UUID.randomUUID());
         tourService.createNewTour(createOrderDTO.getTour());
-
-        createOrderDTO.getCustomer().setCustomerId("CT-" + UUID.randomUUID());
         customerService.createNewCustomer(createOrderDTO.getCustomer());
-
-        createOrderDTO.getAccounting().setAccountingId("AC-" + UUID.randomUUID());
         accountingService.createNewAccounting(createOrderDTO.getAccounting());
 
         Order order = new Order();
@@ -88,15 +78,18 @@ public class OrderService {
                 order.getStatus());
     }
 
-    public void updateOrderById(int orderId, EditOrderDTO editOrderDTO) {
+    public void editOrderById(int orderId, ShowOrderDTO showOrderDTO) {
         Order order = orderDAO.getOrder(orderId);
-        order.setManagerId(editOrderDTO.getManagerId());
-        order.setDate(editOrderDTO.getDate());
-        order.setStatus(editOrderDTO.getStatus());
+        order.setManagerId(showOrderDTO.getManager().getManagerId());
+        order.setDate(showOrderDTO.getDate());
+        order.setStatus(showOrderDTO.getStatus());
         orderDAO.updateOrder(orderId, order);
     }
 
     public void deleteOrderById(int orderId) {
+        Order order = orderDAO.getOrder(orderId);
+        tourService.deleteTourById(order.getTourId());
+        accountingService.deleteAccountingById(order.getAccountingId());
         orderDAO.removeOrder(orderId);
     }
 }

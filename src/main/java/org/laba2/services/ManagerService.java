@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ManagerService {
@@ -23,6 +24,19 @@ public class ManagerService {
 
     public Manager getManagerById(String managerId) {
         return managerDAO.getManager(managerId);
+    }
+
+    public void createNewManager(Manager newManager) {
+        newManager.setManagerId("TR-" + UUID.randomUUID());
+        managerDAO.createManager(newManager);
+    }
+
+    public void editManager(String managerId,Manager editedManager) {
+        managerDAO.updateManager(managerId, editedManager);
+    }
+
+    public void deleteManager(String managerId) {
+        managerDAO.removeManager(managerId);
     }
 
 }
