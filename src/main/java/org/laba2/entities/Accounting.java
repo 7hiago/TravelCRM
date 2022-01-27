@@ -1,9 +1,6 @@
 package org.laba2.entities;
 
-import org.springframework.context.annotation.Bean;
-
 import java.util.Objects;
-
 
 public class Accounting {
     private String accountingId;

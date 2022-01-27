@@ -1,6 +1,8 @@
 package org.laba2.dto;
 
-import org.laba2.entities.*;
+import org.laba2.entities.Accounting;
+import org.laba2.entities.Customer;
+import org.laba2.entities.Tour;
 
 public class CreateOrderDTO {
 

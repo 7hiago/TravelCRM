@@ -1,6 +1,5 @@
 package org.laba2.entities;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Order {
