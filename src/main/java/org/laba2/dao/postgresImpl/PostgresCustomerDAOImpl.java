@@ -2,27 +2,31 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.CustomerDAO;
 import org.laba2.entities.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@DependsOn("datasource")
 public class PostgresCustomerDAOImpl implements CustomerDAO {
 
     private final DataSource dataSource;
 
-    @Autowired
-    public PostgresCustomerDAOImpl(DataSource dataSource) {
+    public PostgresCustomerDAOImpl(@Qualifier("datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void createCustomer(Customer customer) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customers_table (customer_id, customer_firstname, customer_lastname, customer_phonenumber, customer_email) VALUES (?,?,?,?,?)"))
         {
             preparedStatement.setString(1, customer.getCustomerId());
@@ -43,7 +47,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     public Customer getCustomer(String customer_id) {
         Customer customer = null;
         ResultSet resultSet = null;
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table WHERE customer_id=?"))
         {
             preparedStatement.setString(1, customer_id);
@@ -63,7 +67,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     @Override
     public List<Customer> getCustomers() {
         List<Customer> customerList = new ArrayList<>();
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table ORDER BY customer_firstname");
             ResultSet resultSet = preparedStatement.executeQuery())
         {
@@ -78,7 +82,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void updateCustomer(String customer_id, Customer customer) {
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE customers_table SET customer_firstname=?, customer_lastname=?, customer_phonenumber=?, customer_email=? WHERE customer_id=?"))
         {
@@ -97,7 +101,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void removeCustomer(String customer_id) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM customers_table WHERE customer_id=?"))
         {

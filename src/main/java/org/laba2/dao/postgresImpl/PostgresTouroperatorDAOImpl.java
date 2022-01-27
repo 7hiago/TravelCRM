@@ -2,27 +2,32 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.TouroperatorDAO;
 import org.laba2.entities.Touroperator;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@DependsOn("datasource")
 public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
     private final DataSource dataSource;
 
-    @Autowired
-    public PostgresTouroperatorDAOImpl(DataSource dataSource) {
+    public PostgresTouroperatorDAOImpl(@Qualifier("datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void createTouroperator(Touroperator touroperator) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO touroperators_table (touroperator_id, touroperator_name, touroperator_phonenumber, touroperator_email) VALUES (?,?,?,?)"))
         {
             preparedStatement.setString(1, touroperator.getTouroperatorId());
@@ -41,7 +46,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
     public Touroperator getTouroperator(String touroperator_id) {
         Touroperator touroperator = null;
         ResultSet resultSet = null;
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM touroperators_table WHERE touroperator_id=?"))
         {
             preparedStatement.setString(1, touroperator_id);
@@ -61,7 +66,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
     @Override
     public List<Touroperator> getTouroperators() {
         List<Touroperator> touroperatorList = new ArrayList<>();
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM touroperators_table ORDER BY touroperator_id");
             ResultSet resultSet = preparedStatement.executeQuery())
         {
@@ -76,7 +81,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
     @Override
     public void updateTouroperator(String touroperator_id, Touroperator touroperator) {
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE touroperators_table SET touroperator_name=?, touroperator_phonenumber=?, touroperator_email=? WHERE touroperator_id=?"))
         {
@@ -95,7 +100,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
     @Override
     public void removeTouroperator(String touroperator_id) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM touroperators_table WHERE touroperator_id=?"))
         {

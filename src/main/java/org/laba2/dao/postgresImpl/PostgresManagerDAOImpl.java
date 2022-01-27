@@ -2,27 +2,32 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@DependsOn("datasource")
 public class PostgresManagerDAOImpl implements ManagerDAO {
 
     private final DataSource dataSource;
 
-    @Autowired
-    public PostgresManagerDAOImpl(DataSource dataSource) {
+    public PostgresManagerDAOImpl(@Qualifier("datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void createManager(Manager manager) {
-        try (Connection connection = dataSource.getConnection();//= PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO managers_table (manager_id, manager_firstname, manager_lastname, manager_salary, manager_hiredate, manager_phonenumber, manager_email, manager_login, manager_password) VALUES (?,?,?,?,?,?,?,?,?)"))
         {
             preparedStatement.setString(1, manager.getManagerId());
@@ -46,7 +51,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     public Manager getManager(String manager_id) {
         Manager manager = null;
         ResultSet resultSet = null;
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table WHERE manager_id=?"))
         {
             preparedStatement.setString(1, manager_id);
@@ -66,7 +71,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     @Override
     public List<Manager> getManagers() {
         List<Manager> managerList = new ArrayList<>();
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table ORDER BY manager_id");
             ResultSet resultSet = preparedStatement.executeQuery())
         {
@@ -81,7 +86,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
 
     @Override
     public void updateManager(String manager_id, Manager manager) {
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE managers_table SET manager_firstname=?, manager_lastname=?, manager_salary=?, manager_hiredate=?, manager_phonenumber=?, manager_email=?, manager_login=?, manager_password=? WHERE manager_id=?"))
         {
@@ -104,7 +109,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
 
     @Override
     public void removeManager(String manager_id) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM managers_table WHERE manager_id=?"))
         {

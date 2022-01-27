@@ -2,25 +2,29 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.AccountingDAO;
 import org.laba2.entities.Accounting;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Repository
+@DependsOn("datasource")
 public class PostgresAccountingDAOImpl implements AccountingDAO {
 
     private final DataSource dataSource;
 
-    @Autowired
-    public PostgresAccountingDAOImpl(DataSource dataSource) {
+    public PostgresAccountingDAOImpl(@Qualifier("datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void createAccounting(Accounting accounting) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO accounting_table (accounting_id, accounting_tour_price, accounting_tour_paid, accounting_commissionpercent, accounting_touroperator_price, accounting_touroperator_paid, accounting_profit) VALUES (?,?,?,?,?,?,?)"))
         {
             preparedStatement.setString(1, accounting.getAccountingId());
@@ -42,7 +46,7 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
     public Accounting getAccounting(String accounting_id) {
         Accounting accounting = null;
         ResultSet resultSet = null;
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM accounting_table WHERE accounting_id=?"))
         {
             preparedStatement.setString(1, accounting_id);
@@ -61,7 +65,7 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
 
     @Override
     public void updateAccounting(String accounting_id, Accounting accounting) {
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE accounting_table SET accounting_tour_price=?, accounting_tour_paid=?, accounting_commissionpercent=?, accounting_touroperator_price=?, accounting_touroperator_paid=?, accounting_profit=? WHERE accounting_id=?"))
         {
@@ -83,7 +87,7 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
 
     @Override
     public void removeAccounting(String accounting_id) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM accounting_table WHERE accounting_id=?"))
         {

@@ -2,28 +2,33 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.OrderDAO;
 import org.laba2.entities.Order;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@DependsOn("datasource")
 public class PostgresOrderDAOImpl implements OrderDAO {
 
     private final DataSource dataSource;
 
-    @Autowired
-    public PostgresOrderDAOImpl(DataSource dataSource) {
+    public PostgresOrderDAOImpl(@Qualifier("datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void createOrder(Order order) {
 
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders_table (tour_id, customer_id, manager_id, accounting_id, date, status) VALUES (?,?,?,?,?,?)"))
         {
             preparedStatement.setString(1, order.getTourId());
@@ -45,7 +50,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     public Order getOrder(int order_id) {
         Order order = null;
         ResultSet resultSet = null;
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table WHERE order_id=?"))
         {
             preparedStatement.setInt(1, order_id);
@@ -65,7 +70,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public List<Order> getOrders() {
         List<Order> orderList = new ArrayList<>();
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table ORDER BY order_id");
             ResultSet resultSet = preparedStatement.executeQuery())
         {
@@ -81,7 +86,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public void updateOrder(int order_id, Order order) {
 
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE orders_table SET tour_id=?, customer_id=?, manager_id=?, accounting_id=?, date=?, status=? WHERE order_id=?"))
         {
@@ -103,7 +108,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public void removeOrder(int order_id) {
 
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM orders_table WHERE order_id=?"))
         {

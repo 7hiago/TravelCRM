@@ -2,25 +2,30 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.TourDAO;
 import org.laba2.entities.Tour;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
 
 @Repository
+@DependsOn("datasource")
 public class PostgresTourDAOImpl implements TourDAO {
 
     private final DataSource dataSource;
 
-    @Autowired
-    public PostgresTourDAOImpl(DataSource dataSource) {
+    public PostgresTourDAOImpl(@Qualifier("datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void createTour(Tour tour) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tours_table (tour_id, tour_country, tour_hotel, tour_departuredate, tour_returndate, tour_proposal, touroperator_id) VALUES (?,?,?,?,?,?,?)"))
         {
             preparedStatement.setString(1, tour.getTourId());
@@ -42,7 +47,7 @@ public class PostgresTourDAOImpl implements TourDAO {
     public Tour getTour(String tour_id) {
         Tour tour = null;
         ResultSet resultSet = null;
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tours_table WHERE tour_id=?"))
         {
             preparedStatement.setString(1, tour_id);
@@ -61,7 +66,7 @@ public class PostgresTourDAOImpl implements TourDAO {
 
     @Override
     public void updateTour(String tour_id, Tour tour) {
-        try(Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE tours_table SET tour_country=?, tour_hotel=?, tour_departuredate=?, tour_returndate=?, tour_proposal=?, touroperator_id=? WHERE tour_id=?"))
         {
@@ -83,7 +88,7 @@ public class PostgresTourDAOImpl implements TourDAO {
 
     @Override
     public void removeTour(String tour_id) {
-        try (Connection connection = dataSource.getConnection();// = PostgresDAOFactory.createConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM tours_table WHERE tour_id=?"))
         {
