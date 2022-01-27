@@ -14,7 +14,6 @@
 <head>
     <title>Show Managers Page</title>
 </head>
-<br>
 <h2>Managers</h2>
 <a href="..">Back to main</a></br>
 <a href="./createManager">Create new manager</a>
@@ -27,7 +26,6 @@
         <th>Phone number</th>
         <th>Email</th>
         <th>Login</th>
-        <th>Pass</th>
         <th>Edit</th>
     </tr>
 
@@ -40,7 +38,6 @@
             <td>${manager.phoneNumber}</td>
             <td>${manager.email}</td>
             <td>${manager.login}</td>
-            <td>${manager.password}</td>
             <td>
                 <a href="./${manager.managerId}/editManager/">Edit</a>
             </td>

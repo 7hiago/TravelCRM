@@ -14,7 +14,6 @@
 <head>
     <title>Show Customers Page</title>
 </head>
-<br>
 <h2>Customers</h2>
 <a href="..">Back to main</a></br>
 <a href="./createCustomer">Create new customer</a>

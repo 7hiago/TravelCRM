@@ -31,5 +31,11 @@
         <td>Email:</td>
         <td>${customer.email}</td>
     </tr>
+    <tr>
+        <td></td>
+        <td>
+            <a href="../${customer.customerId}/editCustomer/">Edit</a>
+        </td>
+    </tr>
 </table>
 

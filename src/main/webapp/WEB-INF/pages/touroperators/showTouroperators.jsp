@@ -12,35 +12,27 @@
 
 <html>
     <head>
-        <title>Show Orders Page</title>
+        <title>Show Touroperators Page</title>
     </head>
     <body>
-        <h2>Orders</h2>
+        <h2>Touroperators</h2>
         <a href="..">Back to main</a></br>
         <a href="../touroperators/createTouroperator">Create new touroperator</a>
         <table border="1" cellpadding="2" width="60%">
             <tr>
-                <th>Touroperator Id</th>
                 <th>Name</th>
                 <th>Phone number</th>
                 <th>Email</th>
+                <th></th>
             </tr>
 
             <c:forEach var="touroperator" items="${touroperators}">
                 <tr>
-                    <td>
-                        <a href="./showOrder/${touroperator.touroperatorId}">${touroperator.touroperatorId}</a>
-                    </td>
                     <td>${touroperator.name}</td>
                     <td>${touroperator.phoneNumber}</td>
                     <td>${touroperator.email}</td>
                     <td>
                         <a href="./${touroperator.touroperatorId}/editTouroperator/">Edit</a>
-                    </td>
-                    <td>
-                        <form:form action="./deleteTouroperator/${touroperator.touroperatorId}" method="delete">
-                            <input type="submit" value="Delete"/>
-                        </form:form>
                     </td>
                 </tr>
             </c:forEach>

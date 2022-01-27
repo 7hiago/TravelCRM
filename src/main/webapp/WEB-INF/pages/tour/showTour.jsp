@@ -17,32 +17,32 @@
 <table>
     <tr>
         <td>Country:</td>
-        <td>${tour.country}</td>
+        <td>${tourDTO.tour.country}</td>
     </tr>
     <tr>
         <td>Hotel:</td>
-        <td>${tour.hotel}</td>
+        <td>${tourDTO.tour.hotel}</td>
     </tr>
     <tr>
         <td>Departure date:</td>
-        <td>${tour.departureDate}</td>
+        <td>${tourDTO.tour.departureDate}</td>
     </tr>
     <tr>
         <td>Return date:</td>
-        <td>${tour.returnDate}</td>
+        <td>${tourDTO.tour.returnDate}</td>
     </tr>
     <tr>
         <td>Proposal number:</td>
-        <td>${tour.proposalNumber}</td>
+        <td>${tourDTO.tour.proposalNumber}</td>
     </tr>
     <tr>
-        <td>Touroperator Id:</td>
-        <td>${tour.touroperatorId}</td>
+        <td>Touroperator:</td>
+        <td>${tourDTO.touroperator.name}</td>
     </tr>
     <tr>
         <td></td>
         <td>
-            <a href="../${tour.tourId}/editTour/">Edit</a>
+            <a href="../${tourDTO.tour.tourId}/editTour/">Edit</a>
         </td>
     </tr>
 </table>

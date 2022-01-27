@@ -15,61 +15,46 @@
 <body>
 <h2>Edit order</h2>
 <a href="../../showOrders">Back to main</a>
-<form:form action="../../saveEditedOrder/${order.orderNumber}" method="patch" modelAttribute="editOrderDTO">
+<form:form action="../../saveEditedOrder/${orderDTO.orderNumber}" method="patch" modelAttribute="orderDTO">
     <table>
-        <tr>
-            <th></th>
-            <th>Current data</th>
-            <th>New data</th>
-        </tr>
         <tr>
             <td>Tour:</td>
             <td>
-                <a href="../tour/showTour/${order.tour.tourId}">${order.tour.country}</a>
+                <a href="../../../tour/showTour/${orderDTO.tour.tourId}">${orderDTO.tour.country}</a>
             </td>
-<%--            <td><form:input path="tourId"/></td>--%>
-            <td></td>
         </tr>
         <tr>
             <td>Customer:</td>
             <td>
-                <a href="../customers/showCustomer/${order.customer.customerId}">${order.customer.lastName}</a>
+                <a href="../../../customers/showCustomer/${orderDTO.customer.customerId}">${orderDTO.customer.lastName}</a>
             </td>
-<%--            <td><form:input path="customerId"/></td>--%>
-            <td></td>
         </tr>
         <tr>
-            <td>Current manager:</td>
-            <td>${order.manager.lastName}</td>
-<%--            <td><form:input path="managerId"/></td>--%>
+            <td>Manager:</td>
             <td>
                 <label>
-                    <form:select path="managerId">
+                    <form:select path="manager.managerId">
+                        <option selected value="${orderDTO.manager.managerId}">${orderDTO.manager.lastName}</option>
                         <c:forEach var="manager" items="${managers}">
                             <option value="${manager.managerId}">${manager.lastName}</option>
                         </c:forEach>
                     </form:select>
                 </label>
             </td>
-                <%--            <td><form:input path="managerId"/></td>--%>
         </tr>
         <tr>
-            <td>Accounting price:</td>
+            <td>Tour price:</td>
             <td>
-                <a href="../accounting/showAccounting/${order.accounting.accountingId}">${order.accounting.tourPrice}</a>
+                <a href="../../../accounting/showAccounting/${orderDTO.accounting.accountingId}">${orderDTO.accounting.tourPrice}</a>
             </td>
-<%--        <td><form:input path="accountingId"/></td>--%>
-            <td></td>
         </tr>
         <tr>
             <td>Date:</td>
-            <td>${order.date}</td>
             <td><form:input path="date"/></td>
 
         </tr>
         <tr>
             <td>Status:</td>
-            <td>${order.status}</td>
             <td><form:input path="status"/></td>
         </tr>
         <tr>

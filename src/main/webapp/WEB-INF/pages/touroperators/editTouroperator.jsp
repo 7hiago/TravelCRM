@@ -9,11 +9,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
-    <title>Edit Order Page</title>
+    <title>Edit Touroperator Page</title>
 </head>
 <body>
-<h2>Edit order</h2>
-<a href="../../showOrders">Back to main</a>
+<h2>Edit touroperator</h2>
+<a href="../../showTouroperators">Back to main</a>
 <form:form action="../../saveEditedTouroperator/${command.touroperatorId}" method="patch">
     <table>
         <tr>

@@ -14,18 +14,16 @@
 <head>
     <title>Show Orders Page</title>
 </head>
-<br>
 <h2>Orders</h2>
 <a href="..">Back to main</a></br>
 <a href="./createOrder">Create new order</a></br>
-<a href="./createCompleteOrder">Create new complete order</a></br>
 <table border="1" cellpadding="2" width="60%">
     <tr>
         <th>Order number</th>
         <th>Tour</th>
         <th>Customer</th>
         <th>Manager</th>
-        <th>Accounting</th>
+        <th>Tour price</th>
         <th>Data</th>
         <th>Status</th>
         <th>Edit</th>
@@ -35,7 +33,6 @@
     <c:forEach var="order" items="${orders}">
         <tr style="align-items: center">
             <td>#${order.orderNumber}
-<%--                <a href="./showOrder/${order.orderNumber}">#${order.orderNumber}</a>--%>
             </td>
             <td>
                 <a href="../tour/showTour/${order.tour.tourId}">${order.tour.country}</a>
@@ -62,10 +59,10 @@
         </tr>
     </c:forEach>
 </table>
-<security:authorize access="hasRole('ADMIN')">
-    <div><a href="./createOrder">Create new order</a></div>
-</security:authorize>
-<security:csrfInput/>
+<%--<security:authorize access="hasRole('ADMIN')">--%>
+<%--    <div><a href="./createOrder">Create new order</a></div>--%>
+<%--</security:authorize>--%>
+<%--<security:csrfInput/>--%>
 
 </body>
 </html>
