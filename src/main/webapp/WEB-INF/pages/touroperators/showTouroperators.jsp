@@ -16,7 +16,7 @@
     </head>
     <body>
         <h2>Touroperators</h2>
-        <a href="..">Back to main</a></br>
+        <a href="../menuPage">Back to menu</a></br>
         <a href="../touroperators/createTouroperator">Create new touroperator</a>
         <table border="1" cellpadding="2" width="60%">
             <tr>

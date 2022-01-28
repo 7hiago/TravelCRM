@@ -36,6 +36,10 @@
         <tr>
             <td>Proposal number:</td>
             <td><form:input path="tour.proposalNumber"/></td>
+
+            <input id="input-name" type="text" placeholder="Enter your text">
+            <div id="input-name-error" />
+<%--            <input type="text" required minlength="8" maxlength="10">--%>
         </tr>
         <tr>
             <td>Touroperator:</td>
@@ -56,5 +60,35 @@
         </tr>
     </table>
 </form:form>
+
+<%--<script>--%>
+<%--    const nameInput = document.getElementById('input-name');--%>
+<%--    const nameInputError = document.getElementById('input-name-error');--%>
+
+<%--    let containsError = false;--%>
+
+<%--    const validate = (event) => {--%>
+<%--        const inputValue = event.target.value;--%>
+
+<%--        if (!inputValue) {--%>
+<%--            containsError = true;--%>
+<%--            nameInputError.innerText = '';--%>
+<%--            nameInputError.innerText = 'Name value should not be empty';--%>
+<%--        }--%>
+<%--        if (inputValue.length > 10) {--%>
+<%--            containsError = true;--%>
+<%--            nameInputError.innerText = '';--%>
+<%--            nameInputError.innerText = 'Name value should not be more than 10 symbols';--%>
+<%--        }--%>
+<%--    }--%>
+
+<%--    const onSubmit = () => {--%>
+<%--        if (containsError) return;--%>
+
+<%--        // handling submit data--%>
+<%--    }--%>
+
+<%--    nameInput.addEventListener('input', validate)--%>
+<%--</script>--%>
 </body>
 </html>

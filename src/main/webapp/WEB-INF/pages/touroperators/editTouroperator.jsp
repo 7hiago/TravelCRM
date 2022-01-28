@@ -13,7 +13,7 @@
 </head>
 <body>
 <h2>Edit touroperator</h2>
-<a href="../../showTouroperators">Back to main</a>
+<a href="../../showTouroperators">Back to touroperators</a>
 <form:form action="../../saveEditedTouroperator/${command.touroperatorId}" method="patch">
     <table>
         <tr>

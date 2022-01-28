@@ -15,7 +15,7 @@
     <title>Show Customers Page</title>
 </head>
 <h2>Customers</h2>
-<a href="..">Back to main</a></br>
+<a href="../menuPage">Back to menu</a></br>
 <a href="./createCustomer">Create new customer</a>
 <table border="1" cellpadding="2" width="60%">
     <tr>

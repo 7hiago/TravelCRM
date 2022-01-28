@@ -14,7 +14,7 @@
 </head>
 <body>
 <h2>Edit order</h2>
-<a href="../../showOrders">Back to main</a>
+<a href="../../showOrders">Back to orders</a>
 <form:form action="../../saveEditedOrder/${orderDTO.orderNumber}" method="patch" modelAttribute="orderDTO">
     <table>
         <tr>

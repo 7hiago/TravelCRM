@@ -15,7 +15,7 @@
     <title>Show Managers Page</title>
 </head>
 <h2>Managers</h2>
-<a href="..">Back to main</a></br>
+<a href="../menuPage">Back to menu</a></br>
 <a href="./createManager">Create new manager</a>
 <table border="1" cellpadding="2" width="60%">
     <tr>
