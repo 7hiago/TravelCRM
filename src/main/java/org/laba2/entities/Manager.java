@@ -12,10 +12,13 @@ public class Manager {
     private String email;
     private String login;
     private String password;
+    private Role role;
+    private Status status;
+
 
     public Manager() {}
 
-    public Manager(String managerId, String firstName, String lastName, float salary, String hireDate, String phoneNumber, String email, String login, String password) {
+    public Manager(String managerId, String firstName, String lastName, float salary, String hireDate, String phoneNumber, String email, String login, String password, Role role, Status status) {
         this.managerId = managerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,6 +28,8 @@ public class Manager {
         this.email = email;
         this.login = login;
         this.password = password;
+        this.role = role;
+        this.status = status;
     }
 
     public String getManagerId() {
@@ -97,6 +102,24 @@ public class Manager {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        Role role = Role.MANAGER;
+        role.getDeclaringClass();
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
