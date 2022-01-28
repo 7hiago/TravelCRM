@@ -2,7 +2,10 @@ package org.laba2.services;
 
 import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
+import org.laba2.entities.Role;
+import org.laba2.entities.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +15,9 @@ import java.util.UUID;
 public class ManagerService {
 
     private final ManagerDAO managerDAO;
+
+//    @Autowired
+//    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public ManagerService(ManagerDAO managerDAO) {
@@ -23,11 +29,17 @@ public class ManagerService {
     }
 
     public Manager getManagerById(String managerId) {
-        return managerDAO.getManager(managerId);
+        return managerDAO.getManagerById(managerId);
+    }
+
+    public Manager getManagerByLogin(String managerLogin) {
+        return managerDAO.getManagerByLogin(managerLogin);
     }
 
     public void createNewManager(Manager newManager) {
         newManager.setManagerId("TR-" + UUID.randomUUID());
+        newManager.setRole(Role.MANAGER);
+        newManager.setStatus(Status.ACTIVE);
         managerDAO.createManager(newManager);
     }
 

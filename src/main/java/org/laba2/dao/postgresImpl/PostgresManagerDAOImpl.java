@@ -2,6 +2,8 @@ package org.laba2.dao.postgresImpl;
 
 import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
+import org.laba2.entities.Role;
+import org.laba2.entities.Status;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
@@ -28,7 +30,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     @Override
     public void createManager(Manager manager) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO managers_table (manager_id, manager_firstname, manager_lastname, manager_salary, manager_hiredate, manager_phonenumber, manager_email, manager_login, manager_password) VALUES (?,?,?,?,?,?,?,?,?)"))
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO managers_table (manager_id, manager_firstname, manager_lastname, manager_salary, manager_hiredate, manager_phonenumber, manager_email, manager_login, manager_password, manager_role, manager_status) VALUES (?,?,?,?,?,?,?,?,?,?,?)"))
         {
             preparedStatement.setString(1, manager.getManagerId());
             preparedStatement.setString(2, manager.getFirstName());
@@ -39,6 +41,8 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             preparedStatement.setString(7, manager.getEmail());
             preparedStatement.setString(8, manager.getLogin());
             preparedStatement.setString(9, manager.getPassword());
+            preparedStatement.setString(10, manager.getRole().toString());
+            preparedStatement.setString(11, manager.getStatus().toString());
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item manager already exist");
             else System.out.println("Manager added successfully");
@@ -48,13 +52,34 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     }
 
     @Override
-    public Manager getManager(String manager_id) {
+    public Manager getManagerById(String manager_id) {
         Manager manager = null;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table WHERE manager_id=?"))
         {
             preparedStatement.setString(1, manager_id);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            manager = parseManager(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try { resultSet.close();} catch (SQLException e) { e.printStackTrace();}
+            }
+        }
+        return manager;
+    }
+
+    @Override
+    public Manager getManagerByLogin(String manager_login) {
+        Manager manager = null;
+        ResultSet resultSet = null;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table WHERE manager_login=?"))
+        {
+            preparedStatement.setString(1, manager_login);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             manager = parseManager(resultSet);
@@ -88,7 +113,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     public void updateManager(String manager_id, Manager manager) {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE managers_table SET manager_firstname=?, manager_lastname=?, manager_salary=?, manager_hiredate=?, manager_phonenumber=?, manager_email=?, manager_login=?, manager_password=? WHERE manager_id=?"))
+                    connection.prepareStatement("UPDATE managers_table SET manager_firstname=?, manager_lastname=?, manager_salary=?, manager_hiredate=?, manager_phonenumber=?, manager_email=?, manager_login=?, manager_password=?, manager_role=?, manager_status=? WHERE manager_id=?"))
         {
             preparedStatement.setString(1, manager.getFirstName());
             preparedStatement.setString(2, manager.getLastName());
@@ -98,7 +123,9 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             preparedStatement.setString(6, manager.getEmail());
             preparedStatement.setString(7, manager.getLogin());
             preparedStatement.setString(8, manager.getPassword());
-            preparedStatement.setString(9, manager_id);
+            preparedStatement.setString(9, manager.getRole().toString());
+            preparedStatement.setString(10, manager.getStatus().toString());
+            preparedStatement.setString(11, manager_id);
             int num = preparedStatement.executeUpdate();
             if(num == 0) System.out.println("Item manager not exist");
             System.out.println("Manager updated successfully");
@@ -134,8 +161,10 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             String email = resultSet.getString("manager_email");
             String login = resultSet.getString("manager_login");
             String password = resultSet.getString("manager_password");
+            Role role = Role.valueOf(resultSet.getString("manager_role"));
+            Status status = Status.valueOf(resultSet.getString("manager_status"));
             manager = new Manager(manager_id, firstname, lastname,
-                    salary, hireDate, phoneNumber, email, login, password);
+                    salary, hireDate, phoneNumber, email, login, password, role, status);
         } catch (SQLException e) {
             e.printStackTrace();
         }
