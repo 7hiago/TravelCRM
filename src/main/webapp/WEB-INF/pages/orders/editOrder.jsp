@@ -6,34 +6,28 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>Edit Order Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Edit order</h2>
-<a href="../../showOrders">Back to orders</a>
+
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../showOrders"></a>
+    <h2 class="show-title">Edit order</h2>
+</div>
+
 <form:form action="../../saveEditedOrder/${orderDTO.orderNumber}" method="patch" modelAttribute="orderDTO">
-    <table>
-        <tr>
-            <td>Tour:</td>
-            <td>
-                <a href="../../../tour/showTour/${orderDTO.tour.tourId}">${orderDTO.tour.country}</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Customer:</td>
-            <td>
-                <a href="../../../customers/showCustomer/${orderDTO.customer.customerId}">${orderDTO.customer.lastName}</a>
-            </td>
-        </tr>
+    <div class="form">
         <security:authorize access="hasRole('ADMIN')">
-        <tr>
-            <td>Manager:</td>
-            <td>
+            <div class="form-row">
+                <div class="input-label">Manager</div>
                 <label>
                     <form:select path="manager.managerId">
                         <option selected value="${orderDTO.manager.managerId}">${orderDTO.manager.lastName}</option>
@@ -42,29 +36,23 @@
                         </c:forEach>
                     </form:select>
                 </label>
-            </td>
-        </tr>
+            </div>
         </security:authorize>
-        <tr>
-            <td>Tour price:</td>
-            <td>
-                <a href="../../../accounting/showAccounting/${orderDTO.accounting.accountingId}">${orderDTO.accounting.tourPrice}</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Date:</td>
-            <td><form:input path="date"/></td>
 
-        </tr>
-        <tr>
-            <td>Status:</td>
-            <td><form:input path="status"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Edit order"></td>
-        </tr>
-    </table>
+        <div class="form-row">
+            <div class="input-label">Date</div>
+            <form:input path="date"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Status:</div>
+            <form:input path="status"/>
+        </div>
+
+        <div class="form-row">
+            <button type="submit" class="align-center no-top-padding">Edit order</button>
+        </div>
+    </div>
 </form:form>
 </body>
 </html>

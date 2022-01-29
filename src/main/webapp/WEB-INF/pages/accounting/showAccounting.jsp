@@ -10,40 +10,79 @@
 <html>
 <head>
     <title>Show Accounting Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Accounting</h2>
-<a href="../../orders/showOrders">Back to orders</a>
-<table>
-    <tr>
-        <td>Tour price:</td>
-        <td>${accounting.tourPrice}</td>
-    </tr>
-    <tr>
-        <td>Tour paid:</td>
-        <td>${accounting.tourPaid}</td>
-    </tr>
-    <tr>
-        <td>Commission:</td>
-        <td>${accounting.commission}</td>
-    </tr>
-    <tr>
-        <td>Touroperator price:</td>
-        <td>${accounting.touroperatorPrice}</td>
-    </tr>
-    <tr>
-        <td>Touroperator paid:</td>
-        <td>${accounting.touroperatorPaid}</td>
-    </tr>
-    <tr>
-        <td>Profit:</td>
-        <td>${accounting.profit}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <a href="../${accounting.accountingId}/editAccounting/">Edit</a>
-        </td>
-    </tr>
-</table>
+
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../orders/showOrders"></a>
+    <h2 class="show-title">Accounting</h2>
+</div>
+
+<div class="item-wrapper">
+    <div class="item-pile padding-bt-16">
+        <div class="item-pile-inner-wrapper">
+            <div class="info">
+                <div class="order-info-label">
+                    Tour price:
+                </div>
+                <div class="order-info-value">
+                    ${accounting.tourPrice}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Tour paid:
+                </div>
+                <div class="order-info-value">
+                    ${accounting.tourPaid}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Commission:
+                </div>
+                <div class="order-info-value">
+                    ${accounting.commission}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Touroperator price:
+                </div>
+                <div class="order-info-value">
+                    ${accounting.touroperatorPrice}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Touroperator paid:
+                </div>
+                <div class="order-info-value">
+                    ${accounting.touroperatorPaid}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Profit:
+                </div>
+                <div class="order-info-value">
+                    ${accounting.profit}
+                </div>
+            </div>
+
+            <a class="edit-btn" href="../${accounting.accountingId}/editAccounting/">Edit</a>
+        </div>
+    </div>
+</div>
+
+
+</body>
 

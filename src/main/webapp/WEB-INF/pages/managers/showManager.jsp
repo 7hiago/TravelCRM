@@ -10,34 +10,104 @@
 <html>
 <head>
     <title>Show Manager Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Manager</h2>
-<a href="../../orders/showOrders">Back to orders</a>
-<table>
-    <tr>
-        <td>First name:</td>
-        <td>${manager.firstName}</td>
-    </tr>
-    <tr>
-        <td>Last name:</td>
-        <td>${manager.lastName}</td>
-    </tr>
-    <tr>
-        <td>Phone number:</td>
-        <td>${manager.phoneNumber}</td>
-    </tr>
-    <tr>
-        <td>Email:</td>
-        <td>${manager.email}</td>
-    </tr>
-    <tr>
-        <td>Role:</td>
-        <td>${manager.role}</td>
-    </tr>
-    <tr>
-        <td>Status:</td>
-        <td>${manager.status}</td>
-    </tr>
-</table>
 
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../orders/showOrders"></a>
+    <h2 class="show-title">Manager</h2>
+</div>
+
+<div class="item-wrapper">
+    <div class="item-pile padding-bt-16 width-400">
+        <img class="avatar" src="https://i.pravatar.cc/150"/>
+
+        <div class="item-pile-inner-wrapper">
+            <div class="info">
+                <div class="order-info-label">
+                    First Name
+                </div>
+                <div class="order-info-value">
+                    ${manager.firstName}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Last Name
+                </div>
+                <div class="order-info-value">
+                    ${manager.lastName}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Salary
+                </div>
+                <div class="order-info-value">
+                    ${manager.salary}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Hire Date
+                </div>
+                <div class="order-info-value">
+                    ${manager.hireDate}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Phone NUmber
+                </div>
+                <div class="order-info-value">
+                    ${manager.phoneNumber}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Email
+                </div>
+                <div class="order-info-value">
+                    ${manager.email}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Login
+                </div>
+                <div class="order-info-value">
+                    ${manager.login}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Role
+                </div>
+                <div class="order-info-value">
+                    ${manager.role}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Status
+                </div>
+                <div class="order-info-value">
+                    ${manager.status}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>

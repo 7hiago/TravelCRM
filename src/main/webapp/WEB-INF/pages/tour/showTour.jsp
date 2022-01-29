@@ -10,40 +10,78 @@
 <html>
 <head>
     <title>Show Tour Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Tour</h2>
-<a href="../../orders/showOrders">Back to orders</a>
-<table>
-    <tr>
-        <td>Country:</td>
-        <td>${tourDTO.tour.country}</td>
-    </tr>
-    <tr>
-        <td>Hotel:</td>
-        <td>${tourDTO.tour.hotel}</td>
-    </tr>
-    <tr>
-        <td>Departure date:</td>
-        <td>${tourDTO.tour.departureDate}</td>
-    </tr>
-    <tr>
-        <td>Return date:</td>
-        <td>${tourDTO.tour.returnDate}</td>
-    </tr>
-    <tr>
-        <td>Proposal number:</td>
-        <td>${tourDTO.tour.proposalNumber}</td>
-    </tr>
-    <tr>
-        <td>Touroperator:</td>
-        <td>${tourDTO.touroperator.name}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <a href="../${tourDTO.tour.tourId}/editTour/">Edit</a>
-        </td>
-    </tr>
-</table>
 
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../orders/showOrders"></a>
+    <h2 class="show-title">Tour</h2>
+</div>
+
+
+<div class="item-wrapper ">
+    <div class="item-pile padding-bt-16 tour-wrapper">
+        <div class="item-pile-inner-wrapper">
+            <div class="info">
+                <div class="order-info-label">
+                    Country
+                </div>
+                <div class="order-info-value">
+                    ${tourDTO.tour.country}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Hotel:
+                </div>
+                <div class="order-info-value">
+                    ${tourDTO.tour.hotel}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Departure date:
+                </div>
+                <div class="order-info-value">
+                    ${tourDTO.tour.departureDate}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Return date:
+                </div>
+                <div class="order-info-value">
+                    ${tourDTO.tour.returnDate}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Proposal number:
+                </div>
+                <div class="order-info-value">
+                    ${tourDTO.tour.proposalNumber}
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="order-info-label">
+                    Touroperator:
+                </div>
+                <div class="order-info-value">
+                    ${tourDTO.touroperator.name}
+                </div>
+            </div>
+
+            <a class="edit-btn tour-edit-btn" href="../${tourDTO.tour.tourId}/editTour/">Edit</a>
+        </div>
+    </div>
+</div>
+
+</body>

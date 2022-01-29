@@ -11,5 +11,10 @@ public class MainController {
         return "./menuPage";
     }
 
+    @RequestMapping(path = "/error")
+    public String error() {
+        return "./error";
+    }
+
 
 }

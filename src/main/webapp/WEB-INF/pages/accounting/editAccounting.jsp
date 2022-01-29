@@ -6,45 +6,52 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <html>
 <head>
     <title>Edit Accounting Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Edit accounting</h2>
-<a href="../../showAccounting/${command.accountingId}">Back to accounting</a>
+
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../showAccounting/${command.accountingId}"></a>
+    <h2 class="show-title">Edit accounting</h2>
+</div>
+
+
 <form:form action="../../saveEditedAccounting/${command.accountingId}" method="patch">
-    <table>
-        <tr>
-            <td>Tour price:</td>
-            <td><form:input path="tourPrice"/></td>
-        </tr>
-        <tr>
-            <td>Tour paid:</td>
-            <td><form:input path="tourPaid"/></td>
-        </tr>
-        <tr>
-            <td>Commission:</td>
-            <td><form:input path="commission"/></td>
-        </tr>
-        <tr>
-            <td>Touroperator price:</td>
-            <td><form:input path="touroperatorPrice"/></td>
-        </tr>
-        <tr>
-            <td>Touroperator paid:</td>
-            <td><form:input path="touroperatorPaid"/></td>
-        </tr>
-        <tr>
-            <td>Profit:</td>
-            <td><form:input path="profit"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Edit accounting"></td>
-        </tr>
-    </table>
+    <div class="form">
+        <div class="form-row">
+            <div class="input-label">Tour price:</div>
+            <form:input path="tourPrice"/>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Tour paid:</div>
+            <form:input path="tourPaid"/>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Commission:</div>
+            <form:input path="commission"/>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Tour operator price:</div>
+            <form:input path="touroperatorPrice"/>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Tour operator paid:</div>
+            <form:input path="touroperatorPaid"/>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Profit:</div>
+            <form:input path="profit"/>
+        </div>
+
+        <button type="submit" class="align-center">Edit accounting</button>
+    </div>
+
 </form:form>
 </body>
 </html>

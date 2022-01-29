@@ -24,11 +24,6 @@
     <title>index</title>
 </head>
 <body>
-<script>
-    document.getElementById('mybutton').onload = function() {
-        window.location.href = './menuPage';
-    };
-</script>
 <h1>Welcome to Travel CRM</h1>
 <h2>To start work press <a href="./menuPage">here</a></h2>
 </body>

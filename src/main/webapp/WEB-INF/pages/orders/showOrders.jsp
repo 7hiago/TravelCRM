@@ -18,27 +18,27 @@
     </style>
 
 </head>
-<div class="show-order-title-wrapper">
+<div class="show-title-wrapper">
     <a class="arrow-back" href="../menuPage"></a>
-    <h2 class="show-order-title">Orders</h2>
+    <h2 class="show-title">Orders</h2>
+    <a class="btn create-btn" href="./createOrder"></a>
 </div>
-<a class="btn create-order-btn" href="./createOrder">Create new order</a></br>
 
-<div class="order-wrapper">
+<div class="item-wrapper">
     <c:forEach var="order" items="${orders}">
-        <div class="order-pile">
-            <image class="order-image" src=""/>
-            <div class="order-pile-inner-wrapper">
-                <div class="order-info">
+        <div class="item-pile">
+            <image class="item-image" src=""/>
+            <div class="item-pile-inner-wrapper">
+                <div class="info">
                     <div class="order-info-label">
                         Order number
                     </div>
                     <div class="order-info-value">
-                        ${order.orderNumber}
+                            ${order.orderNumber}
                     </div>
                 </div>
 
-                <a class="order-info" href="../tour/showTour/${order.tour.tourId}">
+                <a class="info" href="../tour/showTour/${order.tour.tourId}">
                     <div class="order-info-label">
                         Tour
                     </div>
@@ -47,7 +47,7 @@
                     </div>
                 </a>
 
-                <a class="order-info" href="../customers/showCustomer/${order.customer.customerId}">
+                <a class="info" href="../customers/showCustomer/${order.customer.customerId}">
                     <div class="order-info-label">
                         Customer
                     </div>
@@ -56,16 +56,16 @@
                     </div>
                 </a>
                 <security:authorize access="hasRole('ADMIN')">
-                <a class="order-info" href="../managers/showManager/${order.manager.managerId}">
-                    <div class="order-info-label">
-                        Manager
-                    </div>
-                    <div class="order-info-value">
-                            ${order.manager.firstName}
-                    </div>
-                </a>
+                    <a class="info" href="../managers/showManager/${order.manager.managerId}">
+                        <div class="order-info-label">
+                            Manager
+                        </div>
+                        <div class="order-info-value">
+                                ${order.manager.firstName}
+                        </div>
+                    </a>
                 </security:authorize>
-                <a class="order-info" href="../accounting/showAccounting/${order.accounting.accountingId}">
+                <a class="info" href="../accounting/showAccounting/${order.accounting.accountingId}">
                     <div class="order-info-label">
                         Tour Price
                     </div>
@@ -74,7 +74,7 @@
                     </div>
                 </a>
 
-                <div class="order-info">
+                <div class="info">
                     <div class="order-info-label">
                         Data
                     </div>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <div class="order-info">
+                <div class="info">
                     <div class="order-info-label">
                         Status
                     </div>
@@ -103,7 +103,7 @@
 
 <script>
     const words = ['beach', 'islands', 'sunset', 'sunrise', 'sea', 'mountains', 'countryside', 'resorts', 'hotels', 'summer'];
-    const images = document.getElementsByClassName('order-image');
+    const images = document.getElementsByClassName('item-image');
     const uniqueItems = [];
 
     Array.from(images).forEach((image, index) => {

@@ -6,37 +6,43 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <html>
 <head>
     <title>Edit Customer Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Edit customer</h2>
-<a href="../../showCustomers">Back to customers</a>
+
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../showCustomers"></a>
+    <h2 class="show-title">Edit customer</h2>
+</div>
+
 <form:form action="../../saveEditedCustomer/${command.customerId}" method="patch">
-    <table>
-        <tr>
-            <td>First name:</td>
-            <td><form:input path="firstName"/></td>
-        </tr>
-        <tr>
-            <td>Last name:</td>
-            <td><form:input path="lastName"/></td>
-        </tr>
-        <tr>
-            <td>Phone number:</td>
-            <td><form:input path="phoneNumber"/></td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><form:input path="email"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Edit customer"></td>
-        </tr>
-    </table>
+    <div class="form">
+        <div class="form-row">
+            <div class="input-label">First Name</div>
+            <form:input path="firstName"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Last Name</div>
+            <form:input path="lastName"/>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Phone number</div>
+            <div><form:input path="phoneNumber"/></div>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Email</div>
+            <div><form:input path="email"/></div>
+        </div>
+
+        <button type="submit" class="align-center">Edit customer</button>
+    </div>
 </form:form>
 </body>
 </html>

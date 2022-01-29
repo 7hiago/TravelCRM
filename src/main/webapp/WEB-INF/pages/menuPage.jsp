@@ -6,11 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <html>
 <head>
     <title>Main Page of TravelCRM</title>
-    <style><%@include file="/WEB-INF/pages/style.css"%></style>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
 <h2>Menu</h2>
@@ -22,9 +24,11 @@
     <security:csrfInput/>
     <a class="pile" href="./customers/showCustomers">Customers</a>
     <a class="pile" href="./touroperators/showTouroperators">Touroperators</a>
-        <form action="./logout" method="POST">
-            <button type="submit">Logout</button>
-        </form>
+    <a class="pile"
+       href="./error">Error</a>
+    <form action="./logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
 </div>
 </body>
 </html>

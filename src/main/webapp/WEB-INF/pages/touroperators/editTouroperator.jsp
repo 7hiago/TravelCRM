@@ -6,33 +6,41 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <html>
 <head>
     <title>Edit Touroperator Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Edit touroperator</h2>
-<a href="../../showTouroperators">Back to touroperators</a>
+
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="../../showTouroperators"></a>
+    <h2 class="show-title">Edit touroperator</h2>
+</div>
+
 <form:form action="../../saveEditedTouroperator/${command.touroperatorId}" method="patch">
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td><form:input path="name"/></td>
-        </tr>
-        <tr>
-            <td>Phone number:</td>
-            <td><form:input path="phoneNumber"/></td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><form:input path="email"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Edit touroperator"></td>
-        </tr>
-    </table>
+    <div class="form">
+        <div class="form-row">
+            <div class="input-label">Name</div>
+            <form:input path="name"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Phone number:</div>
+            <div><form:input path="phoneNumber"/></div>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Email:</div>
+            <div><form:input path="email"/></div>
+        </div>
+        <br/>
+        <div class="form-row">
+            <button type="submit" class="align-center no-top-padding">Edit touroperator</button>
+        </div>
+    </div>
 </form:form>
 </body>
 </html>

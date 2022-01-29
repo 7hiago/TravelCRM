@@ -10,67 +10,87 @@
 <html>
 <head>
     <title>Create Manager Page</title>
+    <style>
+        <%@include file="/WEB-INF/pages/style.css" %>
+    </style>
 </head>
 <body>
-<h2>Create manager</h2>
-<a href="./showManagers">Back to managers</a>
+
+<div class="show-title-wrapper">
+    <a class="arrow-back" href="./showManagers"></a>
+    <h2 class="show-title">Create manager</h2>
+</div>
+
+
 <form:form action="saveCreatedManager" method="post">
-    <table>
-        <tr>
-            <td>First name:</td>
-            <td><form:input path="firstName"/></td>
-        </tr>
-        <tr>
-            <td>Last name:</td>
-            <td><form:input path="lastName"/></td>
-        </tr>
-        <tr>
-            <td>Salary:</td>
-            <td><form:input path="salary"/></td>
-        </tr>
-        <tr>
-            <td>Hire date:</td>
-            <td><form:input path="hireDate"/></td>
-        </tr>
-        <tr>
-            <td>Phone number:</td>
-            <td><form:input path="phoneNumber"/></td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><form:input path="email"/></td>
-        </tr>
-        <tr>
-            <td>Login:</td>
-            <td><form:input path="login"/></td>
-        </tr>
-        <tr>
-            <td>Pass:</td>
-            <td><form:input type="password" path="password" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 3}$"/></td>
-        </tr>
-        <tr>
-            <td>Role:</td>
-            <td>
+    <div class="form">
+        <div class="form-row">
+            <div class="input-label">First Name</div>
+            <form:input path="firstName"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Last Name</div>
+            <form:input path="lastName"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Salary</div>
+            <form:input path="salary"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Hire Date</div>
+            <form:input path="hireDate"/>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Phone number</div>
+            <div><form:input path="phoneNumber"/></div>
+        </div>
+        <div class="form-row">
+            <div class="input-label">Email</div>
+            <div><form:input path="email"/></div>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Login</div>
+            <div><form:input path="login"/></div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="input-label">Pass</div>
+            <div><form:input type="password" path="password" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 3}$"/></div>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Role</div>
+            <div>
                 <form:select path="role">
+                    <option selected value="${command.role}">${command.role}</option>
                     <option value="ADMIN">ADMIN</option>
                     <option value="MANAGER">MANAGER</option>
                 </form:select>
-            </td>
-        </tr>
-        <tr>
-            <td>Status:</td>
-            <td>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="input-label">Status</div>
+            <div>
                 <form:select path="status">
+                    <option selected value="${command.status}">${command.status}</option>
                     <option value="ACTIVE">ACTIVE</option>
                     <option value="BANNED">BANNED</option>
                 </form:select>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Create manager"></td>
-        </tr>
-    </table>
+            </div>
+        </div>
+
+        <br/>
+        <div class="form-row">
+            <button type="submit" class="align-center no-top-padding">Create manager</button>
+        </div>
+    </div>
 </form:form>
 </body>
 </html>
