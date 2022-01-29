@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -63,8 +64,10 @@ public class AppConfig {
     @Value("${weblogic.datasource.dataSourceName}")
     private String dataSourceName;
 
-    @Bean(name = "datasource") // "tomcat"
+    @Profile("Tomcat")
+    @Bean(name = "datasource")
     public DriverManagerDataSource getDataSource() {
+        System.out.println("message from Tomcat datasource");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClass);
         dataSource.setUrl(jdbcUrl);
@@ -73,8 +76,10 @@ public class AppConfig {
         return dataSource;
     }
 
-    @Bean(name = "weblogic", destroyMethod = "") // "weblogic"
+    @Profile("Weblogic")
+    @Bean(name = "datasource", destroyMethod = "")
     public DataSource getWeblogicDataSource() {
+        System.out.println("message from Weblogic datasource");
         Hashtable<String, String> hashtable = new Hashtable<>();
         hashtable.put(Context.INITIAL_CONTEXT_FACTORY, initialContextFactory);
         hashtable.put(Context.PROVIDER_URL, "t3://" + providerHost + ":" + providerPort);

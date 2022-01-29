@@ -107,8 +107,8 @@ public class OrderService {
 
     public void deleteOrderById(int orderId) {
         Order order = orderDAO.getOrder(orderId);
+        orderDAO.removeOrder(orderId);
         tourService.deleteTourById(order.getTourId());
         accountingService.deleteAccountingById(order.getAccountingId());
-        orderDAO.removeOrder(orderId);
     }
 }
