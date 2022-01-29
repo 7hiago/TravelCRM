@@ -5,7 +5,6 @@ import org.laba2.services.TouroperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAspectJAutoProxy
 @RequestMapping(value = "/touroperators")
 public class TouroperatorController {
@@ -31,7 +29,6 @@ public class TouroperatorController {
         return new ModelAndView("./touroperators/showTouroperators", "touroperators", touroperatorService.getAvailableTouroperators());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/createTouroperator")
     public ModelAndView createTouroperator() {
         return new ModelAndView("./touroperators/createTouroperator", "command", new Touroperator());
@@ -55,6 +52,7 @@ public class TouroperatorController {
     }
 
     @DeleteMapping("/deleteTouroperator/{touroperatorId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteTouroperator(@PathVariable("touroperatorId") String touroperatorId) {
         touroperatorService.deleteTouroperator(touroperatorId);
         return new ModelAndView("redirect:/touroperators/showTouroperators");

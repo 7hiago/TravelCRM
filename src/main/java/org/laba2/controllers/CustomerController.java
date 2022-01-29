@@ -4,7 +4,7 @@ import org.laba2.entities.Customer;
 import org.laba2.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAspectJAutoProxy
 @RequestMapping(value = "/customers")
 public class CustomerController {
@@ -34,7 +33,6 @@ public class CustomerController {
         return new ModelAndView("./customers/showCustomer", "customer", customerService.getCustomerById(customerId));
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/createCustomer")
     public ModelAndView createCustomer() {
         return new ModelAndView("./customers/createCustomer", "command", new Customer());
@@ -58,6 +56,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/deleteCustomer/{customerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteCustomer(@PathVariable("customerId") String customerId) {
         customerService.deleteCustomer(customerId);
         return new ModelAndView("redirect:/customers/showCustomers");

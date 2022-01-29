@@ -5,7 +5,6 @@ import org.laba2.services.TourService;
 import org.laba2.services.TouroperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAspectJAutoProxy
 @RequestMapping(value = "/tour")
 public class TourController {

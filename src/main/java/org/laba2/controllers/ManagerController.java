@@ -4,7 +4,7 @@ import org.laba2.entities.Manager;
 import org.laba2.services.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAspectJAutoProxy
 @RequestMapping(value = "/managers")
 public class ManagerController {
@@ -25,6 +24,7 @@ public class ManagerController {
     private ManagerService managerService;
 
     @GetMapping("/showManagers")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView showManagers() {
         return new ModelAndView("./managers/showManagers", "managers", managerService.getAvailableManagers());
     }
@@ -34,8 +34,8 @@ public class ManagerController {
         return new ModelAndView("./managers/showManager", "manager", managerService.getManagerById(managerId));
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/createManager")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createManager() {
         return new ModelAndView("./managers/createManager", "command", new Manager());
     }
@@ -47,6 +47,7 @@ public class ManagerController {
     }
 
     @GetMapping("/{managerId}/editManager")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editManager(@PathVariable("managerId") String managerId) {
         return new ModelAndView("./managers/editManager", "command", managerService.getManagerById(managerId));
     }
@@ -58,6 +59,7 @@ public class ManagerController {
     }
 
     @DeleteMapping("/deleteManager/{managerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteManager(@PathVariable("managerId") String managerId) {
         managerService.deleteManager(managerId);
         return new ModelAndView("redirect:/managers/showManagers");
