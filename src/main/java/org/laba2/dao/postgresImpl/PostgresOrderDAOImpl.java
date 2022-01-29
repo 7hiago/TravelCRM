@@ -84,6 +84,28 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public List<Order> getAvailableOrdersForManager(String managerId) {
+        List<Order> orderList = new ArrayList<>();
+        ResultSet resultSet = null;
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table WHERE manager_id=? ORDER BY date"))
+        {
+            preparedStatement.setString(1, managerId);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                orderList.add(parseOrder(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try { resultSet.close();} catch (SQLException e) { e.printStackTrace();}
+            }
+        }
+        return orderList;
+    }
+
+    @Override
     public void updateOrder(int order_id, Order order) {
 
         try(Connection connection = dataSource.getConnection();

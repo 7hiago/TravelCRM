@@ -8,6 +8,8 @@ import org.laba2.entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class OrderService {
         this.orderDAO = orderDAO;
     }
 
-    public void saveNewOrder(CreateOrderDTO createOrderDTO) {
+    public void saveNewOrder(CreateOrderDTO createOrderDTO, Principal principal) {
 
         tourService.createNewTour(createOrderDTO.getTour());
         customerService.createNewCustomer(createOrderDTO.getCustomer());
@@ -42,16 +44,33 @@ public class OrderService {
         Order order = new Order();
         order.setTourId(createOrderDTO.getTour().getTourId());
         order.setCustomerId(createOrderDTO.getCustomer().getCustomerId());
-        order.setManagerId(createOrderDTO.getSelectedManagerId());
+        order.setManagerId(managerService.getManagerByLogin(principal.getName()).getManagerId());
         order.setAccountingId(createOrderDTO.getAccounting().getAccountingId());
-        order.setDate(createOrderDTO.getDate());
-        order.setStatus(createOrderDTO.getStatus());
+        order.setDate(LocalDate.now().toString());
+        order.setStatus("Reserved");
         orderDAO.createOrder(order);
     }
 
     public List<ShowOrderDTO> getAvailableOrders() {
         List<ShowOrderDTO> showOrderDTOList = new ArrayList<>();
         List<Order> orderList = orderDAO.getOrders();
+        for (Order order : orderList) {
+
+            showOrderDTOList.add(new ShowOrderDTO(
+                    order.getOrderId(),
+                    tourService.getTourById(order.getTourId()),
+                    customerService.getCustomerById(order.getCustomerId()),
+                    managerService.getManagerById(order.getManagerId()),
+                    accountingService.getAccountingById(order.getAccountingId()),
+                    order.getDate(),
+                    order.getStatus()));
+        }
+        return showOrderDTOList;
+    }
+
+    public List<ShowOrderDTO> getAvailableOrdersForManager(String managerId) {
+        List<ShowOrderDTO> showOrderDTOList = new ArrayList<>();
+        List<Order> orderList = orderDAO.getAvailableOrdersForManager(managerId);
         for (Order order : orderList) {
 
             showOrderDTOList.add(new ShowOrderDTO(
