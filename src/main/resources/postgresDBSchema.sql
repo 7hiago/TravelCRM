@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS MANAGERS_TABLE
     manager_email       VARCHAR(50) UNIQUE NOT NULL,
     manager_login       VARCHAR(50) UNIQUE NOT NULL,
     manager_password    VARCHAR(255)       NOT NULL,
+    manager_role        VARCHAR(20)        NOT NULL,
+    manager_status      VARCHAR(20)        NOT NULL,
     CONSTRAINT manager_table_pk PRIMARY KEY (manager_id)
 );
 

@@ -1,44 +1,46 @@
 package org.laba2.security;
 
-import org.springframework.context.annotation.Bean;
+import org.laba2.services.ManagerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
-//@ComponentScan("org.laba2")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build(),
-                User.builder().username("user").password(passwordEncoder().encode("user")).roles("USER").build()
-        );
-    }
+    @Autowired
+    private ManagerService managerService;
 
-    @Bean
-    protected PasswordEncoder passwordEncoder () {
-        return new BCryptPasswordEncoder(12);
-    }
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/index", "/").permitAll()
-                .antMatchers("/allTours").authenticated()
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                    .antMatchers("/").fullyAuthenticated()
+                    .antMatchers("/managers/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin().successForwardUrl("/menuPage")
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/login");
+    }
+
+    @Autowired
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(managerService).passwordEncoder(bCryptPasswordEncoder);
     }
 }

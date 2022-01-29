@@ -26,6 +26,8 @@
         <th>Phone number</th>
         <th>Email</th>
         <th>Login</th>
+        <th>Role</th>
+        <th>Status</th>
         <th>Edit</th>
     </tr>
 
@@ -38,6 +40,8 @@
             <td>${manager.phoneNumber}</td>
             <td>${manager.email}</td>
             <td>${manager.login}</td>
+            <td>${manager.role}</td>
+            <td>${manager.status}</td>
             <td>
                 <a href="./${manager.managerId}/editManager/">Edit</a>
             </td>

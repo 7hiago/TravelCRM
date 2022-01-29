@@ -50,22 +50,14 @@
             <td>Tour price:</td>
             <td><form:input path="accounting.tourPrice"/></td>
         <%--Manager column--%>
-            <td>Name:</td>
-            <td>
-                <label>
-                    <form:select path="selectedManagerId">
-                        <c:forEach var="manager" items="${managers}">
-                            <option value="${manager.managerId}">${manager.login}</option>
-                        </c:forEach>
-                    </form:select>
-                </label>
-            </td>
+            <td></td>
+            <td></td>
         <%--Data column--%>
-            <td>Date</td>
-            <td><form:input path="date"/></td>
+            <td></td>
+            <td></td>
         <%--Status column--%>
-            <td>Status</td>
-            <td><form:input path="status"/></td>
+            <td></td>
+            <td></td>
         </tr>
     <%--row 3--%>
         <tr>

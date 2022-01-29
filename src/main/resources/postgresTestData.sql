@@ -26,12 +26,14 @@ VALUES ('C-Oleg', 'Oleg',  'PETRENKO',  '6935783476', 'cust2@gmail.com');
 INSERT INTO customers_table (customer_id, customer_firstName, customer_lastName, customer_phoneNumber, customer_email)
 VALUES ('C-Artem', 'Artem', 'POHORELOV', '5935283276', 'cust3@gmail.com');
 
-INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password)
-VALUES ('M-Marina', 'Marina', 'GAIBALOVA',  10000, '2020-01-14', '4935783276', 'mngr1@gmail.com', 'mngr1', 'mngr1pass123');
-INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password)
-VALUES ('M-Oksana', 'Oksana', 'ZHYTNETSKA', 10000, '2020-03-05', '3935783476', 'mngr2@gmail.com', 'mngr2', 'mngr2pass456');
-INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password)
-VALUES ('M-Vera', 'Vera',   'KUCKOVSKA',  10000, '2020-06-23', '135283276',  'mngr3@gmail.com', 'mngr3', 'mngr3pass789');
+INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password, manager_role, manager_status)
+VALUES ('M-Admin', 'Admin', 'Admin',  10000, '2020-01-01', '1', 'admin@mail.com', 'admin', '$2a$12$ahdyR3T.5gbGXz2yaKToJeegbQ0kEIG8qRXwXqvPKM.rrf577I4jG', 'ROLE_ADMIN', 'ACTIVE');
+INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password, manager_role, manager_status)
+VALUES ('M-Marina', 'Marina', 'GAIBALOVA',  10000, '2020-01-14', '4935783276', 'mngr1@gmail.com', 'mngr1', '$2a$12$QNWXqu/pD0dD1zzlkgnt.em3cqu.7bIN9VvRQ5BVdjwWKwntwEzJO', 'ROLE_MANAGER', 'ACTIVE');
+INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password, manager_role, manager_status)
+VALUES ('M-Oksana', 'Oksana', 'ZHYTNETSKA', 10000, '2020-03-05', '3935783476', 'mngr2@gmail.com', 'mngr2', '$2a$12$pWfX/ntAGOWnYaKxjfbEm.LUvvHq0yBwb8gz1W9ivy6co.QOr1gia', 'ROLE_MANAGER', 'ACTIVE');
+INSERT INTO managers_table (manager_id, manager_firstName, manager_lastName, manager_salary, manager_hireDate, manager_phoneNumber, manager_email, manager_login, manager_password, manager_role, manager_status)
+VALUES ('M-Vera', 'Vera',   'KUCKOVSKA',  10000, '2020-06-23', '135283276',  'mngr3@gmail.com', 'mngr3', '$2a$12$32O9K.c9a9rEgYCk4cgdqubLiqC/DtCvmxQbJ9NQla8Vn0ZY7BW/2', 'ROLE_MANAGER', 'BANNED');
 
 INSERT INTO orders_table (tour_id, customer_id, manager_id, accounting_id, date, status)
 VALUES ('T-Dominican','C-Kate','M-Marina','A-20000','2022-01-01', 'reserved');

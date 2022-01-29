@@ -34,7 +34,7 @@
                         Order number
                     </div>
                     <div class="order-info-value">
-                        #${order.orderNumber}
+                        ${order.orderNumber}
                     </div>
                 </div>
 
@@ -55,16 +55,16 @@
                             ${order.customer.lastName}
                     </div>
                 </a>
-
+                <security:authorize access="hasRole('ADMIN')">
                 <a class="order-info" href="../managers/showManager/${order.manager.managerId}">
                     <div class="order-info-label">
                         Manager
                     </div>
                     <div class="order-info-value">
-                            ${order.manager.login}
+                            ${order.manager.firstName}
                     </div>
                 </a>
-
+                </security:authorize>
                 <a class="order-info" href="../accounting/showAccounting/${order.accounting.accountingId}">
                     <div class="order-info-label">
                         Tour Price
@@ -101,10 +101,6 @@
     </c:forEach>
 </div>
 
-<%--<security:authorize access="hasRole('ADMIN')">--%>
-<%--    <div><a href="./createOrder">Create new order</a></div>--%>
-<%--</security:authorize>--%>
-<%--<security:csrfInput/>--%>
 <script>
     const words = ['beach', 'islands', 'sunset', 'sunrise', 'sea', 'mountains', 'countryside', 'resorts', 'hotels', 'summer'];
     const images = document.getElementsByClassName('order-image');

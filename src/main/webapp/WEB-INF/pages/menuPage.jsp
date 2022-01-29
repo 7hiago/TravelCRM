@@ -16,11 +16,10 @@
 <h2>Menu</h2>
 <div class="pile-wrapper">
     <a class="pile" href="./orders/showOrders">Orders</a>
-<%--    <security:authorize access="hasRole('ADMIN')">--%>
-<%--    <security:authorize access="hasAuthority('delete')">--%>
+    <security:authorize access="hasRole('ADMIN')">
         <a class="pile" href="./managers/showManagers">Managers</a>
-<%--    </security:authorize>--%>
-<%--    <security:csrfInput/>--%>
+    </security:authorize>
+    <security:csrfInput/>
     <a class="pile" href="./customers/showCustomers">Customers</a>
     <a class="pile" href="./touroperators/showTouroperators">Touroperators</a>
         <form action="./logout" method="POST">

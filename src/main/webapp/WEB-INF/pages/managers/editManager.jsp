@@ -46,7 +46,27 @@
         </tr>
         <tr>
             <td>Pass:</td>
-            <td><form:input path="password"/></td>
+            <td><form:input type="password" path="password" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 3}$"/></td>
+        </tr>
+        <tr>
+            <td>Role:</td>
+            <td>
+                <form:select path="role">
+                    <option selected value="${command.role}">${command.role}</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="MANAGER">MANAGER</option>
+                </form:select>
+            </td>
+        </tr>
+        <tr>
+            <td>Status:</td>
+            <td>
+                <form:select path="status">
+                    <option selected value="${command.status}">${command.status}</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="BANNED">BANNED</option>
+                </form:select>
+            </td>
         </tr>
         <tr>
             <td></td>

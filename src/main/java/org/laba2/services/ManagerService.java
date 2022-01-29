@@ -3,15 +3,22 @@ package org.laba2.services;
 import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ManagerService {
+public class ManagerService implements UserDetailsService {
 
     private final ManagerDAO managerDAO;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public ManagerService(ManagerDAO managerDAO) {
@@ -19,19 +26,42 @@ public class ManagerService {
     }
 
     public List<Manager> getAvailableManagers() {
-        return managerDAO.getManagers();
+        List<Manager> managerList = managerDAO.getManagers();
+        for(Manager manager : managerList) {
+            manager.setRole(manager.getRole().equals("ROLE_ADMIN") ? "ADMIN" : "MANAGER");
+        }
+        return managerList;
     }
 
     public Manager getManagerById(String managerId) {
-        return managerDAO.getManager(managerId);
+        Manager manager = managerDAO.getManagerById(managerId);
+        manager.setRole(manager.getRole().equals("ROLE_ADMIN") ? "ADMIN" : "MANAGER");
+        return manager;
     }
 
-    public void createNewManager(Manager newManager) {
-        newManager.setManagerId("TR-" + UUID.randomUUID());
-        managerDAO.createManager(newManager);
+    public Manager getManagerByLogin(String managerLogin) {
+        return managerDAO.getManagerByLogin(managerLogin);
+    }
+
+    public boolean createNewManager(Manager newManager) {
+        Manager existManager = managerDAO.getManagerByLogin(newManager.getLogin());
+        if(!newManager.equals(existManager)) {
+            newManager.setManagerId("TR-" + UUID.randomUUID());
+            newManager.setPassword(passwordEncoder.encode(newManager.getPassword()));
+            newManager.setRole("ROLE_" + newManager.getRole());
+            managerDAO.createManager(newManager);
+            return true;
+        }
+        return false;
     }
 
     public void editManager(String managerId,Manager editedManager) {
+        Manager notEditManager = managerDAO.getManagerById(managerId);
+
+        if (!notEditManager.getPassword().equals(editedManager.getPassword())) {
+            editedManager.setPassword(passwordEncoder.encode(editedManager.getPassword()));
+        }
+        editedManager.setRole("ROLE_" + editedManager.getRole());
         managerDAO.updateManager(managerId, editedManager);
     }
 
@@ -39,4 +69,10 @@ public class ManagerService {
         managerDAO.removeManager(managerId);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Manager manager = managerDAO.getManagerByLogin(username);
+            if(manager == null) throw new UsernameNotFoundException("User not found");
+        return manager;
+    }
 }

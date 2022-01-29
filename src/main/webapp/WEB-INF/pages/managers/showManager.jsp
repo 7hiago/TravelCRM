@@ -31,5 +31,13 @@
         <td>Email:</td>
         <td>${manager.email}</td>
     </tr>
+    <tr>
+        <td>Role:</td>
+        <td>${manager.role}</td>
+    </tr>
+    <tr>
+        <td>Status:</td>
+        <td>${manager.status}</td>
+    </tr>
 </table>
 
