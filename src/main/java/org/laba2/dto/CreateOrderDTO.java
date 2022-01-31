@@ -8,10 +8,7 @@ public class CreateOrderDTO {
 
     private Tour tour;
     private Customer customer;
-    private String selectedManagerId;
     private Accounting accounting;
-    private String date;
-    private String status;
 
     public CreateOrderDTO() {}
 
@@ -31,14 +28,6 @@ public class CreateOrderDTO {
         this.customer = customer;
     }
 
-    public String getSelectedManagerId() {
-        return selectedManagerId;
-    }
-
-    public void setSelectedManagerId(String selectedManagerId) {
-        this.selectedManagerId = selectedManagerId;
-    }
-
     public Accounting getAccounting() {
         return accounting;
     }
@@ -47,19 +36,4 @@ public class CreateOrderDTO {
         this.accounting = accounting;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

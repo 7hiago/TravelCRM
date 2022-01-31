@@ -37,15 +37,11 @@ public class OrderService {
 
     public void saveNewOrder(CreateOrderDTO createOrderDTO, Principal principal) {
 
-        tourService.createNewTour(createOrderDTO.getTour());
-        customerService.createNewCustomer(createOrderDTO.getCustomer());
-        accountingService.createNewAccounting(createOrderDTO.getAccounting());
-
         Order order = new Order();
-        order.setTourId(createOrderDTO.getTour().getTourId());
-        order.setCustomerId(createOrderDTO.getCustomer().getCustomerId());
+        order.setTourId(tourService.createNewTour(createOrderDTO.getTour()));
+        order.setCustomerId(customerService.createNewCustomer(createOrderDTO.getCustomer()));
         order.setManagerId(managerService.getManagerByLogin(principal.getName()).getManagerId());
-        order.setAccountingId(createOrderDTO.getAccounting().getAccountingId());
+        order.setAccountingId(accountingService.createNewAccounting(createOrderDTO.getAccounting()));
         order.setDate(LocalDate.now().toString());
         order.setStatus("Reserved");
         orderDAO.createOrder(order);

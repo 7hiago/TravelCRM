@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ManagerService implements UserDetailsService {
@@ -44,18 +45,21 @@ public class ManagerService implements UserDetailsService {
     }
 
     public boolean createNewManager(Manager newManager) {
-        Manager existManager = managerDAO.getManagerByLogin(newManager.getLogin());
-        if(!newManager.equals(existManager)) {
-            newManager.setManagerId("TR-" + UUID.randomUUID());
-            newManager.setPassword(passwordEncoder.encode(newManager.getPassword()));
-            newManager.setRole("ROLE_" + newManager.getRole());
-            managerDAO.createManager(newManager);
-            return true;
+        List<Manager> managersFromDB = managerDAO.getManagers();
+        managersFromDB = managersFromDB.stream().filter(existManager -> existManager.getEmail().equals(newManager.getEmail())
+                || existManager.getPhoneNumber().equals(newManager.getPhoneNumber())
+                || existManager.getLogin().equals(newManager.getLogin())).collect(Collectors.toList());
+        if(managersFromDB.size() != 0) {
+            return false;
         }
-        return false;
+        newManager.setManagerId("TR-" + UUID.randomUUID());
+        newManager.setPassword(passwordEncoder.encode(newManager.getPassword()));
+        newManager.setRole("ROLE_" + newManager.getRole());
+        managerDAO.createManager(newManager);
+        return true;
     }
 
-    public void editManager(String managerId,Manager editedManager) {
+    public void editManager(String managerId, Manager editedManager) {
         Manager notEditManager = managerDAO.getManagerById(managerId);
 
         if (!notEditManager.getPassword().equals(editedManager.getPassword())) {

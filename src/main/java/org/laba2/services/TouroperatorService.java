@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TouroperatorService {
@@ -27,9 +28,18 @@ public class TouroperatorService {
         return touroperatorDAO.getTouroperator(touroperatorId);
     }
 
-    public void createNewTouroperator(Touroperator newTouroperator) {
+    public boolean createNewTouroperator(Touroperator newTouroperator) {
+        List<Touroperator> touroperatorsFromDB = touroperatorDAO.getTouroperators();
+        touroperatorsFromDB = touroperatorsFromDB.stream().filter(existTouroperator -> existTouroperator.getEmail().equals(newTouroperator.getEmail())
+                || existTouroperator.getPhoneNumber().equals(newTouroperator.getPhoneNumber())).collect(Collectors.toList());
+        if(touroperatorsFromDB.size() != 0) {
+            return false;
+        }
         newTouroperator.setTouroperatorId("TR-" + UUID.randomUUID());
         touroperatorDAO.createTouroperator(newTouroperator);
+        return true;
+
+
     }
 
     public void editTouroperator(String touroperatorId,Touroperator editedTouroperator) {

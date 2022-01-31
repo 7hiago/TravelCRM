@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -18,9 +19,16 @@ public class CustomerService {
         this.customerDAO = customerDAO;
     }
 
-    public void createNewCustomer(Customer customer) {
-        customer.setCustomerId("CT-" + UUID.randomUUID());
-        customerDAO.createCustomer(customer);
+    public String createNewCustomer(Customer newCustomer) {
+        List<Customer> customersFromDB = customerDAO.getCustomers();
+        customersFromDB = customersFromDB.stream().filter(existCustomer -> existCustomer.getEmail().equals(newCustomer.getEmail())
+                || existCustomer.getPhoneNumber().equals(newCustomer.getPhoneNumber())).collect(Collectors.toList());
+        if(customersFromDB.size() != 0) {
+            return customersFromDB.get(0).getCustomerId();
+        }
+        newCustomer.setCustomerId("CT-" + UUID.randomUUID());
+        customerDAO.createCustomer(newCustomer);
+        return newCustomer.getCustomerId();
     }
 
     public Customer getCustomerById(String customerId) {

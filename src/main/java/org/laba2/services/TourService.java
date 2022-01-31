@@ -21,9 +21,10 @@ public class TourService {
         this.tourDAO = tourDAO;
     }
 
-    public void createNewTour(Tour tour) {
+    public String createNewTour(Tour tour) {
         tour.setTourId("TR-" + UUID.randomUUID());
         tourDAO.createTour(tour);
+        return tour.getTourId();
     }
 
     public Tour getTourById(String tourId) {

@@ -17,13 +17,14 @@ public class AccountingService {
         this.accountingDAO = accountingDAO;
     }
 
-    public void createNewAccounting(Accounting accounting) {
+    public String createNewAccounting(Accounting accounting) {
         accounting.setAccountingId("AC-" + UUID.randomUUID());
+        accounting.setProfit(accounting.getTourPrice() * (accounting.getCommission()/100));
         accountingDAO.createAccounting(accounting);
+        return accounting.getAccountingId();
     }
 
     public Accounting getAccountingById(String accountingId) {
-
         return accountingDAO.getAccounting(accountingId);
     }
 
