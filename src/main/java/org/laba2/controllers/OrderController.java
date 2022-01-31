@@ -1,5 +1,6 @@
 package org.laba2.controllers;
 
+import org.apache.log4j.Logger;
 import org.laba2.dto.CreateOrderDTO;
 import org.laba2.dto.ShowOrderDTO;
 import org.laba2.entities.Manager;
@@ -27,6 +28,8 @@ import java.security.Principal;
 @RequestMapping(value = "/orders")
 public class OrderController {
 
+    private static final Logger logger = Logger.getLogger(OrderController.class);
+
     @Autowired
     private OrderService orderService;
 
@@ -39,6 +42,7 @@ public class OrderController {
     @GetMapping("/showOrders")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String showOrders(Model model, Principal principal) {
+        logger.debug("invocation show orders method");
         Manager manager = managerService.getManagerByLogin(principal.getName());
         if(manager.getRole().equals("ROLE_MANAGER")) {
             model.addAttribute("orders", orderService.getAvailableOrdersForManager(manager.getManagerId()));
@@ -51,6 +55,7 @@ public class OrderController {
     @GetMapping("/createOrder")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String createOrder(Model model) {
+        logger.debug("invocation create order method");
         model.addAttribute("managers", managerService.getAvailableManagers());
         model.addAttribute("touroperators", touroperatorService.getAvailableTouroperators());
         model.addAttribute("createOrderDTO", new CreateOrderDTO());
@@ -59,6 +64,7 @@ public class OrderController {
 
     @PostMapping("/saveCreatedOrder")
     public ModelAndView saveCreatedOrder(@ModelAttribute CreateOrderDTO createOrderDTO, Principal principal) {
+        logger.debug("invocation save created order method");
         orderService.saveNewOrder(createOrderDTO, principal);
         return new ModelAndView("redirect:/orders/showOrders");
     }
@@ -66,6 +72,7 @@ public class OrderController {
     @GetMapping("/{orderId}/editOrder")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String editOrder(Model model, @PathVariable("orderId") int orderId) {
+        logger.debug("invocation edit order method");
         model.addAttribute("managers", managerService.getAvailableManagers());
         model.addAttribute("orderDTO", orderService.getOrderById(orderId));
         return "./orders/editOrder";
@@ -73,6 +80,7 @@ public class OrderController {
 
     @PatchMapping("/saveEditedOrder/{orderID}")
     public ModelAndView saveEditedOrder(@ModelAttribute ShowOrderDTO showOrderDTO, @PathVariable("orderID") int orderId) {
+        logger.debug("invocation save edited order method");
         orderService.editOrderById(orderId, showOrderDTO);
         return new ModelAndView("redirect:/orders/showOrders");
     }
@@ -80,6 +88,7 @@ public class OrderController {
     @DeleteMapping("/deleteOrder/{orderId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteOrder(@PathVariable("orderId") int orderId) {
+        logger.debug("invocation delete order method");
         orderService.deleteOrderById(orderId);
         return new ModelAndView("redirect:/orders/showOrders");
     }

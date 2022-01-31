@@ -1,7 +1,9 @@
 package org.laba2.dao.postgresImpl;
 
+import org.apache.log4j.Logger;
 import org.laba2.dao.CustomerDAO;
 import org.laba2.entities.Customer;
+import org.laba2.exception.DatabaseException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,8 @@ import java.util.List;
 @DependsOn("datasource")
 public class PostgresCustomerDAOImpl implements CustomerDAO {
 
+    private static final Logger logger = Logger.getLogger(PostgresCustomerDAOImpl.class);
+
     private final DataSource dataSource;
 
     public PostgresCustomerDAOImpl(@Qualifier("datasource") DataSource dataSource) {
@@ -26,6 +30,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void createCustomer(Customer customer) {
+        logger.debug("invocation create customer method");
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customers_table (customer_id, customer_firstname, customer_lastname, customer_phonenumber, customer_email) VALUES (?,?,?,?,?)"))
         {
@@ -34,17 +39,15 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             preparedStatement.setString(3, customer.getLastName());
             preparedStatement.setString(4, customer.getPhoneNumber());
             preparedStatement.setString(5, customer.getEmail());
-
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item customer already exist");
-            else System.out.println("Customer added successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     @Override
     public Customer getCustomer(String customer_id) {
+        logger.debug("invocation get customer method");
         Customer customer = null;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
@@ -55,10 +58,14 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             resultSet.next();
             customer = parseCustomer(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         } finally {
             if (resultSet != null) {
-                try { resultSet.close();} catch (SQLException e) { e.printStackTrace();}
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return customer;
@@ -66,6 +73,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List<Customer> getCustomers() {
+        logger.debug("invocation get customers method");
         List<Customer> customerList = new ArrayList<>();
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table ORDER BY customer_firstname");
@@ -75,13 +83,14 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
                 customerList.add(parseCustomer(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
         return customerList;
     }
 
     @Override
     public void updateCustomer(String customer_id, Customer customer) {
+        logger.debug("invocation update customer method");
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE customers_table SET customer_firstname=?, customer_lastname=?, customer_phonenumber=?, customer_email=? WHERE customer_id=?"))
@@ -91,30 +100,28 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             preparedStatement.setString(3, customer.getPhoneNumber());
             preparedStatement.setString(4, customer.getEmail());
             preparedStatement.setString(5, customer_id);
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item customer not exist");
-            System.out.println("Customer updated successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     @Override
     public void removeCustomer(String customer_id) {
+        logger.debug("invocation remove customer method");
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM customers_table WHERE customer_id=?"))
         {
             preparedStatement.setString(1, customer_id);
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item customer not exist");
-            else System.out.println("Customer deleted successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     private Customer parseCustomer(ResultSet resultSet) {
+        logger.debug("invocation parse customer method");
         Customer customer = null;
         try {
             String manager_id = resultSet.getString("customer_id");
@@ -124,7 +131,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             String email = resultSet.getString("customer_email");
             customer = new Customer(manager_id, firstname, lastname, phoneNumber, email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
         return customer;
     }

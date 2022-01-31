@@ -1,7 +1,9 @@
 package org.laba2.dao.postgresImpl;
 
+import org.apache.log4j.Logger;
 import org.laba2.dao.TouroperatorDAO;
 import org.laba2.entities.Touroperator;
+import org.laba2.exception.DatabaseException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,8 @@ import java.util.List;
 @DependsOn("datasource")
 public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
+    private static final Logger logger = Logger.getLogger(PostgresTouroperatorDAOImpl.class);
+
     private final DataSource dataSource;
 
     public PostgresTouroperatorDAOImpl(@Qualifier("datasource") DataSource dataSource) {
@@ -27,6 +31,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
     @Override
     public void createTouroperator(Touroperator touroperator) {
+        logger.debug("invocation create touroperator method");
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO touroperators_table (touroperator_id, touroperator_name, touroperator_phonenumber, touroperator_email) VALUES (?,?,?,?)"))
         {
@@ -34,16 +39,15 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
             preparedStatement.setString(2, touroperator.getName());
             preparedStatement.setString(3, touroperator.getPhoneNumber());
             preparedStatement.setString(4, touroperator.getEmail());
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item already exist");
-            else System.out.println("Added successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     @Override
     public Touroperator getTouroperator(String touroperator_id) {
+        logger.debug("invocation get touroperator method");
         Touroperator touroperator = null;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
@@ -54,7 +58,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
             resultSet.next();
             touroperator = parseTouroperator(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         } finally {
             if (resultSet != null) {
                 try { resultSet.close();} catch (SQLException e) { e.printStackTrace();}
@@ -65,6 +69,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
     @Override
     public List<Touroperator> getTouroperators() {
+        logger.debug("invocation get touroperators method");
         List<Touroperator> touroperatorList = new ArrayList<>();
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM touroperators_table ORDER BY touroperator_id");
@@ -74,13 +79,14 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
                 touroperatorList.add(parseTouroperator(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
         return touroperatorList;
     }
 
     @Override
     public void updateTouroperator(String touroperator_id, Touroperator touroperator) {
+        logger.debug("invocation update touroperator method");
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE touroperators_table SET touroperator_name=?, touroperator_phonenumber=?, touroperator_email=? WHERE touroperator_id=?"))
@@ -89,31 +95,28 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
             preparedStatement.setString(2, touroperator.getPhoneNumber());
             preparedStatement.setString(3, touroperator.getEmail());
             preparedStatement.setString(4, touroperator.getTouroperatorId());
-
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item not exist");
-            System.out.println("Job updated successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     @Override
     public void removeTouroperator(String touroperator_id) {
+        logger.debug("invocation remove touroperator method");
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM touroperators_table WHERE touroperator_id=?"))
         {
             preparedStatement.setString(1, touroperator_id);
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item not exist");
-            else System.out.println("Deleted successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     private Touroperator parseTouroperator(ResultSet resultSet) {
+        logger.debug("invocation parse touroperator method");
         Touroperator touroperator = null;
         try {
             String touroperator_id = resultSet.getString("touroperator_id");
@@ -123,7 +126,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
             touroperator = new Touroperator(touroperator_id, touroperator_name, touroperator_phonenumber, touroperator_email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
         return touroperator;
     }

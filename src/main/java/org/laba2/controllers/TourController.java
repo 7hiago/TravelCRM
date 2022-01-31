@@ -1,5 +1,6 @@
 package org.laba2.controllers;
 
+import org.apache.log4j.Logger;
 import org.laba2.dto.TourDTO;
 import org.laba2.services.TourService;
 import org.laba2.services.TouroperatorService;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/tour")
 public class TourController {
 
+    private static final Logger logger = Logger.getLogger(TourController.class);
+
     @Autowired
     private TourService tourService;
 
@@ -28,12 +31,14 @@ public class TourController {
 
     @GetMapping("/showTour/{tourId}")
     public String  showTour(@PathVariable("tourId") String tourId, Model model) {
+        logger.debug("invocation show tour method");
         model.addAttribute("tourDTO", tourService.getTourDTOById(tourId));
         return "tour/showTour";
     }
 
     @GetMapping("/{tourId}/editTour")
     public String  editTour(@PathVariable("tourId") String tourId, Model model) {
+        logger.debug("invocation edit tour method");
         model.addAttribute("touroperators", touroperatorService.getAvailableTouroperators());
         model.addAttribute("tourDTO", tourService.getTourDTOById(tourId));
         return "./tour/editTour";
@@ -41,6 +46,7 @@ public class TourController {
 
     @PatchMapping("/saveEditedTour/{tourId}")
     public ModelAndView saveEditedTour(@ModelAttribute TourDTO tourDTO, @PathVariable("tourId") String tourId) {
+        logger.debug("invocation save edited tour method");
         tourService.editTour(tourId, tourDTO);
         return new ModelAndView("redirect:/tour/showTour/{tourId}");
     }

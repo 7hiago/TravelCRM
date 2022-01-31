@@ -1,7 +1,9 @@
 package org.laba2.dao.postgresImpl;
 
+import org.apache.log4j.Logger;
 import org.laba2.dao.TourDAO;
 import org.laba2.entities.Tour;
+import org.laba2.exception.DatabaseException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
@@ -17,6 +19,8 @@ import java.sql.Date;
 @DependsOn("datasource")
 public class PostgresTourDAOImpl implements TourDAO {
 
+    private static final Logger logger = Logger.getLogger(PostgresTourDAOImpl.class);
+
     private final DataSource dataSource;
 
     public PostgresTourDAOImpl(@Qualifier("datasource") DataSource dataSource) {
@@ -25,6 +29,7 @@ public class PostgresTourDAOImpl implements TourDAO {
 
     @Override
     public void createTour(Tour tour) {
+        logger.debug("invocation create tour method");
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tours_table (tour_id, tour_country, tour_hotel, tour_departuredate, tour_returndate, tour_proposal, touroperator_id) VALUES (?,?,?,?,?,?,?)"))
         {
@@ -35,16 +40,15 @@ public class PostgresTourDAOImpl implements TourDAO {
             preparedStatement.setDate(5, Date.valueOf(tour.getReturnDate()));
             preparedStatement.setString(6, tour.getProposalNumber());
             preparedStatement.setString(7, tour.getTouroperatorId());
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item tour already exist");
-            else System.out.println("Tour added successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     @Override
     public Tour getTour(String tour_id) {
+        logger.debug("invocation get tour method");
         Tour tour = null;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
@@ -55,7 +59,7 @@ public class PostgresTourDAOImpl implements TourDAO {
             resultSet.next();
             tour = parseTour(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         } finally {
             if (resultSet != null) {
                 try { resultSet.close();} catch (SQLException e) { e.printStackTrace();}
@@ -66,6 +70,7 @@ public class PostgresTourDAOImpl implements TourDAO {
 
     @Override
     public void updateTour(String tour_id, Tour tour) {
+        logger.debug("invocation update tour method");
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE tours_table SET tour_country=?, tour_hotel=?, tour_departuredate=?, tour_returndate=?, tour_proposal=?, touroperator_id=? WHERE tour_id=?"))
@@ -77,31 +82,28 @@ public class PostgresTourDAOImpl implements TourDAO {
             preparedStatement.setString(5, tour.getProposalNumber());
             preparedStatement.setString(6, tour.getTouroperatorId());
             preparedStatement.setString(7, tour_id);
-
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item tour not exist");
-            System.out.println("Tour updated successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     @Override
     public void removeTour(String tour_id) {
+        logger.debug("invocation remove tour method");
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM tours_table WHERE tour_id=?"))
         {
             preparedStatement.setString(1, tour_id);
-            int num = preparedStatement.executeUpdate();
-            if(num == 0) System.out.println("Item tour not exist");
-            else System.out.println("Tour deleted successfully");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
     }
 
     private Tour parseTour(ResultSet resultSet) {
+        logger.debug("invocation parse tour method");
         Tour tour = null;
         try {
             String tour_id = resultSet.getString("tour_id");
@@ -114,7 +116,7 @@ public class PostgresTourDAOImpl implements TourDAO {
             tour = new Tour(tour_id, country, hotel, departureDate,
                     returnDate, proposal, touroperator_id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Something wrong happened with database", e);
         }
         return tour;
     }
