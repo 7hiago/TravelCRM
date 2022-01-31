@@ -36,7 +36,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Hotel:
+                    Hotel
                 </div>
                 <div class="order-info-value">
                     ${tourDTO.tour.hotel}
@@ -45,7 +45,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Departure date:
+                    Departure date
                 </div>
                 <div class="order-info-value">
                     ${tourDTO.tour.departureDate}
@@ -54,7 +54,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Return date:
+                    Return date
                 </div>
                 <div class="order-info-value">
                     ${tourDTO.tour.returnDate}
@@ -63,7 +63,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Proposal number:
+                    Proposal number
                 </div>
                 <div class="order-info-value">
                     ${tourDTO.tour.proposalNumber}
@@ -72,7 +72,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Touroperator:
+                    Touroperator
                 </div>
                 <div class="order-info-value">
                     ${tourDTO.touroperator.name}

@@ -29,11 +29,11 @@
         </div>
 
         <div class="form-row">
-            <div class="input-label">Phone number:</div>
+            <div class="input-label">Phone number</div>
             <div><form:input path="phoneNumber"/></div>
         </div>
         <div class="form-row">
-            <div class="input-label">Email:</div>
+            <div class="input-label">Email</div>
             <div><form:input path="email"/></div>
         </div>
         <br/>

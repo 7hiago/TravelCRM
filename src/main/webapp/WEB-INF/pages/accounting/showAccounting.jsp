@@ -26,7 +26,7 @@
         <div class="item-pile-inner-wrapper">
             <div class="info">
                 <div class="order-info-label">
-                    Tour price:
+                    Tour price
                 </div>
                 <div class="order-info-value">
                     ${accounting.tourPrice}
@@ -35,7 +35,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Tour paid:
+                    Tour paid
                 </div>
                 <div class="order-info-value">
                     ${accounting.tourPaid}
@@ -44,7 +44,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Commission:
+                    Commission
                 </div>
                 <div class="order-info-value">
                     ${accounting.commission}
@@ -53,7 +53,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Touroperator price:
+                    Touroperator price
                 </div>
                 <div class="order-info-value">
                     ${accounting.touroperatorPrice}
@@ -62,7 +62,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Touroperator paid:
+                    Touroperator paid
                 </div>
                 <div class="order-info-value">
                     ${accounting.touroperatorPaid}
@@ -71,7 +71,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Profit:
+                    Profit
                 </div>
                 <div class="order-info-value">
                     ${accounting.profit}

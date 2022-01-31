@@ -38,12 +38,12 @@
             </div>
 
             <div class="form-row full-width">
-                <div class="input-label">Departure date</div>
+                <div class="input-label">Departure date (yyyy-MM-dd)</div>
                 <form:input path="tour.departureDate"/>
             </div>
 
             <div class="form-row full-width">
-                <div class="input-label">Return date</div>
+                <div class="input-label">Return date (yyyy-MM-dd)</div>
                 <form:input path="tour.returnDate"/>
             </div>
 
@@ -103,7 +103,7 @@
             </div>
 
             <div class="form-row full-width">
-                <div class="input-label">Commission</div>
+                <div class="input-label">Commission in %</div>
                 <form:input path="accounting.commission"/>
             </div>
 

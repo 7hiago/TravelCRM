@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="error">
-        <h1 class="error-title">500</h1>
+        <h1 class="error-title">404</h1>
         <div class="error-description">${message}</div>
         <a class="btn error-btn" href="../menuPage">Back</a>
     </div>

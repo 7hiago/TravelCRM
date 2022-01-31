@@ -24,8 +24,8 @@
     <security:csrfInput/>
     <a class="pile" href="./customers/showCustomers">Customers</a>
     <a class="pile" href="./touroperators/showTouroperators">Touroperators</a>
-    <a class="pile"
-       href="./error">Error</a>
+<%--    <a class="pile"--%>
+<%--       href="./error">Error</a>--%>
     <form action="./logout" method="POST">
         <button type="submit">Logout</button>
     </form>

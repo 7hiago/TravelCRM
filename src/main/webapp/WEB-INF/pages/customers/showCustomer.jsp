@@ -46,7 +46,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Phone number:
+                    Phone number
                 </div>
                 <div class="order-info-value">
                     ${customer.phoneNumber}
@@ -55,7 +55,7 @@
 
             <div class="info">
                 <div class="order-info-label">
-                    Email:
+                    Email
                 </div>
                 <div class="order-info-value">
                     ${customer.email}

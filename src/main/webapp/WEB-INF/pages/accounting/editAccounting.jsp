@@ -25,27 +25,27 @@
 <form:form action="../../saveEditedAccounting/${command.accountingId}" method="patch">
     <div class="form">
         <div class="form-row">
-            <div class="input-label">Tour price:</div>
+            <div class="input-label">Tour price</div>
             <form:input path="tourPrice"/>
         </div>
         <div class="form-row">
-            <div class="input-label">Tour paid:</div>
+            <div class="input-label">Tour paid</div>
             <form:input path="tourPaid"/>
         </div>
         <div class="form-row">
-            <div class="input-label">Commission:</div>
+            <div class="input-label">Commission in $</div>
             <form:input path="commission"/>
         </div>
         <div class="form-row">
-            <div class="input-label">Tour operator price:</div>
+            <div class="input-label">Tour operator price</div>
             <form:input path="touroperatorPrice"/>
         </div>
         <div class="form-row">
-            <div class="input-label">Tour operator paid:</div>
+            <div class="input-label">Tour operator paid</div>
             <form:input path="touroperatorPaid"/>
         </div>
         <div class="form-row">
-            <div class="input-label">Profit:</div>
+            <div class="input-label">Profit</div>
             <form:input path="profit"/>
         </div>
 

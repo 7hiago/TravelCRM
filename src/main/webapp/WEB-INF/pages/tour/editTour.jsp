@@ -35,22 +35,22 @@
         </div>
 
         <div class="form-row">
-            <div class="input-label">Departure date:</div>
+            <div class="input-label">Departure date (yyyy-MM-dd)</div>
             <form:input path="tour.departureDate"/>
         </div>
 
         <div class="form-row">
-            <div class="input-label">Return date:</div>
+            <div class="input-label">Return date (yyyy-MM-dd)</div>
             <div><form:input path="tour.returnDate"/></div>
         </div>
 
         <div class="form-row">
-            <div class="input-label">Proposal number:</div>
+            <div class="input-label">Proposal number</div>
             <div><form:input path="tour.proposalNumber"/></div>
         </div>
 
         <div class="form-row">
-            <div class="input-label">Tour operator:</div>
+            <div class="input-label">Tour operator</div>
             <label>
                 <form:select path="tour.touroperatorId">
                     <option selected value="${tourDTO.tour.touroperatorId}">${tourDTO.touroperator.name}</option>

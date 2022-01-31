@@ -40,7 +40,7 @@
         </div>
 
         <div class="form-row">
-            <div class="input-label">Hire Date</div>
+            <div class="input-label">Hire Date (yyyy-MM-dd)</div>
             <form:input path="hireDate"/>
         </div>
 
