@@ -2,7 +2,10 @@ package org.laba2;
 
 import org.laba2.aop.LogAspect;
 import org.laba2.security.WebSecurityConfig;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -34,5 +37,12 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     private void registerHiddenFieldFilter(ServletContext aContext) {
         aContext.addFilter("hiddenHttpMethodFilter",
                 new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
+    }
+
+    @Override
+    protected FrameworkServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+        var dispatcher = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
+        dispatcher.setThrowExceptionIfNoHandlerFound(true);
+        return dispatcher;
     }
 }
