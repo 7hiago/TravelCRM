@@ -1,8 +1,14 @@
-# Project exclude paths
 /target/
-out/
-.idea/
-.idea_modules/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+/TravelCRMLogs/
+/.mvn
+/mvnw
+/mvnw.cmd
+
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
 *.ipr
-*.iws
