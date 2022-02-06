@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 
 @ControllerAdvice
@@ -15,22 +16,22 @@ public class GlobalExceptionHandlerController {
     @ExceptionHandler(NullPointerException.class)
     public ModelAndView handleCreateOrderException(NullPointerException exception) {
         logger.error("Have null in received data");
-        return new ModelAndView("./error", "message", exception.getMessage());
+        return new ModelAndView("./error500", "message", exception.getMessage());
     }
 
     @ExceptionHandler(DatabaseException.class)
     public ModelAndView handleDatabaseException(DatabaseException exception) {
         logger.error("Lost connection with database");
-        return new ModelAndView("./error", "message", exception.getMessage());
+        return new ModelAndView("./error500", "message", exception.getMessage());
     }
 
-//    @ExceptionHandler(NoHandlerFoundException.class)
-//    public ModelAndView handle(Exception exception) {
-//        logger.error("requested page not exist");
-//        ModelAndView mv = new ModelAndView();
-//        mv.addObject("message", exception.getMessage());
-//        mv.setViewName("./error404");
-//        return mv;
-//    }
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView handle(Exception exception) {
+        logger.error("requested page not exist");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("message", exception.getMessage());
+        mv.setViewName("./error404");
+        return mv;
+    }
 
 }
