@@ -29,27 +29,27 @@
 
             <div class="form-row full-width">
                 <div class="input-label">Country</div>
-                <form:input path="tour.country"/>
+                <div><form:input path="tour.country"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Hotel</div>
-                <form:input path="tour.hotel"/>
+                <div><form:input path="tour.hotel"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Departure date (yyyy-MM-dd)</div>
-                <form:input path="tour.departureDate"/>
+                <div><form:input type="date" path="tour.departureDate" /></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Return date (yyyy-MM-dd)</div>
-                <form:input path="tour.returnDate"/>
+                <div><form:input type="date" path="tour.returnDate"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Proposal number</div>
-                <form:input path="tour.proposalNumber"/>
+                <div><form:input path="tour.proposalNumber"/></div>
             </div>
 
             <div class="form-row full-width">
@@ -69,22 +69,22 @@
 
             <div class="form-row full-width">
                 <div class="input-label">First name</div>
-                <form:input path="customer.firstName"/>
+                <div><form:input path="customer.firstName"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Last name</div>
-                <form:input path="customer.lastName"/>
+                <div><form:input path="customer.lastName"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Email</div>
-                <form:input path="customer.email"/>
+                <div><form:input path="customer.email"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Phone number</div>
-                <form:input path="customer.phoneNumber"/>
+                <div><form:input path="customer.phoneNumber"/></div>
             </div>
 
         </div>
@@ -94,22 +94,22 @@
 
             <div class="form-row full-width">
                 <div class="input-label">Tour price</div>
-                <form:input path="accounting.tourPrice"/>
+                <div><form:input path="accounting.tourPrice"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Tour paid</div>
-                <form:input path="accounting.tourPaid"/>
+                <div><form:input path="accounting.tourPaid"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Commission in %</div>
-                <form:input path="accounting.commission"/>
+                <div><form:input path="accounting.commission"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Tour operator price</div>
-                <form:input path="accounting.touroperatorPrice"/>
+                <div><form:input path="accounting.touroperatorPrice"/></div>
             </div>
         </div>
 

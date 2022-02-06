@@ -17,7 +17,7 @@
     <div class="error">
         <h1 class="error-title">404</h1>
         <div class="error-description">${message}</div>
-        <a class="btn error-btn" href="../menuPage">Back</a>
+        <a class="btn error-btn" href="./">Back</a>
     </div>
 </body>
 </html>
