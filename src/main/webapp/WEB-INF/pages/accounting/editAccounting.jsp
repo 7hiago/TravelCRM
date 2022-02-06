@@ -17,36 +17,41 @@
 <body>
 
 <div class="show-title-wrapper">
-    <a class="arrow-back" href="../../showAccounting/${command.accountingId}"></a>
+    <a class="arrow-back" href="../../../accounting/showAccounting/${command.accountingId}"></a>
     <h2 class="show-title">Edit accounting</h2>
 </div>
 
-
-<form:form action="../../saveEditedAccounting/${command.accountingId}" method="patch">
+<form:form action="../../../accounting/saveEditedAccounting/${command.accountingId}" method="post">
     <div class="form">
         <div class="form-row">
             <div class="input-label">Tour price</div>
-            <form:input path="tourPrice"/>
+            <div><form:input path="tourPrice"/></div>
+            <div class="error-label"><form:errors path="tourPrice"/></div>
         </div>
         <div class="form-row">
             <div class="input-label">Tour paid</div>
-            <form:input path="tourPaid"/>
+            <div><form:input path="tourPaid"/></div>
+            <div class="error-label"><form:errors path="tourPaid"/></div>
         </div>
         <div class="form-row">
-            <div class="input-label">Commission in $</div>
-            <form:input path="commission"/>
+            <div class="input-label">Commission in %</div>
+            <div><form:input path="commission"/></div>
+            <div class="error-label"><form:errors path="commission"/></div>
         </div>
         <div class="form-row">
             <div class="input-label">Tour operator price</div>
-            <form:input path="touroperatorPrice"/>
+            <div><form:input path="touroperatorPrice"/></div>
+            <div class="error-label"><form:errors path="touroperatorPrice"/></div>
         </div>
         <div class="form-row">
             <div class="input-label">Tour operator paid</div>
-            <form:input path="touroperatorPaid"/>
+            <div><form:input path="touroperatorPaid"/></div>
+            <div class="error-label"><form:errors path="touroperatorPaid"/></div>
         </div>
         <div class="form-row">
             <div class="input-label">Profit</div>
-            <form:input path="profit"/>
+            <div><form:input path="profit"/></div>
+            <div class="error-label"><form:errors path="profit"/></div>
         </div>
 
         <button type="submit" class="align-center">Edit accounting</button>

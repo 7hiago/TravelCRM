@@ -35,13 +35,13 @@
         </div>
 
         <div class="form-row">
-            <div class="input-label">Departure date (yyyy-MM-dd)</div>
-            <form:input path="tour.departureDate"/>
+            <div class="input-label">Departure date</div>
+            <form:input type = "date" path="tour.departureDate"/>
         </div>
 
         <div class="form-row">
-            <div class="input-label">Return date (yyyy-MM-dd)</div>
-            <div><form:input path="tour.returnDate"/></div>
+            <div class="input-label">Return date</div>
+            <div><form:input type = "date" path="tour.returnDate"/></div>
         </div>
 
         <div class="form-row">

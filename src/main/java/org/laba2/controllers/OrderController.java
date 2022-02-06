@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -49,17 +51,23 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String createOrder(Model model) {
         logger.debug("invocation create order method");
-        model.addAttribute("managers", managerService.getAvailableManagers());
         model.addAttribute("touroperators", touroperatorService.getAvailableTouroperators());
         model.addAttribute("createOrderDTO", new CreateOrderDTO());
         return "./orders/createOrder";
     }
 
     @PostMapping("/saveCreatedOrder")
-    public ModelAndView saveCreatedOrder(@ModelAttribute CreateOrderDTO createOrderDTO, Principal principal) {
+    public String saveCreatedOrder(@ModelAttribute("createOrderDTO") @Valid CreateOrderDTO createOrderDTO, BindingResult bindingResult, Principal principal, Model model) {
         logger.debug("invocation save created order method");
-        orderService.saveNewOrder(createOrderDTO, principal);
-        return new ModelAndView("redirect:/orders/showOrders");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            model.addAttribute("touroperators", touroperatorService.getAvailableTouroperators());
+            return "./orders/createOrder";
+        } else {
+            logger.debug("save has not error");
+            orderService.saveNewOrder(createOrderDTO, principal);
+        }
+        return "redirect:/orders/showOrders";
     }
 
     @GetMapping("/{orderId}/editOrder")

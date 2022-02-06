@@ -1,14 +1,33 @@
 package org.laba2.entities;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class Accounting {
     private String accountingId;
+
+    @NotNull(message = "Field must be filled")
+    @Min(value = 1, message = "Entered value must be greater than or equal 1")
     private float tourPrice;
+
+    @NotNull(message = "Field must be filled")
     private float tourPaid;
+
+    @NotNull(message = "Field must be filled")
+    @Min(value = 0, message = "Entered value must be greater than or equal 0")
+    @Max(value = 100, message = "Entered value must be less than or equal 100")
     private float commission;
+
+    @NotNull(message = "Field must be filled")
+    @Min(value = 1, message = "Entered value must be greater than or equal 1")
     private float touroperatorPrice;
+
+    @NotNull(message = "Field must be filled")
     private float touroperatorPaid;
+
+    @NotNull(message = "Field must be filled")
     private float profit;
 
     public Accounting() {}

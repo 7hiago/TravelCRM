@@ -4,10 +4,21 @@ import org.laba2.entities.Accounting;
 import org.laba2.entities.Customer;
 import org.laba2.entities.Tour;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 public class CreateOrderDTO {
 
+    @NotNull
+    @Valid
     private Tour tour;
+
+    @NotNull
+    @Valid
     private Customer customer;
+
+    @NotNull
+    @Valid
     private Accounting accounting;
 
     public CreateOrderDTO() {}

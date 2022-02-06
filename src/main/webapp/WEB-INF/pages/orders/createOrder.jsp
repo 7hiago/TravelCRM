@@ -30,38 +30,47 @@
             <div class="form-row full-width">
                 <div class="input-label">Country</div>
                 <div><form:input path="tour.country"/></div>
+                <div class="error-label"><form:errors path="tour.country"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Hotel</div>
                 <div><form:input path="tour.hotel"/></div>
+                <div class="error-label"><form:errors path="tour.hotel"/></div>
             </div>
 
             <div class="form-row full-width">
-                <div class="input-label">Departure date (yyyy-MM-dd)</div>
-                <div><form:input type="date" path="tour.departureDate" /></div>
+                <div class="input-label">Departure date</div>
+                <div><form:input type="date" path="tour.departureDate"/></div>
+                <div class="error-label"><form:errors path="tour.departureDate"/></div>
             </div>
 
             <div class="form-row full-width">
-                <div class="input-label">Return date (yyyy-MM-dd)</div>
+                <div class="input-label">Return date</div>
                 <div><form:input type="date" path="tour.returnDate"/></div>
+                <div class="error-label"><form:errors path="tour.returnDate"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Proposal number</div>
                 <div><form:input path="tour.proposalNumber"/></div>
+                <div class="error-label"><form:errors path="tour.proposalNumber"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Tour operator</div>
-                <label>
-                    <form:select path="tour.touroperatorId">
-                        <c:forEach var="touroperator" items="${touroperators}">
-                            <option value="${touroperator.touroperatorId}">${touroperator.name}</option>
-                        </c:forEach>
-                    </form:select>
-                </label>
+                <div>
+                    <label>
+                        <form:select path="tour.touroperatorId">
+                            <c:forEach var="touroperator" items="${touroperators}">
+                                <option value="${touroperator.touroperatorId}">${touroperator.name}</option>
+                            </c:forEach>
+                        </form:select>
+                    </label>
+                </div>
+                <div class="error-label"><form:errors path="tour.touroperatorId"/></div>
             </div>
+
         </div>
 
         <div class="crate-order-wrapper item-wrapper">
@@ -70,21 +79,25 @@
             <div class="form-row full-width">
                 <div class="input-label">First name</div>
                 <div><form:input path="customer.firstName"/></div>
+                <div class="error-label"><form:errors path="customer.firstName"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Last name</div>
                 <div><form:input path="customer.lastName"/></div>
+                <div class="error-label"><form:errors path="customer.lastName"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Email</div>
                 <div><form:input path="customer.email"/></div>
+                <div class="error-label"><form:errors path="customer.email"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Phone number</div>
                 <div><form:input path="customer.phoneNumber"/></div>
+                <div class="error-label"><form:errors path="customer.phoneNumber"/></div>
             </div>
 
         </div>
@@ -95,21 +108,25 @@
             <div class="form-row full-width">
                 <div class="input-label">Tour price</div>
                 <div><form:input path="accounting.tourPrice"/></div>
+                <div class="error-label"><form:errors path="accounting.tourPrice"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Tour paid</div>
                 <div><form:input path="accounting.tourPaid"/></div>
+                <div class="error-label"><form:errors path="accounting.tourPaid"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Commission in %</div>
                 <div><form:input path="accounting.commission"/></div>
+                <div class="error-label"><form:errors path="accounting.commission"/></div>
             </div>
 
             <div class="form-row full-width">
                 <div class="input-label">Tour operator price</div>
                 <div><form:input path="accounting.touroperatorPrice"/></div>
+                <div class="error-label"><form:errors path="accounting.touroperatorPrice"/></div>
             </div>
         </div>
 

@@ -1,14 +1,28 @@
 package org.laba2.entities;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Tour {
     private String tourId;
+
+    @Size(min=2, max=30, message = "Entered first name must contain at least 2 characters and a maximum of 30 characters")
     private String country;
+
+    @Size(min=2, max=50, message = "Entered first name must contain at least 2 characters and a maximum of 50 characters")
     private String hotel;
+
+    @NotBlank(message = "Departure date must not be blank")
     private String departureDate;
+
+    @NotBlank(message = "Return date must not be blank")
     private String returnDate;
+
+    @Size(min=2, max=30, message = "Entered first name must contain at least 2 characters and a maximum of 30 characters")
     private String proposalNumber;
+
+    @NotBlank(message = "Touroperator must not be blank")
     private String touroperatorId;
 
     public Tour() {}

@@ -40,13 +40,13 @@
         </security:authorize>
 
         <div class="form-row">
-            <div class="input-label">Date (yyyy-MM-dd)</div>
-            <form:input path="date"/>
+            <div class="input-label">Date</div>
+            <div><form:input type = "date" path="date"/></div>
         </div>
 
         <div class="form-row">
             <div class="input-label">Status</div>
-            <form:input path="status"/>
+            <div><form:input path="status"/></div>
         </div>
 
         <div class="form-row">
