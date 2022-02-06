@@ -3,6 +3,7 @@ package org.laba2.entities;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,15 +11,36 @@ import java.util.Objects;
 
 public class Manager implements UserDetails {
     private String managerId;
+
+    @Size(min=2, max=30, message = "Entered first name must contain at least 2 characters and a maximum of 30 characters")
     private String firstName;
+
+    @Size(min=2, max=30, message = "Entered last name must contain at least 2 characters and a maximum of 30 characters")
     private String lastName;
+
+    @Min(value = 1, message = "Entered value must be greater than 0")
     private float salary;
+
+    @NotBlank(message = "Hire date must not be blank")
     private String hireDate;
+
+    @Pattern(regexp = "^(\\+?[0-9]{3}|0)[0-9]{9}$", message = "Please enter a valid phone number")
     private String phoneNumber;
+
+    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Please enter a valid e-mail address")
     private String email;
+
+    @Size(min=8, max=20, message = "Entered login must contain min 8, max 20 symbols")
+    @Pattern(regexp = "[a-zA-Z0-9_.]*", message = "Please enter a valid login")
     private String login;
+
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,30}$", message = "Please enter a valid password: it must contain at least one digit, at least one lowercase Latin character, at least one uppercase Latin character, at least one special character like ! @ # & ( ), and contain a length of at least 8 characters and a maximum of 30 characters")
     private String password;
+
+    @NotBlank(message = "Role must not be blank")
     private String role;
+
+    @NotBlank(message = "Status must not be blank")
     private String status;
 
 

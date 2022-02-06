@@ -336,3 +336,8 @@ a.info:hover {
     background-color: #cecece;
     color: black;
 }
+
+.error-label {
+    margin-top: 8px;
+    color: brown;
+}

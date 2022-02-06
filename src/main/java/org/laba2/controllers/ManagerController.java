@@ -7,8 +7,11 @@ import org.laba2.services.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/managers")
@@ -40,10 +43,16 @@ public class ManagerController {
     }
 
     @PostMapping("/saveCreatedManager")
-    public ModelAndView saveCreatedManager(@ModelAttribute Manager manager) {
+    public String saveCreatedManager(@ModelAttribute("command") @Valid Manager manager, BindingResult bindingResult) {
         logger.debug("invocation save created manager method");
-        managerService.createNewManager(manager);
-        return new ModelAndView("redirect:/managers/showManagers");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            return "./managers/createManager";
+        } else {
+            logger.debug("save has not error");
+            managerService.createNewManager(manager);
+        }
+        return "redirect:/managers/showManagers";
     }
 
     @GetMapping("/{managerId}/editManager")
@@ -53,11 +62,17 @@ public class ManagerController {
         return new ModelAndView("./managers/editManager", "command", managerService.getManagerById(managerId));
     }
 
-    @PatchMapping("/saveEditedManager/{managerId}")
-    public ModelAndView saveEditedManager(@ModelAttribute Manager manager, @PathVariable("managerId") String managerId) {
+    @PostMapping("/saveEditedManager/{managerId}")
+    public String saveEditedManager(@ModelAttribute("command") @Valid Manager manager, BindingResult bindingResult, @PathVariable("managerId") String managerId) {
         logger.debug("invocation save edited manager method");
-        managerService.editManager(managerId, manager);
-        return new ModelAndView("redirect:/managers/showManagers");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            return "./managers/editManager";
+        } else {
+            logger.debug("save has not error");
+            managerService.editManager(managerId, manager);
+        }
+        return "redirect:/managers/showManagers";
     }
 
     @DeleteMapping("/deleteManager/{managerId}")

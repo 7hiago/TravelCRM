@@ -7,8 +7,12 @@ import org.laba2.services.TouroperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/touroperators")
@@ -32,23 +36,36 @@ public class TouroperatorController {
     }
 
     @PostMapping("/saveCreatedTouroperator")
-    public ModelAndView saveCreatedTouroperator(@ModelAttribute Touroperator touroperator) {
+    public String saveCreatedTouroperator(@ModelAttribute("command") @Valid Touroperator touroperator, BindingResult bindingResult) {
         logger.debug("invocation save created touroperator method");
-        touroperatorService.createNewTouroperator(touroperator);
-        return new ModelAndView("redirect:/touroperators/showTouroperators");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            return "./touroperators/createTouroperator";
+        } else {
+            logger.debug("save has not error");
+            touroperatorService.createNewTouroperator(touroperator);
+        }
+        logger.debug("redirect");
+        return "redirect:/touroperators/showTouroperators";
     }
 
     @GetMapping("/{touroperatorId}/editTouroperator")
-    public ModelAndView editTouroperator(@PathVariable("touroperatorId") String touroperatorId) {
+    public ModelAndView editTouroperator(Model model, @PathVariable("touroperatorId") String touroperatorId) {
         logger.debug("invocation edit touroperator method");
         return new ModelAndView("./touroperators/editTouroperator", "command", touroperatorService.getTouroperatorById(touroperatorId));
     }
 
-    @PatchMapping("/saveEditedTouroperator/{touroperatorId}")
-    public ModelAndView saveEditedTouroperator(@ModelAttribute Touroperator touroperator, @PathVariable("touroperatorId") String touroperatorId) {
+    @PostMapping("/saveEditedTouroperator/{touroperatorId}")
+    public String saveEditedTouroperator(@ModelAttribute("command") @Valid Touroperator touroperator, BindingResult bindingResult, @PathVariable("touroperatorId") String touroperatorId) {
         logger.debug("invocation save edited touroperator method");
-        touroperatorService.editTouroperator(touroperatorId, touroperator);
-        return new ModelAndView("redirect:/touroperators/showTouroperators");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            return "./touroperators/editTouroperator";
+        } else {
+            logger.debug("save has not error");
+            touroperatorService.editTouroperator(touroperatorId, touroperator);
+        }
+        return "redirect:/touroperators/showTouroperators";
     }
 
     @DeleteMapping("/deleteTouroperator/{touroperatorId}")

@@ -25,20 +25,24 @@
     <div class="form">
         <div class="form-row">
             <div class="input-label">First Name</div>
-            <form:input path="firstName"/>
+            <div><form:input path="firstName"/></div>
+            <div class="error-label"><form:errors path="firstName"/></div>
         </div>
 
         <div class="form-row">
             <div class="input-label">Last Name</div>
-            <form:input path="lastName"/>
+            <div><form:input path="lastName"/></div>
+            <div class="error-label"><form:errors path="lastName"/></div>
         </div>
         <div class="form-row">
             <div class="input-label">Phone number</div>
             <div><form:input path="phoneNumber"/></div>
+            <div class="error-label"><form:errors path="phoneNumber"/></div>
         </div>
         <div class="form-row">
             <div class="input-label">Email</div>
             <div><form:input path="email"/></div>
+            <div class="error-label"><form:errors path="email"/></div>
         </div>
 
         <button type="submit" class="align-center">Create customer</button>

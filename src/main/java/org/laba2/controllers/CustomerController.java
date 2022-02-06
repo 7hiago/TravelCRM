@@ -7,8 +7,11 @@ import org.laba2.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/customers")
@@ -38,10 +41,16 @@ public class CustomerController {
     }
 
     @PostMapping("/saveCreatedCustomer")
-    public ModelAndView saveCreatedCustomer(@ModelAttribute Customer customer) {
+    public String saveCreatedCustomer(@ModelAttribute("command") @Valid Customer customer, BindingResult bindingResult) {
         logger.debug("invocation save created customer method");
-        customerService.createNewCustomer(customer);
-        return new ModelAndView("redirect:/customers/showCustomers");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            return "./customers/createCustomer";
+        } else {
+            logger.debug("save has not error");
+            customerService.createNewCustomer(customer);
+        }
+        return "redirect:/customers/showCustomers";
     }
 
     @GetMapping("/{customerId}/editCustomer")
@@ -50,11 +59,17 @@ public class CustomerController {
         return new ModelAndView("./customers/editCustomer", "command", customerService.getCustomerById(customerId));
     }
 
-    @PatchMapping("/saveEditedCustomer/{customerId}")
-    public ModelAndView saveEditedCustomer(@ModelAttribute Customer customer, @PathVariable("customerId") String customerId) {
+    @PostMapping("/saveEditedCustomer/{customerId}")
+    public String saveEditedCustomer(@ModelAttribute("command") @Valid Customer customer, BindingResult bindingResult, @PathVariable("customerId") String customerId) {
         logger.debug("invocation save edited customer method");
-        customerService.editCustomer(customerId, customer);
-        return new ModelAndView("redirect:/customers/showCustomers");
+        if (bindingResult.hasErrors()) {
+            logger.debug("save has error");
+            return "./customers/editCustomer";
+        } else {
+            logger.debug("save has not error");
+            customerService.editCustomer(customerId, customer);
+        }
+        return "redirect:/customers/showCustomers";
     }
 
     @DeleteMapping("/deleteCustomer/{customerId}")

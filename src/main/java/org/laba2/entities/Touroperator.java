@@ -1,11 +1,19 @@
 package org.laba2.entities;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Touroperator {
     private String touroperatorId;
+
+    @Size(min=2, max=50, message = "Entered name must contain at least 2 characters and a maximum of 30 characters")
     private String name;
+
+    @Pattern(regexp = "^(\\+?[0-9]{3}|0)[0-9]{9}$", message = "Please enter a valid phone number")
     private String phoneNumber;
+
+    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Please enter a valid e-mail address")
     private String email;
 
     public Touroperator() {}
