@@ -17,7 +17,7 @@
     <div class="error">
         <h1 class="error-title">404</h1>
         <div class="error-description">Page not found</div>
-        <a class="btn error-btn" href="./">Back</a>
+        <a class="btn error-btn" href="../../../menuPage">Back to menu</a>
     </div>
 </body>
 </html>

@@ -17,7 +17,7 @@
 <div class="error">
     <h1 class="error-title">Something went wrong!</h1>
     <div class="error-description">Our Engineers are on it</div>
-    <a class="btn error-btn" href="./">Back</a>
+    <a class="btn error-btn" href="../../../menuPage">Back to menu</a>
 </div>
 </body>
 </html>
