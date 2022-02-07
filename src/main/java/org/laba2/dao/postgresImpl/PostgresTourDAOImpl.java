@@ -56,7 +56,11 @@ public class PostgresTourDAOImpl implements TourDAO {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
             if (resultSet != null) {
-                try { resultSet.close();} catch (SQLException e) { e.printStackTrace();}
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    logger.error("Problem with closing result set" + e.getMessage());
+                }
             }
         }
         return tour;

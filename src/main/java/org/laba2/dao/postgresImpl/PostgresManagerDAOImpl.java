@@ -64,7 +64,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("Problem with closing result set" + e.getMessage());
                 }
             }
         }
@@ -89,7 +89,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("Problem with closing result set" + e.getMessage());
                 }
             }
         }

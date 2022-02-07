@@ -60,7 +60,7 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("Problem with closing result set" + e.getMessage());
                 }
             }
         }

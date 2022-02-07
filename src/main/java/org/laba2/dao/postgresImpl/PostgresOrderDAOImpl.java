@@ -59,7 +59,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("Problem with closing result set" + e.getMessage());
                 }
             }
         }
@@ -101,7 +101,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("Problem with closing result set" + e.getMessage());
                 }
             }
         }

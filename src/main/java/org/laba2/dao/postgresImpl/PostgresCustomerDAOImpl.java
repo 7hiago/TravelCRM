@@ -62,7 +62,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("Problem with closing result set" + e.getMessage());
                 }
             }
         }
