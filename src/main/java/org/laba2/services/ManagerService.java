@@ -60,11 +60,7 @@ public class ManagerService implements UserDetailsService {
     }
 
     public void editManager(String managerId, Manager editedManager) {
-        Manager notEditManager = managerDAO.getManagerById(managerId);
-
-        if (!notEditManager.getPassword().equals(editedManager.getPassword())) {
-            editedManager.setPassword(passwordEncoder.encode(editedManager.getPassword()));
-        }
+        editedManager.setPassword(passwordEncoder.encode(editedManager.getPassword()));
         editedManager.setRole("ROLE_" + editedManager.getRole());
         managerDAO.updateManager(managerId, editedManager);
     }
