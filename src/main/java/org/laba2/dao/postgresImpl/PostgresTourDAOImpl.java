@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.TourDAO;
 import org.laba2.entities.Tour;
 import org.laba2.exception.DatabaseException;
+import org.laba2.utils.DateConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -14,6 +16,9 @@ import java.sql.*;
 public class PostgresTourDAOImpl implements TourDAO {
 
     private static final Logger logger = LogManager.getLogger(PostgresTourDAOImpl.class);
+
+    @Autowired
+    private DateConverter dateConverter;
 
     private final DataSource dataSource;
 
@@ -30,8 +35,8 @@ public class PostgresTourDAOImpl implements TourDAO {
             preparedStatement.setString(1, tour.getTourId());
             preparedStatement.setString(2, tour.getCountry());
             preparedStatement.setString(3, tour.getHotel());
-            preparedStatement.setDate(4, Date.valueOf(tour.getDepartureDate()));
-            preparedStatement.setDate(5, Date.valueOf(tour.getReturnDate()));
+            preparedStatement.setDate(4, dateConverter.convert(tour.getDepartureDate()));
+            preparedStatement.setDate(5, dateConverter.convert(tour.getReturnDate()));
             preparedStatement.setString(6, tour.getProposalNumber());
             preparedStatement.setString(7, tour.getTouroperatorId());
             preparedStatement.executeUpdate();
@@ -75,8 +80,8 @@ public class PostgresTourDAOImpl implements TourDAO {
         {
             preparedStatement.setString(1, tour.getCountry());
             preparedStatement.setString(2, tour.getHotel());
-            preparedStatement.setDate(3, Date.valueOf(tour.getDepartureDate()));
-            preparedStatement.setDate(4, Date.valueOf(tour.getReturnDate()));
+            preparedStatement.setDate(3, dateConverter.convert(tour.getDepartureDate()));
+            preparedStatement.setDate(4, dateConverter.convert(tour.getReturnDate()));
             preparedStatement.setString(5, tour.getProposalNumber());
             preparedStatement.setString(6, tour.getTouroperatorId());
             preparedStatement.setString(7, tour_id);

@@ -1,5 +1,7 @@
 package org.laba2.exception;
 
+import org.laba2.utils.IntegerConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class AppErrorController implements ErrorController {
 
+    @Autowired
+    private IntegerConverter integerConverter;
+
     @GetMapping(value = "/error")
     public String handleError(HttpServletRequest request) {
 
@@ -18,7 +23,7 @@ public class AppErrorController implements ErrorController {
 
         if (status != null) {
 
-            Integer statusCode = Integer.valueOf(status.toString());
+            Integer statusCode = integerConverter.convert(status.toString());
 
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error404";

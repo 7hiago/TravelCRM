@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.OrderDAO;
 import org.laba2.entities.Order;
 import org.laba2.exception.DatabaseException;
+import org.laba2.utils.DateConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,9 @@ import java.util.List;
 public class PostgresOrderDAOImpl implements OrderDAO {
 
     private static final Logger logger = LogManager.getLogger(PostgresOrderDAOImpl.class);
+
+    @Autowired
+    private DateConverter dateConverter;
 
     private final DataSource dataSource;
 
@@ -32,7 +37,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             preparedStatement.setString(2, order.getCustomerId());
             preparedStatement.setString(3, order.getManagerId());
             preparedStatement.setString(4, order.getAccountingId());
-            preparedStatement.setDate(5, Date.valueOf(order.getDate()));
+            preparedStatement.setDate(5, dateConverter.convert(order.getDate()));
             preparedStatement.setString(6, order.getStatus());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -118,7 +123,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             preparedStatement.setString(2, order.getCustomerId());
             preparedStatement.setString(3, order.getManagerId());
             preparedStatement.setString(4, order.getAccountingId());
-            preparedStatement.setDate(5, Date.valueOf(order.getDate()));
+            preparedStatement.setDate(5, dateConverter.convert(order.getDate()));
             preparedStatement.setString(6, order.getStatus());
             preparedStatement.setInt(7, order_id);
             preparedStatement.executeUpdate();

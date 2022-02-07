@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
 import org.laba2.exception.DatabaseException;
+import org.laba2.utils.DateConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,9 @@ import java.util.List;
 public class PostgresManagerDAOImpl implements ManagerDAO {
 
     private static final Logger logger = LogManager.getLogger(PostgresManagerDAOImpl.class);
+
+    @Autowired
+    private DateConverter dateConverter;
 
     private final DataSource dataSource;
 
@@ -32,7 +37,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             preparedStatement.setString(2, manager.getFirstName());
             preparedStatement.setString(3, manager.getLastName());
             preparedStatement.setFloat(4, manager.getSalary());
-            preparedStatement.setDate(5, Date.valueOf(manager.getHireDate()));
+            preparedStatement.setDate(5, dateConverter.convert(manager.getHireDate()));
             preparedStatement.setString(6, manager.getPhoneNumber());
             preparedStatement.setString(7, manager.getEmail());
             preparedStatement.setString(8, manager.getLogin());
@@ -121,7 +126,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             preparedStatement.setString(1, manager.getFirstName());
             preparedStatement.setString(2, manager.getLastName());
             preparedStatement.setFloat(3, manager.getSalary());
-            preparedStatement.setDate(4, Date.valueOf(manager.getHireDate()));
+            preparedStatement.setDate(4, dateConverter.convert(manager.getHireDate()));
             preparedStatement.setString(5, manager.getPhoneNumber());
             preparedStatement.setString(6, manager.getEmail());
             preparedStatement.setString(7, manager.getLogin());
