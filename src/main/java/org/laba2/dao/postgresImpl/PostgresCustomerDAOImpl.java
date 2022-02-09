@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.CustomerDAO;
 import org.laba2.entities.Customer;
 import org.laba2.exception.DatabaseException;
+import org.laba2.utils.ResultSetToCustomerConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -19,6 +21,9 @@ import java.util.List;
 public class PostgresCustomerDAOImpl implements CustomerDAO {
 
     private static final Logger logger = LogManager.getLogger(PostgresCustomerDAOImpl.class);
+
+    @Autowired
+    private ResultSetToCustomerConverter resultSetToCustomerConverter;
 
     private final DataSource dataSource;
 
@@ -46,7 +51,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
     @Override
     public Customer getCustomer(String customer_id) {
         logger.debug("invocation get customer method");
-        Customer customer = null;
+        Customer customer;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers_table WHERE customer_id=?"))
@@ -54,7 +59,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             preparedStatement.setString(1, customer_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            customer = parseCustomer(resultSet);
+            customer = resultSetToCustomerConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
@@ -78,7 +83,7 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
             ResultSet resultSet = preparedStatement.executeQuery())
         {
             while (resultSet.next()) {
-                customerList.add(parseCustomer(resultSet));
+                customerList.add(resultSetToCustomerConverter.convert(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
@@ -116,21 +121,5 @@ public class PostgresCustomerDAOImpl implements CustomerDAO {
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         }
-    }
-
-    private Customer parseCustomer(ResultSet resultSet) {
-        logger.debug("invocation parse customer method");
-        Customer customer = null;
-        try {
-            String manager_id = resultSet.getString("customer_id");
-            String firstname = resultSet.getString("customer_firstname");
-            String lastname = resultSet.getString("customer_lastname");
-            String phoneNumber = resultSet.getString("customer_phonenumber");
-            String email = resultSet.getString("customer_email");
-            customer = new Customer(manager_id, firstname, lastname, phoneNumber, email);
-        } catch (SQLException e) {
-            throw new DatabaseException("Something wrong happened with database", e);
-        }
-        return customer;
     }
 }

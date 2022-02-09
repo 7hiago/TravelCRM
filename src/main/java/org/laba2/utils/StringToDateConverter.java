@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 
 @Component
-public class DateConverter implements Converter<String, Date> {
+public class StringToDateConverter implements Converter<String, Date> {
 
     @Override
     public Date convert(String source) {

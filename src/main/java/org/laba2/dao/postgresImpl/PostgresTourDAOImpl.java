@@ -5,12 +5,17 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.TourDAO;
 import org.laba2.entities.Tour;
 import org.laba2.exception.DatabaseException;
-import org.laba2.utils.DateConverter;
+import org.laba2.utils.ResultSetToTourConverter;
+import org.laba2.utils.StringToDateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 @Repository
 public class PostgresTourDAOImpl implements TourDAO {
@@ -18,7 +23,10 @@ public class PostgresTourDAOImpl implements TourDAO {
     private static final Logger logger = LogManager.getLogger(PostgresTourDAOImpl.class);
 
     @Autowired
-    private DateConverter dateConverter;
+    private StringToDateConverter stringToDateConverter;
+
+    @Autowired
+    private ResultSetToTourConverter resultSetToTourConverter;
 
     private final DataSource dataSource;
 
@@ -35,8 +43,8 @@ public class PostgresTourDAOImpl implements TourDAO {
             preparedStatement.setString(1, tour.getTourId());
             preparedStatement.setString(2, tour.getCountry());
             preparedStatement.setString(3, tour.getHotel());
-            preparedStatement.setDate(4, dateConverter.convert(tour.getDepartureDate()));
-            preparedStatement.setDate(5, dateConverter.convert(tour.getReturnDate()));
+            preparedStatement.setDate(4, stringToDateConverter.convert(tour.getDepartureDate()));
+            preparedStatement.setDate(5, stringToDateConverter.convert(tour.getReturnDate()));
             preparedStatement.setString(6, tour.getProposalNumber());
             preparedStatement.setString(7, tour.getTouroperatorId());
             preparedStatement.executeUpdate();
@@ -48,7 +56,7 @@ public class PostgresTourDAOImpl implements TourDAO {
     @Override
     public Tour getTour(String tour_id) {
         logger.debug("invocation get tour method");
-        Tour tour = null;
+        Tour tour;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tours_table WHERE tour_id=?"))
@@ -56,7 +64,7 @@ public class PostgresTourDAOImpl implements TourDAO {
             preparedStatement.setString(1, tour_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            tour = parseTour(resultSet);
+            tour = resultSetToTourConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
@@ -80,8 +88,8 @@ public class PostgresTourDAOImpl implements TourDAO {
         {
             preparedStatement.setString(1, tour.getCountry());
             preparedStatement.setString(2, tour.getHotel());
-            preparedStatement.setDate(3, dateConverter.convert(tour.getDepartureDate()));
-            preparedStatement.setDate(4, dateConverter.convert(tour.getReturnDate()));
+            preparedStatement.setDate(3, stringToDateConverter.convert(tour.getDepartureDate()));
+            preparedStatement.setDate(4, stringToDateConverter.convert(tour.getReturnDate()));
             preparedStatement.setString(5, tour.getProposalNumber());
             preparedStatement.setString(6, tour.getTouroperatorId());
             preparedStatement.setString(7, tour_id);
@@ -103,24 +111,5 @@ public class PostgresTourDAOImpl implements TourDAO {
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         }
-    }
-
-    private Tour parseTour(ResultSet resultSet) {
-        logger.debug("invocation parse tour method");
-        Tour tour = null;
-        try {
-            String tour_id = resultSet.getString("tour_id");
-            String country = resultSet.getString("tour_country");
-            String hotel = resultSet.getString("tour_hotel");
-            String departureDate = resultSet.getString("tour_departuredate");
-            String returnDate = resultSet.getString("tour_returndate");
-            String proposal = resultSet.getString("tour_proposal");
-            String touroperator_id = resultSet.getString("touroperator_id");
-            tour = new Tour(tour_id, country, hotel, departureDate,
-                    returnDate, proposal, touroperator_id);
-        } catch (SQLException e) {
-            throw new DatabaseException("Something wrong happened with database", e);
-        }
-        return tour;
     }
 }

@@ -5,12 +5,16 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.OrderDAO;
 import org.laba2.entities.Order;
 import org.laba2.exception.DatabaseException;
-import org.laba2.utils.DateConverter;
+import org.laba2.utils.ResultSetToOrderConverter;
+import org.laba2.utils.StringToDateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,10 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     private static final Logger logger = LogManager.getLogger(PostgresOrderDAOImpl.class);
 
     @Autowired
-    private DateConverter dateConverter;
+    private StringToDateConverter stringToDateConverter;
+
+    @Autowired
+    private ResultSetToOrderConverter resultSetToOrderConverter;
 
     private final DataSource dataSource;
 
@@ -37,7 +44,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             preparedStatement.setString(2, order.getCustomerId());
             preparedStatement.setString(3, order.getManagerId());
             preparedStatement.setString(4, order.getAccountingId());
-            preparedStatement.setDate(5, dateConverter.convert(order.getDate()));
+            preparedStatement.setDate(5, stringToDateConverter.convert(order.getDate()));
             preparedStatement.setString(6, order.getStatus());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -49,14 +56,14 @@ public class PostgresOrderDAOImpl implements OrderDAO {
     @Override
     public Order getOrder(int order_id) {
         logger.debug("invocation get order method");
-        Order order = null;
+        Order order;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table WHERE order_id=?")) {
             preparedStatement.setInt(1, order_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            order = parseOrder(resultSet);
+            order = resultSetToOrderConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
@@ -79,7 +86,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders_table ORDER BY order_id");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                orderList.add(parseOrder(resultSet));
+                orderList.add(resultSetToOrderConverter.convert(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
@@ -97,7 +104,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             preparedStatement.setString(1, managerId);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                orderList.add(parseOrder(resultSet));
+                orderList.add(resultSetToOrderConverter.convert(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
@@ -123,7 +130,7 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             preparedStatement.setString(2, order.getCustomerId());
             preparedStatement.setString(3, order.getManagerId());
             preparedStatement.setString(4, order.getAccountingId());
-            preparedStatement.setDate(5, dateConverter.convert(order.getDate()));
+            preparedStatement.setDate(5, stringToDateConverter.convert(order.getDate()));
             preparedStatement.setString(6, order.getStatus());
             preparedStatement.setInt(7, order_id);
             preparedStatement.executeUpdate();
@@ -144,24 +151,4 @@ public class PostgresOrderDAOImpl implements OrderDAO {
             throw new DatabaseException("Something wrong happened with database", e);
         }
     }
-
-    private Order parseOrder(ResultSet resultSet) {
-        logger.debug("invocation parse order method");
-        Order order = null;
-        try {
-            int order_id = resultSet.getInt("order_id");
-            String tour_id = resultSet.getString("tour_id");
-            String customer_id = resultSet.getString("customer_id");
-            String manager_id = resultSet.getString("manager_id");
-            String accounting_id = resultSet.getString("accounting_id");
-            String date = resultSet.getString("date");
-            String status = resultSet.getString("status");
-            order = new Order(order_id, tour_id, customer_id,
-                    manager_id, accounting_id, date, status);
-        } catch (SQLException e) {
-            throw new DatabaseException("Something wrong happened with database", e);
-        }
-        return order;
-    }
-
 }

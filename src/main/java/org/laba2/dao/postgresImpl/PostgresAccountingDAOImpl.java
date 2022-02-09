@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.AccountingDAO;
 import org.laba2.entities.Accounting;
 import org.laba2.exception.DatabaseException;
+import org.laba2.utils.ResultSetToAccountingConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -17,6 +19,9 @@ import java.sql.SQLException;
 public class PostgresAccountingDAOImpl implements AccountingDAO {
 
     private static final Logger logger = LogManager.getLogger(PostgresAccountingDAOImpl.class);
+
+    @Autowired
+    private ResultSetToAccountingConverter resultSetToAccountingConverter;
 
     private final DataSource dataSource;
 
@@ -45,14 +50,14 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
     @Override
     public Accounting getAccounting(String accounting_id) {
         logger.debug("invocation get accounting method");
-        Accounting accounting = null;
+        Accounting accounting;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM accounting_table WHERE accounting_id=?")) {
             preparedStatement.setString(1, accounting_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            accounting = parseAccounting(resultSet);
+            accounting = resultSetToAccountingConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database connection", e);
         } finally {
@@ -97,24 +102,5 @@ public class PostgresAccountingDAOImpl implements AccountingDAO {
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database connection", e);
         }
-    }
-
-    private Accounting parseAccounting(ResultSet resultSet) {
-        logger.debug("invocation parse accounting method");
-        Accounting accounting = null;
-        try {
-            String accounting_id = resultSet.getString("accounting_id");
-            float tour_price = resultSet.getFloat("accounting_tour_price");
-            float tour_paid = resultSet.getFloat("accounting_tour_paid");
-            float commissionPercent = resultSet.getFloat("accounting_commissionpercent");
-            float touroperator_price = resultSet.getFloat("accounting_touroperator_price");
-            float touroperator_paid = resultSet.getFloat("accounting_touroperator_paid");
-            float profit = resultSet.getFloat("accounting_profit");
-            accounting = new Accounting(accounting_id, tour_price, tour_paid, commissionPercent,
-                    touroperator_price, touroperator_paid, profit);
-        } catch (SQLException e) {
-            throw new DatabaseException("Something wrong happened with database connection", e);
-        }
-        return accounting;
     }
 }

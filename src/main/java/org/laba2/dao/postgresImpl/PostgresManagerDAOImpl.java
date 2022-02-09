@@ -5,12 +5,16 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.ManagerDAO;
 import org.laba2.entities.Manager;
 import org.laba2.exception.DatabaseException;
-import org.laba2.utils.DateConverter;
+import org.laba2.utils.StringToDateConverter;
+import org.laba2.utils.ResultSetToManagerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,10 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     private static final Logger logger = LogManager.getLogger(PostgresManagerDAOImpl.class);
 
     @Autowired
-    private DateConverter dateConverter;
+    private StringToDateConverter stringToDateConverter;
+
+    @Autowired
+    private ResultSetToManagerConverter resultSetToManagerConverter;
 
     private final DataSource dataSource;
 
@@ -37,7 +44,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             preparedStatement.setString(2, manager.getFirstName());
             preparedStatement.setString(3, manager.getLastName());
             preparedStatement.setFloat(4, manager.getSalary());
-            preparedStatement.setDate(5, dateConverter.convert(manager.getHireDate()));
+            preparedStatement.setDate(5, stringToDateConverter.convert(manager.getHireDate()));
             preparedStatement.setString(6, manager.getPhoneNumber());
             preparedStatement.setString(7, manager.getEmail());
             preparedStatement.setString(8, manager.getLogin());
@@ -50,18 +57,17 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
         }
     }
 
-
     @Override
     public Manager getManagerByLogin(String manager_login) {
         logger.debug("invocation get manager by login method");
-        Manager manager = null;
+        Manager manager;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table WHERE manager_login=?")) {
             preparedStatement.setString(1, manager_login);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            manager = parseManager(resultSet);
+            manager = resultSetToManagerConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
@@ -79,14 +85,14 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
     @Override
     public Manager getManagerById(String manager_id) {
         logger.debug("invocation get manager by id method");
-        Manager manager = null;
+        Manager manager;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table WHERE manager_id=?")) {
             preparedStatement.setString(1, manager_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            manager = parseManager(resultSet);
+            manager = resultSetToManagerConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
@@ -109,7 +115,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM managers_table ORDER BY manager_id");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                managerList.add(parseManager(resultSet));
+                managerList.add(resultSetToManagerConverter.convert(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
@@ -126,7 +132,7 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
             preparedStatement.setString(1, manager.getFirstName());
             preparedStatement.setString(2, manager.getLastName());
             preparedStatement.setFloat(3, manager.getSalary());
-            preparedStatement.setDate(4, dateConverter.convert(manager.getHireDate()));
+            preparedStatement.setDate(4, stringToDateConverter.convert(manager.getHireDate()));
             preparedStatement.setString(5, manager.getPhoneNumber());
             preparedStatement.setString(6, manager.getEmail());
             preparedStatement.setString(7, manager.getLogin());
@@ -151,28 +157,5 @@ public class PostgresManagerDAOImpl implements ManagerDAO {
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         }
-    }
-
-    private Manager parseManager(ResultSet resultSet) {
-        logger.debug("invocation parse manager method");
-        Manager manager = null;
-        try {
-            String manager_id = resultSet.getString("manager_id");
-            String firstname = resultSet.getString("manager_firstname");
-            String lastname = resultSet.getString("manager_lastname");
-            float salary = resultSet.getFloat("manager_salary");
-            String hireDate = resultSet.getString("manager_hiredate");
-            String phoneNumber = resultSet.getString("manager_phonenumber");
-            String email = resultSet.getString("manager_email");
-            String login = resultSet.getString("manager_login");
-            String password = resultSet.getString("manager_password");
-            String role = resultSet.getString("manager_role");
-            String status = resultSet.getString("manager_status");
-            manager = new Manager(manager_id, firstname, lastname,
-                    salary, hireDate, phoneNumber, email, login, password, role, status);
-        } catch (SQLException e) {
-            throw new DatabaseException("Something wrong happened with database", e);
-        }
-        return manager;
     }
 }

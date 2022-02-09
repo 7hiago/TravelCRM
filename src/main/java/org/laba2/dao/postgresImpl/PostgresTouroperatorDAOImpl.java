@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.laba2.dao.TouroperatorDAO;
 import org.laba2.entities.Touroperator;
 import org.laba2.exception.DatabaseException;
+import org.laba2.utils.ResultSetToTouroperatorConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -19,6 +21,9 @@ import java.util.List;
 public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
 
     private static final Logger logger = LogManager.getLogger(PostgresTouroperatorDAOImpl.class);
+
+    @Autowired
+    private ResultSetToTouroperatorConverter resultSetToTouroperatorConverter;
 
     private final DataSource dataSource;
 
@@ -45,7 +50,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
     @Override
     public Touroperator getTouroperator(String touroperator_id) {
         logger.debug("invocation get touroperator method");
-        Touroperator touroperator = null;
+        Touroperator touroperator;
         ResultSet resultSet = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM touroperators_table WHERE touroperator_id=?"))
@@ -53,7 +58,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
             preparedStatement.setString(1, touroperator_id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            touroperator = parseTouroperator(resultSet);
+            touroperator = resultSetToTouroperatorConverter.convert(resultSet);
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         } finally {
@@ -77,7 +82,7 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
             ResultSet resultSet = preparedStatement.executeQuery())
         {
             while (resultSet.next()) {
-                touroperatorList.add(parseTouroperator(resultSet));
+                touroperatorList.add(resultSetToTouroperatorConverter.convert(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
@@ -114,21 +119,5 @@ public class PostgresTouroperatorDAOImpl implements TouroperatorDAO {
         } catch (SQLException e) {
             throw new DatabaseException("Something wrong happened with database", e);
         }
-    }
-
-    private Touroperator parseTouroperator(ResultSet resultSet) {
-        logger.debug("invocation parse touroperator method");
-        Touroperator touroperator = null;
-        try {
-            String touroperator_id = resultSet.getString("touroperator_id");
-            String touroperator_name = resultSet.getString("touroperator_name");
-            String touroperator_phonenumber = resultSet.getString("touroperator_phonenumber");
-            String touroperator_email = resultSet.getString("touroperator_email");
-
-            touroperator = new Touroperator(touroperator_id, touroperator_name, touroperator_phonenumber, touroperator_email);
-        } catch (SQLException e) {
-            throw new DatabaseException("Something wrong happened with database", e);
-        }
-        return touroperator;
     }
 }
