@@ -26,7 +26,7 @@ public class MainController {
         session.setMaxInactiveInterval(-1);
         if(session.isNew()){
             logger.debug("update course");
-            courseService.updateRate();
+            courseService.updateCourse();
         }
         return new ModelAndView("/menuPage");
     }

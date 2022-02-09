@@ -29,7 +29,7 @@ public class CourseService {
         return course.getRate();
     }
 
-    public void updateRate() {
+    public void updateCourse() {
         course = getCurrentCourse();
     }
 }
