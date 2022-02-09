@@ -38,8 +38,6 @@ public class TouroperatorService {
         newTouroperator.setTouroperatorId("TR-" + UUID.randomUUID());
         touroperatorDAO.createTouroperator(newTouroperator);
         return true;
-
-
     }
 
     public void editTouroperator(String touroperatorId,Touroperator editedTouroperator) {
@@ -49,5 +47,4 @@ public class TouroperatorService {
     public void deleteTouroperator(String touroperatorId) {
         touroperatorDAO.removeTouroperator(touroperatorId);
     }
-
 }
