@@ -2,8 +2,6 @@ package org.laba2.controllers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.laba2.services.CourseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,18 +14,13 @@ public class MainController {
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
-    @Autowired
-    private CourseService courseService;
-
     @RequestMapping(value = "/")
     public ModelAndView startPoint(HttpSession session, HttpServletRequest request) {
+        logger.debug("invalidate session");
         session.invalidate();
+        logger.debug("create new session");
         session = request.getSession(true);
         session.setMaxInactiveInterval(-1);
-        if(session.isNew()){
-            logger.debug("update course");
-            courseService.updateCourse();
-        }
         return new ModelAndView("/menuPage");
     }
 

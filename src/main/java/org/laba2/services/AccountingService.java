@@ -5,13 +5,14 @@ import org.laba2.entities.Accounting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Service
 public class AccountingService {
 
     private final CourseService courseService;
-
     private final AccountingDAO accountingDAO;
 
     @Autowired
@@ -21,11 +22,13 @@ public class AccountingService {
     }
 
     public String createNewAccounting(Accounting accounting) {
+        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getRate();
+
         accounting.setAccountingId("AC-" + UUID.randomUUID());
-        accounting.setTourPrice(accounting.getTourPrice() / courseService.getRate());
-        accounting.setTourPaid(accounting.getTourPaid() / courseService.getRate());
-        accounting.setTouroperatorPrice(accounting.getTouroperatorPrice() / courseService.getRate());
-        accounting.setTouroperatorPaid(accounting.getTouroperatorPaid() / courseService.getRate());
+        accounting.setTourPrice(accounting.getTourPrice() / course);
+        accounting.setTourPaid(accounting.getTourPaid() / course);
+        accounting.setTouroperatorPrice(accounting.getTouroperatorPrice() / course);
+        accounting.setTouroperatorPaid(accounting.getTouroperatorPaid() / course);
         accounting.setProfit(accounting.getTourPrice() * (accounting.getCommission() / 100));
 
         accountingDAO.createAccounting(accounting);
@@ -33,22 +36,25 @@ public class AccountingService {
     }
 
     public Accounting getAccountingById(String accountingId) {
+        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getRate();
         Accounting accounting = accountingDAO.getAccounting(accountingId);
 
-        accounting.setTourPrice(accounting.getTourPrice() * courseService.getRate());
-        accounting.setTourPaid(accounting.getTourPaid() * courseService.getRate());
-        accounting.setTouroperatorPrice(accounting.getTouroperatorPrice() * courseService.getRate());
-        accounting.setTouroperatorPaid(accounting.getTouroperatorPaid() * courseService.getRate());
-        accounting.setProfit(Math.round(accounting.getProfit() * courseService.getRate()));
+        accounting.setTourPrice(accounting.getTourPrice() * course);
+        accounting.setTourPaid(accounting.getTourPaid() * course);
+        accounting.setTouroperatorPrice(accounting.getTouroperatorPrice() * course);
+        accounting.setTouroperatorPaid(accounting.getTouroperatorPaid() * course);
+        accounting.setProfit(Math.round(accounting.getProfit() * course));
 
         return accounting;
     }
 
     public void editAccounting(String accountingId, Accounting accounting) {
-        accounting.setTourPrice(accounting.getTourPrice() / courseService.getRate());
-        accounting.setTourPaid(accounting.getTourPaid() / courseService.getRate());
-        accounting.setTouroperatorPrice(accounting.getTouroperatorPrice() / courseService.getRate());
-        accounting.setTouroperatorPaid(accounting.getTouroperatorPaid() / courseService.getRate());
+        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getRate();
+
+        accounting.setTourPrice(accounting.getTourPrice() / course);
+        accounting.setTourPaid(accounting.getTourPaid() / course);
+        accounting.setTouroperatorPrice(accounting.getTouroperatorPrice() / course);
+        accounting.setTouroperatorPaid(accounting.getTouroperatorPaid() / course);
         accounting.setProfit(accounting.getTourPrice() * (accounting.getCommission()/100));
 
         accountingDAO.updateAccounting(accountingId, accounting);
