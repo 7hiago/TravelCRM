@@ -19,7 +19,7 @@ public class ManagerService implements UserDetailsService {
     private final ManagerDAO managerDAO;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public ManagerService(ManagerDAO managerDAO) {
