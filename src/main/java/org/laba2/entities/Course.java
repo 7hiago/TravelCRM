@@ -1,64 +1,59 @@
 package org.laba2.entities;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Course {
 
-    private int r030;
-    private String txt;
-    private float rate;
-    private String cc;
-    private String exchangedate;
+    @JsonAlias({"rate", "rateSell", "saleRate", "sale"})
+    private float course;
+
+    @JsonAlias({"cc", "currencyCodeA", "currency", "ccy"})
+    private String currency;
+
+    @JsonAlias({"exchangedate", "date"})
+    private String date;
+
+    private String bank;
 
     public Course() {
     }
 
-    public int getR030() {
-        return r030;
+    public float getCourse() {
+        return course;
     }
 
-    public void setR030(int r030) {
-        this.r030 = r030;
+    public void setCourse(float course) {
+        this.course = course;
     }
 
-    public String getTxt() {
-        return txt;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setTxt(String txt) {
-        this.txt = txt;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
-    public float getRate() {
-        return rate;
+    public String getDate() {
+        return date;
     }
 
-    public void setRate(float rate) {
-        this.rate = rate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getCc() {
-        return cc;
+    public String getBank() {
+        return bank;
     }
 
-    public void setCc(String cc) {
-        this.cc = cc;
-    }
-
-    public String getExchangedate() {
-        return exchangedate;
-    }
-
-    public void setExchangedate(String exchangedate) {
-        this.exchangedate = exchangedate;
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 
     @Override
     public String toString() {
-        return "Course{" +
-                "r030=" + r030 +
-                ", txt='" + txt + '\'' +
-                ", rate=" + rate +
-                ", cc='" + cc + '\'' +
-                ", exchangedate='" + exchangedate + '\'' +
-                '}';
+        return "Course of " + currency + " in " + bank + " on " + date + " is " + course;
     }
 }

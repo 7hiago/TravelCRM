@@ -1,6 +1,8 @@
 package org.laba2;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -17,6 +19,12 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class AppConfiguration {
 
+    @Value("${apikey.name}")
+    private String apiKeyName;
+
+    @Value("${apikey.key}")
+    private String apiKey;
+
     @Bean
     public PasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder(12);
@@ -28,8 +36,8 @@ public class AppConfiguration {
     }
 
     @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
+    public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
+        return restTemplateBuilder.defaultHeader(apiKeyName, apiKey).build();
     }
 
     @Bean

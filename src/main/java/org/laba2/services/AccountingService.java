@@ -22,7 +22,7 @@ public class AccountingService {
     }
 
     public String createNewAccounting(Accounting accounting) {
-        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getRate();
+        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getCourse();
 
         accounting.setAccountingId("AC-" + UUID.randomUUID());
         accounting.setTourPrice(accounting.getTourPrice() / course);
@@ -36,7 +36,7 @@ public class AccountingService {
     }
 
     public Accounting getAccountingById(String accountingId) {
-        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getRate();
+        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getCourse();
         Accounting accounting = accountingDAO.getAccounting(accountingId);
 
         accounting.setTourPrice(accounting.getTourPrice() * course);
@@ -49,7 +49,7 @@ public class AccountingService {
     }
 
     public void editAccounting(String accountingId, Accounting accounting) {
-        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getRate();
+        float course = courseService.getCourse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).getCourse();
 
         accounting.setTourPrice(accounting.getTourPrice() / course);
         accounting.setTourPaid(accounting.getTourPaid() / course);
