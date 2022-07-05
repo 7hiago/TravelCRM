@@ -6,6 +6,7 @@ import org.laba2.entities.Tour;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 public class CreateOrderDTO {
 
@@ -47,4 +48,26 @@ public class CreateOrderDTO {
         this.accounting = accounting;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CreateOrderDTO)) return false;
+        CreateOrderDTO that = (CreateOrderDTO) o;
+        return getTour().equals(that.getTour()) && getCustomer().equals(that.getCustomer()) && getAccounting().equals(that.getAccounting());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTour(), getCustomer(), getAccounting());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder createOrderDTOToString = new StringBuilder()
+                .append("CreateOrderDTO: ").append('\n')
+                .append("tour: ").append(tour).append(',').append('\n')
+                .append("customer: ").append(customer).append(',').append('\n')
+                .append("accounting: ").append(accounting).append('.');
+        return createOrderDTOToString.toString();
+    }
 }

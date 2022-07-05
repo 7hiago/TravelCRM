@@ -81,4 +81,16 @@ public class Customer {
     public int hashCode() {
         return Objects.hash(getCustomerId(), getFirstName(), getLastName(), getPhoneNumber(), getEmail());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder customerToString = new StringBuilder()
+                .append("Customer: ").append('\n')
+                .append("customer id: ").append(customerId).append(',').append('\n')
+                .append("first name: ").append(firstName).append(',').append('\n')
+                .append("last name: ").append(lastName).append(',').append('\n')
+                .append("phone number: ").append(phoneNumber).append(',').append('\n')
+                .append("email: ").append(email).append('.');
+        return customerToString.toString();
+    }
 }

@@ -196,4 +196,21 @@ public class Manager implements UserDetails {
         return Objects.hash(getManagerId(), getFirstName(), getLastName(), getSalary(), getHireDate(), getPhoneNumber(), getEmail(), getLogin(), getPassword());
     }
 
+    @Override
+    public String toString() {
+        StringBuilder managerToString = new StringBuilder()
+                .append("Manager: ").append('\n')
+                .append("manager id: ").append(managerId).append(',').append('\n')
+                .append("first name: ").append(firstName).append(',').append('\n')
+                .append("last name: ").append(lastName).append(',').append('\n')
+                .append("salary: ").append(salary).append(',').append('\n')
+                .append("hire date: ").append(hireDate).append(',').append('\n')
+                .append("phone number: ").append(phoneNumber).append(',').append('\n')
+                .append("email: ").append(email).append(',').append('\n')
+                .append("login: ").append(login).append(',').append('\n')
+                .append("password: ").append(password).append(',').append('\n')
+                .append("role: ").append(role).append(',').append('\n')
+                .append("status: ").append(status).append('.');
+        return managerToString.toString();
+    }
 }

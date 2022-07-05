@@ -3,6 +3,8 @@ package org.laba2.entities;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Course {
 
@@ -50,6 +52,19 @@ public class Course {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Course)) return false;
+        Course course1 = (Course) o;
+        return Float.compare(course1.getCourse(), getCourse()) == 0 && getCurrency().equals(course1.getCurrency()) && getDate().equals(course1.getDate()) && getBank().equals(course1.getBank());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCourse(), getCurrency(), getDate(), getBank());
     }
 
     @Override

@@ -110,4 +110,18 @@ public class Accounting {
     public int hashCode() {
         return Objects.hash(getAccountingId(), getTourPrice(), getTourPaid(), getCommission(), getTouroperatorPrice(), getTouroperatorPaid(), getProfit());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder accountingToString = new StringBuilder()
+                .append("Accounting: ").append('\n')
+                .append("accounting id: ").append(accountingId).append(',').append('\n')
+                .append("tour price: ").append(tourPrice).append(',').append('\n')
+                .append("tour paid: ").append(tourPaid).append(',').append('\n')
+                .append("commission: ").append(commission).append(',').append('\n')
+                .append("touroperator price: ").append(touroperatorPrice).append(',').append('\n')
+                .append("touroperator paid: ").append(touroperatorPaid).append(',').append('\n')
+                .append("profit: ").append(profit).append('.');
+        return accountingToString.toString();
+    }
 }

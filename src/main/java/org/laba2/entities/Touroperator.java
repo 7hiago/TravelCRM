@@ -69,4 +69,15 @@ public class Touroperator {
     public int hashCode() {
         return Objects.hash(getTouroperatorId(), getName(), getPhoneNumber(), getEmail());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder touroperatorToString = new StringBuilder()
+                .append("Touroperator: ").append('\n')
+                .append("touroperator id: ").append(touroperatorId).append(',').append('\n')
+                .append("name: ").append(name).append(',').append('\n')
+                .append("phone number: ").append(phoneNumber).append(',').append('\n')
+                .append("email: ").append(email).append('.');
+        return touroperatorToString.toString();
+    }
 }

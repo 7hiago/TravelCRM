@@ -5,6 +5,8 @@ import org.laba2.entities.Customer;
 import org.laba2.entities.Manager;
 import org.laba2.entities.Tour;
 
+import java.util.Objects;
+
 public class ShowOrderDTO {
 
     private int orderNumber;
@@ -81,5 +83,32 @@ public class ShowOrderDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShowOrderDTO)) return false;
+        ShowOrderDTO that = (ShowOrderDTO) o;
+        return getOrderNumber() == that.getOrderNumber() && getTour().equals(that.getTour()) && getCustomer().equals(that.getCustomer()) && getManager().equals(that.getManager()) && getAccounting().equals(that.getAccounting()) && getDate().equals(that.getDate()) && getStatus().equals(that.getStatus());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrderNumber(), getTour(), getCustomer(), getManager(), getAccounting(), getDate(), getStatus());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder showOrderDTOToString = new StringBuilder()
+                .append("ShowOrderDTO: ").append('\n')
+                .append("order number: ").append(orderNumber).append(',').append('\n')
+                .append("tour: ").append(tour).append(',').append('\n')
+                .append("customer: ").append(customer).append(',').append('\n')
+                .append("manager: ").append(manager).append(',').append('\n')
+                .append("accounting: ").append(accounting).append(',').append('\n')
+                .append("date: ").append(date).append(',').append('\n')
+                .append("status: ").append(status).append('.');
+        return showOrderDTOToString.toString();
     }
 }
