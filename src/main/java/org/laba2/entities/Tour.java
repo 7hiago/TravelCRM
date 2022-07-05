@@ -105,4 +105,18 @@ public class Tour {
     public int hashCode() {
         return Objects.hash(getTourId(), getCountry(), getHotel(), getDepartureDate(), getReturnDate(), getProposalNumber(), getTouroperatorId());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder tourToString = new StringBuilder()
+                .append("Tour: ").append('\n')
+                .append("tour id: ").append(tourId).append(',').append('\n')
+                .append("country: ").append(country).append(',').append('\n')
+                .append("hotel: ").append(hotel).append(',').append('\n')
+                .append("departure date: ").append(departureDate).append(',').append('\n')
+                .append("return date: ").append(returnDate).append(',').append('\n')
+                .append("proposal number: ").append(proposalNumber).append(',').append('\n')
+                .append("touroperator id: ").append(touroperatorId).append('.');
+        return tourToString.toString();
+    }
 }

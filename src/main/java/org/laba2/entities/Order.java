@@ -91,4 +91,18 @@ public class Order {
     public int hashCode() {
         return Objects.hash(getOrderId(), getTourId(), getCustomerId(), getManagerId(), getAccountingId(), getDate(), getStatus());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder orderToString = new StringBuilder()
+                .append("Order: ").append('\n')
+                .append("order id: ").append(orderId).append(',').append('\n')
+                .append("tour id: ").append(tourId).append(',').append('\n')
+                .append("customer id: ").append(customerId).append(',').append('\n')
+                .append("manager id: ").append(managerId).append(',').append('\n')
+                .append("accounting id: ").append(accountingId).append(',').append('\n')
+                .append("date: ").append(date).append(',').append('\n')
+                .append("status: ").append(status).append('.');
+        return orderToString.toString();
+    }
 }
